@@ -1,5 +1,5 @@
-const fs = require("node:fs");
-const apiVersion = require("@shopify/shopify-app-remix").LATEST_API_VERSION;
+const fs = require('node:fs');
+const apiVersion = require('@shopify/shopify-app-remix').LATEST_API_VERSION;
 
 function getConfig() {
   const config = {
@@ -17,14 +17,14 @@ function getConfig() {
       // },
       shopifyAdminApi: {
         schema: `https://shopify.dev/admin-graphql-direct-proxy/${apiVersion}`,
-        documents: ["./app/**/*.{graphql,js,ts,jsx,tsx}"],
+        documents: ['./app/**/*.{graphql,js,ts,jsx,tsx}'],
       },
     },
   };
 
   let extensions = [];
   try {
-    extensions = fs.readdirSync("./extensions");
+    extensions = fs.readdirSync('./extensions');
   } catch {
     // ignore if no extensions
   }

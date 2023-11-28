@@ -1,4 +1,4 @@
-import { Page, Layout } from "@shopify/polaris";
+import { Page, Layout } from '@shopify/polaris';
 
 export default function Index() {
   return (
