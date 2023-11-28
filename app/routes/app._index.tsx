@@ -1,10 +1,15 @@
-import { Page, Layout } from '@shopify/polaris';
+import { Page, Layout, Card, Button, ButtonGroup } from '@shopify/polaris';
 
 export default function Index() {
   return (
     <Page>
       <ui-title-bar title="Main page"></ui-title-bar>
-      <Layout></Layout>
+      <Layout>
+        <ButtonGroup>
+          <Button>View pages</Button>
+          <Button variant="primary">Create page</Button>
+        </ButtonGroup>
+      </Layout>
     </Page>
   );
 }
