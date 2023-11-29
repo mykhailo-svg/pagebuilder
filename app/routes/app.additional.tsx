@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { BlockStack, Button, Card, Grid, Layout, Page } from '@shopify/polaris';
-import { generateId } from '~/helpers/generateId';
+import { useState, useEffect } from 'react';
+import { Page } from '@shopify/polaris';
 import grapesjs from 'grapesjs';
 import gjsPresetWebpage from 'grapesjs-preset-webpage';
 import gjsPluginBlocksBasic from 'grapesjs-blocks-basic';
@@ -22,12 +21,6 @@ export default function AdditionalPage() {
     });
     setEditor(editor);
   }, []);
-
-  const handleContentClick = (e: any) => {
-    e.stopPropagation();
-    alert(e.target.textContent);
-    console.log(e.target);
-  };
 
   return (
     <Page fullWidth>
