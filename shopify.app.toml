@@ -2,7 +2,7 @@
 
 name = "pages-builder"
 client_id = "b559767290b67b4db00a3d213d55c281"
-application_url = "https://sales-incl-wa-tasks.trycloudflare.com"
+application_url = "https://meeting-commons-decor-reactions.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://sales-incl-wa-tasks.trycloudflare.com/auth/callback",
-  "https://sales-incl-wa-tasks.trycloudflare.com/auth/shopify/callback",
-  "https://sales-incl-wa-tasks.trycloudflare.com/api/auth/callback",
-  "https://sales-incl-wa-tasks.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://meeting-commons-decor-reactions.trycloudflare.com/auth/callback",
+  "https://meeting-commons-decor-reactions.trycloudflare.com/auth/shopify/callback",
+  "https://meeting-commons-decor-reactions.trycloudflare.com/api/auth/callback",
+  "https://meeting-commons-decor-reactions.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]
