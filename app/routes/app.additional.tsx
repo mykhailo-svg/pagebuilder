@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BlockStack, Button, Card, Grid, Layout, Page } from '@shopify/polaris';
 import { generateId } from '~/helpers/generateId';
 import grapesjs from 'grapesjs';
+import gjsPresetWebpage from 'grapesjs-preset-webpage';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
 export const links = () => [{ rel: 'stylesheet', href: grapesStyles }];
 
@@ -12,7 +13,13 @@ export default function AdditionalPage() {
 
   const [editor, setEditor] = useState<any>(null);
   useEffect(() => {
-    const editor = grapesjs.init({ container: '#editor' });
+    const editor = grapesjs.init({
+      container: '#editor',
+      plugins: [gjsPresetWebpage],
+      pluginsOpts: {
+        gjsPresetWebpage: {},
+      },
+    });
     setEditor(editor);
   }, []);
 
