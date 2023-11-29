@@ -2,7 +2,7 @@
 
 name = "pages-builder"
 client_id = "b559767290b67b4db00a3d213d55c281"
-application_url = "https://thinkpad-centres-payable-vt.trycloudflare.com"
+application_url = "https://sacrifice-olive-zambia-ads.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://thinkpad-centres-payable-vt.trycloudflare.com/auth/callback",
-  "https://thinkpad-centres-payable-vt.trycloudflare.com/auth/shopify/callback",
-  "https://thinkpad-centres-payable-vt.trycloudflare.com/api/auth/callback",
-  "https://thinkpad-centres-payable-vt.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://sacrifice-olive-zambia-ads.trycloudflare.com/auth/callback",
+  "https://sacrifice-olive-zambia-ads.trycloudflare.com/auth/shopify/callback",
+  "https://sacrifice-olive-zambia-ads.trycloudflare.com/api/auth/callback",
+  "https://sacrifice-olive-zambia-ads.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]
