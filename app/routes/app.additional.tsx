@@ -3,21 +3,21 @@ import { BlockStack, Button, Card, Grid, Layout, Page } from '@shopify/polaris';
 import { generateId } from '~/helpers/generateId';
 import grapesjs from 'grapesjs';
 import gjsPresetWebpage from 'grapesjs-preset-webpage';
+import gjsPluginBlocksBasic from 'grapesjs-blocks-basic';
+import gjsPluginCkEditor from 'grapesjs-plugin-ckeditor';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
 export const links = () => [{ rel: 'stylesheet', href: grapesStyles }];
 
 export default function AdditionalPage() {
-  const [markdown, setMarkdown] = useState<string>(
-    `<div class="${generateId()}" >Hii<div>no</div></div>`
-  );
-
   const [editor, setEditor] = useState<any>(null);
   useEffect(() => {
     const editor = grapesjs.init({
       container: '#editor',
-      plugins: [gjsPresetWebpage],
+      plugins: [gjsPresetWebpage, gjsPluginCkEditor, gjsPluginBlocksBasic],
       pluginsOpts: {
         gjsPresetWebpage: {},
+        gjsPluginCkEditor: {},
+        gjsPluginBlocksBasic: {},
       },
     });
     setEditor(editor);
