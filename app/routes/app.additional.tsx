@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Page } from '@shopify/polaris';
+import { Button, Layout, Page } from '@shopify/polaris';
+import { generateId } from '~/helpers/generateId';
 
 export default function AdditionalPage() {
-  const [markdown, setMarkdown] = useState<string>('<div>Hii</div>');
+  const [markdown, setMarkdown] = useState<string>(
+    `<div class="${generateId()}" >Hii<div>no</div></div>`
+  );
 
-  useEffect(() => {
-    // Перевірка, чи код виконується на клієнтській стороні
-    if (typeof window !== 'undefined') {
-      console.log(new DOMParser().parseFromString(markdown, 'text/html'));
-    }
-  }, [markdown]);
+  const handleContentClick = (e: any) => {
+    e.stopPropagation();
+    alert(e.target.textContent);
+  };
 
   return (
     <Page>
       <ui-title-bar title="Page Builder" />
       <Layout>
-        <div dangerouslySetInnerHTML={{ __html: markdown }} />
+        <div
+          dangerouslySetInnerHTML={{ __html: markdown }}
+          onClick={handleContentClick}
+        />
       </Layout>
     </Page>
   );
