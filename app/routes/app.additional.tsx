@@ -16,41 +16,28 @@ export default function AdditionalPage() {
   return (
     <Page fullWidth>
       <ui-title-bar title="Page Builder" />
-      <Layout>
-        <Layout.Section>
-          <Grid>
-            <Card>
-              <div
-                dangerouslySetInnerHTML={{ __html: markdown }}
-                onClick={handleContentClick}
-              />
-            </Card>
-            <Card>sd</Card>
-          </Grid>
-        </Layout.Section>
-      </Layout>
-      <Page fullWidth>
-        <Grid
-          columns={{ xs: 1, sm: 4, md: 4, lg: 6, xl: 6 }}
-          areas={{
-            xs: ['product', 'sales', 'orders'],
-            sm: [
-              'product product product product',
-              'sales sales orders orders',
-            ],
-            md: ['sales product product orders'],
-            lg: ['product product product product sales orders'],
-            xl: ['product product sales sales orders orders'],
-          }}
-        >
-          <Grid.Cell area="product">
-            <Card>dfgdsl;gs;l</Card>
-          </Grid.Cell>
-          <Grid.Cell area="sales">
-            <Card>dfgdsl;gs;l</Card>
-          </Grid.Cell>
-        </Grid>
-      </Page>
+      <Grid
+        columns={{ xs: 1, sm: 7, md: 4, lg: 6, xl: 6 }}
+        areas={{
+          xs: ['product', 'sales', 'sales'],
+          sm: ['product sales sales sales', 'sales sales sales sales'],
+          md: ['sales product product orders'],
+          lg: ['product sales sales sales sales sales'],
+          xl: ['product product sales sales orders orders'],
+        }}
+      >
+        <Grid.Cell area="product">
+          <Card>dfgdsl;gs;l</Card>
+        </Grid.Cell>
+        <Grid.Cell area="sales">
+          <Card>
+            <div
+              dangerouslySetInnerHTML={{ __html: markdown }}
+              onClick={handleContentClick}
+            />
+          </Card>
+        </Grid.Cell>
+      </Grid>
     </Page>
   );
 }
