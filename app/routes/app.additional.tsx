@@ -37,6 +37,9 @@ export default function AdditionalPage() {
             />
           </Card>
         </Grid.Cell>
+        <Grid.Cell area="sales">
+          <Card>dfdf</Card>
+        </Grid.Cell>
       </Grid>
     </Page>
   );

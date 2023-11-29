@@ -2,7 +2,7 @@
 
 name = "pages-builder"
 client_id = "b559767290b67b4db00a3d213d55c281"
-application_url = "https://exceed-jumping-fiber-leaf.trycloudflare.com"
+application_url = "https://thinkpad-centres-payable-vt.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://exceed-jumping-fiber-leaf.trycloudflare.com/auth/callback",
-  "https://exceed-jumping-fiber-leaf.trycloudflare.com/auth/shopify/callback",
-  "https://exceed-jumping-fiber-leaf.trycloudflare.com/api/auth/callback",
-  "https://exceed-jumping-fiber-leaf.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://thinkpad-centres-payable-vt.trycloudflare.com/auth/callback",
+  "https://thinkpad-centres-payable-vt.trycloudflare.com/auth/shopify/callback",
+  "https://thinkpad-centres-payable-vt.trycloudflare.com/api/auth/callback",
+  "https://thinkpad-centres-payable-vt.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]
