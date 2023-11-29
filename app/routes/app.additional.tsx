@@ -29,6 +29,28 @@ export default function AdditionalPage() {
           </Grid>
         </Layout.Section>
       </Layout>
+      <Page fullWidth>
+        <Grid
+          columns={{ xs: 1, sm: 4, md: 4, lg: 6, xl: 6 }}
+          areas={{
+            xs: ['product', 'sales', 'orders'],
+            sm: [
+              'product product product product',
+              'sales sales orders orders',
+            ],
+            md: ['sales product product orders'],
+            lg: ['product product product product sales orders'],
+            xl: ['product product sales sales orders orders'],
+          }}
+        >
+          <Grid.Cell area="product">
+            <Card>dfgdsl;gs;l</Card>
+          </Grid.Cell>
+          <Grid.Cell area="sales">
+            <Card>dfgdsl;gs;l</Card>
+          </Grid.Cell>
+        </Grid>
+      </Page>
     </Page>
   );
 }
