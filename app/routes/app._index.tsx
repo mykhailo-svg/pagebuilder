@@ -1,4 +1,4 @@
-import { Page, Layout, Card, Button, ButtonGroup } from '@shopify/polaris';
+import { Page, Layout, Button, ButtonGroup } from '@shopify/polaris';
 
 export default function Index() {
   return (
