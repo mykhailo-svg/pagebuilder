@@ -6,7 +6,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from '@remix-run/react';
-import 'grapesjs/dist/css/grapes.min.css';
+
 
 export default function App() {
   return (

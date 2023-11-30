@@ -2,7 +2,7 @@
 
 name = "pages-builder"
 client_id = "b559767290b67b4db00a3d213d55c281"
-application_url = "https://transportation-sells-purse-husband.trycloudflare.com"
+application_url = "https://nearest-comprehensive-engines-nt.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://transportation-sells-purse-husband.trycloudflare.com/auth/callback",
-  "https://transportation-sells-purse-husband.trycloudflare.com/auth/shopify/callback",
-  "https://transportation-sells-purse-husband.trycloudflare.com/api/auth/callback",
-  "https://transportation-sells-purse-husband.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://nearest-comprehensive-engines-nt.trycloudflare.com/auth/callback",
+  "https://nearest-comprehensive-engines-nt.trycloudflare.com/auth/shopify/callback",
+  "https://nearest-comprehensive-engines-nt.trycloudflare.com/api/auth/callback",
+  "https://nearest-comprehensive-engines-nt.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]
