@@ -6,10 +6,38 @@ import gjsPluginBlocksBasic from 'grapesjs-blocks-basic';
 import gjsPluginCkEditor from 'grapesjs-plugin-ckeditor';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
 import { parseIntoLiquid } from '~/helpers/parseIntoLiquid';
+import { LoaderFunction, json } from '@remix-run/node';
+import { authenticate } from '~/shopify.server';
+import { createNewPage, getPageById } from '~/models/page.server';
+import { useLoaderData } from '@remix-run/react';
 export const links = () => [{ rel: 'stylesheet', href: grapesStyles }];
+
+type Page = {
+  id: string;
+  css: string;
+  html: string;
+  themeId: string;
+};
+
+export const loader: LoaderFunction = async ({ request }) => {
+  try {
+    const { admin } = await authenticate.admin(request);
+    const url = new URL(request.url);
+    const pageId = url.searchParams.get('pageId') || '';
+    const page = await getPageById(pageId);
+
+    return json({ page });
+  } catch (error) {
+    console.error('Error fetching data:', error);
+
+    return json([]);
+  }
+};
 
 export default function AdditionalPage() {
   const [editor, setEditor] = useState<Editor>();
+  const response = useLoaderData();
+
   useEffect(() => {
     const editor = grapesjs.init({
       container: '#editor',

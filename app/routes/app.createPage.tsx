@@ -33,9 +33,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   formData.forEach((value, key) => {
     formDataObject[key] = value.toString();
   });
-  const page = await createNewPage({ themeId: formDataObject.themePicker });
+  const page: any = await createNewPage({
+    themeId: formDataObject.themePicker,
+  });
   if (page) {
-    return redirect(`/app/additional?themeId=${formDataObject.themePicker}`);
+    return redirect(`/app/additional?pageId=${page.id}`);
   }
   return json({
     page,

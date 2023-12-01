@@ -32,3 +32,14 @@ export async function createNewPage({ themeId }: CreatePageArgs) {
     return error;
   }
 }
+
+export async function getPageById(id: string) {
+  try {
+    const page = await db.page.findUnique({
+      where: { id },
+    });
+    return page;
+  } catch (error) {
+    return error;
+  }
+}
