@@ -2,19 +2,19 @@
 
 name = "pages-builder"
 client_id = "b559767290b67b4db00a3d213d55c281"
-application_url = "https://geographical-discrimination-acdbentity-astrology.trycloudflare.com"
+application_url = "https://salaries-announce-school-staffing.trycloudflare.com"
 embedded = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "write_products"
+scopes = "write_products, read_themes"
 
 [auth]
 redirect_urls = [
-  "https://geographical-discrimination-acdbentity-astrology.trycloudflare.com/auth/callback",
-  "https://geographical-discrimination-acdbentity-astrology.trycloudflare.com/auth/shopify/callback",
-  "https://geographical-discrimination-acdbentity-astrology.trycloudflare.com/api/auth/callback",
-  "https://geographical-discrimination-acdbentity-astrology.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://salaries-announce-school-staffing.trycloudflare.com/auth/callback",
+  "https://salaries-announce-school-staffing.trycloudflare.com/auth/shopify/callback",
+  "https://salaries-announce-school-staffing.trycloudflare.com/api/auth/callback",
+  "https://salaries-announce-school-staffing.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]
