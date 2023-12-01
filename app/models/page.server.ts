@@ -18,10 +18,14 @@ export function generateUniqueID() {
   return `${timestamp}-${random}`;
 }
 
-export async function createNewPage() {
+type CreatePageArgs = {
+  themeId: string;
+};
+
+export async function createNewPage({ themeId }: CreatePageArgs) {
   try {
     const pages = await db.page.create({
-      data: { themeId: 'sfsf', id: generateUniqueID() },
+      data: { themeId, id: generateUniqueID() },
     });
     return pages;
   } catch (error) {

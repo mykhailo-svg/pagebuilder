@@ -38,7 +38,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     const themesResponse = await admin.rest.resources.Theme.all({
       session: session,
     });
-    const pages = await createNewPage();
+    const pages = await createNewPage({themeId:"dgfdtae2"});
     const data = await response.json();
 
     return json({ ...data.data, themes: themesResponse.data, pages });
