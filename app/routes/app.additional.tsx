@@ -12,11 +12,15 @@ import { createNewPage, getPageById } from '~/models/page.server';
 import { useLoaderData } from '@remix-run/react';
 export const links = () => [{ rel: 'stylesheet', href: grapesStyles }];
 
-type Page = {
+type PageType = {
   id: string;
   css: string;
   html: string;
   themeId: string;
+};
+
+type LoaderResponse = {
+  page: PageType;
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -36,7 +40,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function AdditionalPage() {
   const [editor, setEditor] = useState<Editor>();
-  const response = useLoaderData();
+  const response = useLoaderData<LoaderResponse>();
 
   useEffect(() => {
     const editor = grapesjs.init({
@@ -48,6 +52,7 @@ export default function AdditionalPage() {
         gjsPluginBlocksBasic: {},
       },
     });
+    editor.setComponents(response.page.html);
     setEditor(editor);
   }, []);
 
