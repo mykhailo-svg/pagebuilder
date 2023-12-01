@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Button, ChoiceList, Page, TextField } from '@shopify/polaris';
 import { authenticate } from '~/shopify.server';
-import { ActionFunctionArgs, LoaderFunction, json } from '@remix-run/node';
+import {
+  ActionFunctionArgs,
+  LoaderFunction,
+  json,
+  redirect,
+} from '@remix-run/node';
 import { Form, useActionData, useLoaderData } from '@remix-run/react';
 import { createNewPage, getPages } from '~/models/page.server';
 
@@ -29,6 +34,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     formDataObject[key] = value.toString();
   });
   const page = await createNewPage({ themeId: formDataObject.themePicker });
+  if (page) {
+    return redirect(`/app/additional?themeId=${formDataObject.themePicker}`);
+  }
   return json({
     page,
     form: formDataObject,
@@ -82,13 +90,10 @@ export default function createPage() {
   const handleChange = useCallback((value: string[]) => setSelected(value), []);
 
   useEffect(() => {
-    console.log(response);
-
     setShop(response.shop);
     setThemes(response.themes);
     setSelected([response?.themes[0].id.toString()]);
   }, []);
-  console.log(themes);
 
   return (
     <Page fullWidth>
