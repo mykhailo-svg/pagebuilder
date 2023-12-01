@@ -47,23 +47,21 @@ export const loader: LoaderFunction = async ({ request }) => {
   }
 };
 
-const PickerChildren = () => {
-  return <div>wefdgd</div>;
-};
-
 export default function createPage() {
   const [shop, setShop] = useState<Shop>({ id: '', name: '' });
   const [themes, setThemes] = useState<Theme[]>([]);
-  const choices = [{ label: 'None', value: 'none' }];
+  const choices = themes.map((theme) => {
+    return {
+      label: `${theme.name} --- ${theme.role}`,
+      value: theme.id.toString(),
+    };
+  });
 
   const response = useLoaderData<InitialResponse>();
   const [selected, setSelected] = useState<string[]>(['']);
-  const [textFieldValue, setTextFieldValue] = useState('');
 
   const handleChange = useCallback((value: string[]) => setSelected(value), []);
-  const renderChildren = () => <PickerChildren />;
 
-  const renderPickerChildren = (ad: string) => <PickerChildren />;
   useEffect(() => {
     setShop(response.shop);
     setThemes(response.themes);
