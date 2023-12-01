@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Button, ChoiceList, Page, TextField } from '@shopify/polaris';
 import { authenticate } from '~/shopify.server';
-import { LoaderFunction, json } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { ActionFunctionArgs, LoaderFunction, json } from '@remix-run/node';
+import { Form, useActionData, useLoaderData } from '@remix-run/react';
 import { createNewPage, getPages } from '~/models/page.server';
 
 type Shop = {
@@ -19,6 +19,14 @@ type Theme = {
 type InitialResponse = {
   shop: Shop;
   themes: Theme[];
+};
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+  const page = await createNewPage({ themeId: 'dfdg' });
+
+  return json({
+    page,
+  });
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -38,7 +46,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     const themesResponse = await admin.rest.resources.Theme.all({
       session: session,
     });
-    const pages = await createNewPage({themeId:"dgfdtae2"});
+    const pages = await createNewPage({ themeId: 'dgfdtae2' });
     const data = await response.json();
 
     return json({ ...data.data, themes: themesResponse.data, pages });
@@ -60,6 +68,9 @@ export default function createPage() {
   });
 
   const response = useLoaderData<InitialResponse>();
+  const createPageResponse = useActionData<typeof action>();
+  console.log(createPageResponse);
+
   const [selected, setSelected] = useState<string[]>(['']);
 
   const handleChange = useCallback((value: string[]) => setSelected(value), []);
@@ -76,16 +87,19 @@ export default function createPage() {
   return (
     <Page fullWidth>
       <ui-title-bar title={`Shop: ${shop.name}`}></ui-title-bar>
-      {themes ? (
-        <ChoiceList
-          title="Pick theme"
-          choices={choices}
-          selected={selected}
-          onChange={handleChange}
-        />
-      ) : (
-        ''
-      )}
+      <Form method="post">
+        {themes ? (
+          <ChoiceList
+            title="Pick theme"
+            choices={choices}
+            selected={selected}
+            onChange={handleChange}
+          />
+        ) : (
+          ''
+        )}
+        <Button submit>Log</Button>
+      </Form>
     </Page>
   );
 }
