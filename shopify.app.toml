@@ -2,7 +2,7 @@
 
 name = "pages-builder"
 client_id = "b559767290b67b4db00a3d213d55c281"
-application_url = "https://salaries-announce-school-staffing.trycloudflare.com"
+application_url = "https://rat-creature-outdoor-resolved.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products, read_themes"
 
 [auth]
 redirect_urls = [
-  "https://salaries-announce-school-staffing.trycloudflare.com/auth/callback",
-  "https://salaries-announce-school-staffing.trycloudflare.com/auth/shopify/callback",
-  "https://salaries-announce-school-staffing.trycloudflare.com/api/auth/callback",
-  "https://salaries-announce-school-staffing.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://rat-creature-outdoor-resolved.trycloudflare.com/auth/callback",
+  "https://rat-creature-outdoor-resolved.trycloudflare.com/auth/shopify/callback",
+  "https://rat-creature-outdoor-resolved.trycloudflare.com/api/auth/callback",
+  "https://rat-creature-outdoor-resolved.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]

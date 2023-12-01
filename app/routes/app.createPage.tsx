@@ -3,6 +3,7 @@ import { Button, ChoiceList, Page, TextField } from '@shopify/polaris';
 import { authenticate } from '~/shopify.server';
 import { LoaderFunction, json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
+import { getPages } from '~/models/page.server';
 
 type Shop = {
   name: string;
@@ -37,9 +38,10 @@ export const loader: LoaderFunction = async ({ request }) => {
     const themesResponse = await admin.rest.resources.Theme.all({
       session: session,
     });
+    const pages = await getPages();
     const data = await response.json();
 
-    return json({ ...data.data, themes: themesResponse.data });
+    return json({ ...data.data, themes: themesResponse.data, pages });
   } catch (error) {
     console.error('Error fetching data:', error);
 
@@ -63,6 +65,8 @@ export default function createPage() {
   const handleChange = useCallback((value: string[]) => setSelected(value), []);
 
   useEffect(() => {
+    console.log(response);
+
     setShop(response.shop);
     setThemes(response.themes);
     setSelected([response?.themes[0].id.toString()]);
