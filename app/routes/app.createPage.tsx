@@ -22,10 +22,16 @@ type InitialResponse = {
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const page = await createNewPage({ themeId: 'dfdg' });
+  const formData = await request.formData();
 
+  const formDataObject: Record<string, string> = {};
+  formData.forEach((value, key) => {
+    formDataObject[key] = value.toString();
+  });
+  const page = await createNewPage({ themeId: formDataObject.themePicker });
   return json({
     page,
+    form: formDataObject,
   });
 };
 
@@ -90,6 +96,7 @@ export default function createPage() {
       <Form method="post">
         {themes ? (
           <ChoiceList
+            name="themePicker"
             title="Pick theme"
             choices={choices}
             selected={selected}
