@@ -65,6 +65,7 @@ export default function createPage() {
   useEffect(() => {
     setShop(response.shop);
     setThemes(response.themes);
+    setSelected([response?.themes[0].id.toString()]);
   }, []);
   console.log(themes);
 
@@ -73,7 +74,7 @@ export default function createPage() {
       <ui-title-bar title={`Shop: ${shop.name}`}></ui-title-bar>
       {themes ? (
         <ChoiceList
-          title="Discount minimum requirements"
+          title="Pick theme"
           choices={choices}
           selected={selected}
           onChange={handleChange}
