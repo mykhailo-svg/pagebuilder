@@ -43,3 +43,23 @@ export async function getPageById(id: string) {
     return error;
   }
 }
+type UpdatePageArgs = {
+  id: string;
+  css: string;
+  html: string;
+};
+
+export async function updatePage({ id, css, html }: UpdatePageArgs) {
+  try {
+    const page = await db.page.update({
+      where: { id },
+      data: {
+        css,
+        html,
+      },
+    });
+    return page;
+  } catch (error) {
+    return error;
+  }
+}
