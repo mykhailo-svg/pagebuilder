@@ -57,35 +57,20 @@ export default function Pages() {
     <LegacyCard>
       <ResourceList
         resourceName={{ singular: 'customer', plural: 'customers' }}
-        items={[
-          {
-            id: '100',
-            url: '#',
-            name: 'Mae Jemison',
-            location: 'Decatur, USA',
-          },
-          {
-            id: '200',
-            url: '#',
-            name: 'Ellen Ochoa',
-            location: 'Los Angeles, USA',
-          },
-        ]}
+        items={pages}
         renderItem={(item) => {
-          const { id, url, name, location } = item;
-          const media = <Avatar customer size="md" name={name} />;
+          const { id, shop } = item;
 
           return (
             <ResourceItem
               id={id}
-              url={url}
-              media={media}
+              url={'#'}
               accessibilityLabel={`View details for ${name}`}
             >
               <Text variant="bodyMd" fontWeight="bold" as="h3">
-                {name}
+                {id}
               </Text>
-              <div>{'sdds'}</div>
+              <div>{shop}</div>
             </ResourceItem>
           );
         }}
