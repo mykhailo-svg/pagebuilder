@@ -72,6 +72,29 @@ export default function AdditionalPage() {
   useEffect(() => {
     const editor = grapesjs.init({
       container: '#editor',
+      blockManager: {
+        appendTo: '#blocks',
+      },
+      styleManager: {
+        appendTo: '#styles-container',
+        sectors: [
+          {
+            name: 'Dimension',
+            open: false,
+            buildProps: ['width', 'min-height', 'padding'],
+            properties: [
+              {
+                type: 'integer',
+                name: 'The width',
+                property: 'width',
+                units: ['px', '%'],
+                defaults: 'auto',
+                min: 0,
+              },
+            ],
+          },
+        ],
+      },
       plugins: [gjsPresetWebpage, gjsPluginCkEditor, gjsPluginBlocksBasic],
       pluginsOpts: {
         gjsPresetWebpage: {},
