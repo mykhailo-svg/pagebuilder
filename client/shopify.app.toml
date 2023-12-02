@@ -2,7 +2,7 @@
 
 name = "pages-builder"
 client_id = "b559767290b67b4db00a3d213d55c281"
-application_url = "https://lean-nickel-spray-trials.trycloudflare.com"
+application_url = "https://belly-generate-transmission-listprice.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products,read_themes"
 
 [auth]
 redirect_urls = [
-  "https://lean-nickel-spray-trials.trycloudflare.com/auth/callback",
-  "https://lean-nickel-spray-trials.trycloudflare.com/auth/shopify/callback",
-  "https://lean-nickel-spray-trials.trycloudflare.com/api/auth/callback",
-  "https://lean-nickel-spray-trials.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://belly-generate-transmission-listprice.trycloudflare.com/auth/callback",
+  "https://belly-generate-transmission-listprice.trycloudflare.com/auth/shopify/callback",
+  "https://belly-generate-transmission-listprice.trycloudflare.com/api/auth/callback",
+  "https://belly-generate-transmission-listprice.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]

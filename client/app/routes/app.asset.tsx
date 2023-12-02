@@ -1,7 +1,7 @@
-import { ActionFunctionArgs, redirect, json } from '@remix-run/node';
+import type { ActionFunctionArgs } from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { Form, useActionData } from '@remix-run/react';
-import { Page, Layout, Button, ButtonGroup } from '@shopify/polaris';
-import axios from 'axios';
+import { Page, Layout, Button } from '@shopify/polaris';
 export const action = async ({ request }: ActionFunctionArgs) => {
   return json({
     sf: 'sdsd',

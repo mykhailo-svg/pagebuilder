@@ -1,9 +1,8 @@
-import { LoaderFunction, json } from '@remix-run/node';
+import type { LoaderFunction } from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import {
-  LegacyCard,
   ResourceList,
-  Avatar,
   ResourceItem,
   Text,
   Badge,
@@ -11,7 +10,10 @@ import {
   Page,
   EmptyState,
 } from '@shopify/polaris';
-import { Progress, Tone } from '@shopify/polaris/build/ts/src/components/Badge';
+import type {
+  Progress,
+  Tone,
+} from '@shopify/polaris/build/ts/src/components/Badge';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { authenticate } from '~/shopify.server';
@@ -32,8 +34,7 @@ type InitialLoaderResponse = {
 export const loader: LoaderFunction = async ({ request }) => {
   try {
     const { admin } = await authenticate.admin(request);
-    const url = new URL(request.url);
-    const pageId = url.searchParams.get('pageId') || '';
+
     const pages = await axios
       .get(`http://localhost:4000/v1/page/created/test2r3`)
       .catch((error) => {
