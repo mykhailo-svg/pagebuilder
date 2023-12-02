@@ -1,17 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Button, Form, Page } from '@shopify/polaris';
-import grapesjs, { Editor } from 'grapesjs';
+import type { Editor } from 'grapesjs';
+import grapesjs from 'grapesjs';
 import gjsPresetWebpage from 'grapesjs-preset-webpage';
 import gjsPluginBlocksBasic from 'grapesjs-blocks-basic';
 import gjsPluginCkEditor from 'grapesjs-plugin-ckeditor';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
 import { parseIntoLiquid } from '~/helpers/parseIntoLiquid';
-import {
-  ActionFunctionArgs,
-  LoaderFunction,
-  json,
-  redirect,
-} from '@remix-run/node';
+import type { LoaderFunction } from '@remix-run/node';
+import { ActionFunctionArgs, json, redirect } from '@remix-run/node';
 import { authenticate } from '~/shopify.server';
 import { createNewPage, getPageById } from '~/models/page.server';
 import { useActionData, useLoaderData } from '@remix-run/react';
@@ -30,8 +27,7 @@ type PageType = {
 };
 
 type LoaderResponse = {
-  page: PageType;
-  newPageData: PageType;
+  pageData: PageType;
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -39,16 +35,14 @@ export const loader: LoaderFunction = async ({ request }) => {
     const { admin } = await authenticate.admin(request);
     const url = new URL(request.url);
     const pageId = url.searchParams.get('pageId') || '';
-    const page = await getPageById(pageId);
-    const newPage = await axios
+    const page = await axios
       .get(`http://localhost:4000/v1/page/${pageId}`)
       .catch((error) => {
-        // Обробка помилки, якщо її виникне
         console.error('Помилка відправлення POST-запиту:', error);
       });
-    const newPageData = newPage ? newPage.data : null;
+    const pageData = page ? page.data : null;
 
-    return json({ page, newPageData });
+    return json({ pageData });
   } catch (error) {
     console.error('Error fetching data:', error);
 
@@ -69,7 +63,6 @@ export default function AdditionalPage() {
   });
 
   const response = useLoaderData<LoaderResponse>();
-  console.log(response);
 
   useEffect(() => {
     const editor = grapesjs.init({
@@ -81,24 +74,21 @@ export default function AdditionalPage() {
         gjsPluginBlocksBasic: {},
       },
     });
-    setServerPAge(response.newPageData);
-    editor.setComponents(response.newPageData.html);
+    setServerPAge(response.pageData);
+    editor.setComponents(response.pageData.html);
     setEditor(editor);
   }, []);
 
   const handleSubmit = async () => {
     const html = editor?.getHtml() ?? '';
     const css = editor?.getCss() ?? '';
-    // URL для PUT-запиту
     const url = `http://localhost:4000/v1/page/${serverPage.id}`;
 
-    // JSON-об'єкт для відправлення у тілі PUT-запиту
     const data = {
       css,
       html,
     };
 
-    // Виконання PUT-запиту з використанням Axios
     const response = await axios
       .put(url, data)
       .then((response) => {
