@@ -95,9 +95,8 @@ export default function AdditionalPage() {
           },
         ],
       },
-      plugins: [gjsPresetWebpage, gjsPluginCkEditor, gjsPluginBlocksBasic],
+      plugins: [gjsPluginCkEditor, gjsPluginBlocksBasic],
       pluginsOpts: {
-        gjsPresetWebpage: {},
         gjsPluginCkEditor: {},
         gjsPluginBlocksBasic: {},
       },
