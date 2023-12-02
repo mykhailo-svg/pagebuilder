@@ -40,7 +40,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const newPage = await axios
     .post('http://localhost:4000/v1/page', {
       themeId: formDataObject.themePicker,
-      shop: 'test2r3',
+      shop: formDataObject.shopField,
     })
     .catch((error) => {
       // Обробка помилки, якщо її виникне
@@ -113,16 +113,23 @@ export default function createPage() {
 
   return (
     <Page fullWidth>
-      <ui-title-bar title={`Shop: ${shop.name}`}></ui-title-bar>
       <Form method="post">
         {themes ? (
-          <ChoiceList
-            name="themePicker"
-            title="Pick theme"
-            choices={choices}
-            selected={selected}
-            onChange={handleChange}
-          />
+          <>
+            <TextField
+              label="Your shop"
+              value={shop.name}
+              autoComplete=""
+              name="shopField"
+            />
+            <ChoiceList
+              name="themePicker"
+              title="Pick theme"
+              choices={choices}
+              selected={selected}
+              onChange={handleChange}
+            />
+          </>
         ) : (
           ''
         )}
