@@ -7,6 +7,8 @@ import {
   ResourceItem,
   Text,
   Badge,
+  Card,
+  Page,
 } from '@shopify/polaris';
 import { Progress, Tone } from '@shopify/polaris/build/ts/src/components/Badge';
 import axios from 'axios';
@@ -56,34 +58,37 @@ export default function Pages() {
   }, []);
 
   return (
-    <LegacyCard>
-      <ResourceList
-        resourceName={{ singular: 'customer', plural: 'customers' }}
-        items={pages}
-        renderItem={(item) => {
-          const { id, shop, isPublished } = item;
-          const publishTone: Tone = isPublished ? 'success' : 'attention';
-          const publishProgress: Progress = isPublished
-            ? 'complete'
-            : 'incomplete';
-          const badgeText = isPublished ? 'Published' : 'Not published';
-          return (
-            <ResourceItem
-              id={id}
-              url={`/app/additional?pageId=${id}`}
-              accessibilityLabel={`View details for ${name}`}
-            >
-              <Text variant="bodyMd" fontWeight="bold" as="h3">
-                {id}
-              </Text>
-              <Badge tone={publishTone} progress={publishProgress}>
-                {badgeText}
-              </Badge>
-              <div>{shop}</div>
-            </ResourceItem>
-          );
-        }}
-      />
-    </LegacyCard>
+    <Page>
+      <ui-title-bar title="Pages"></ui-title-bar>
+      <Card>
+        <ResourceList
+          resourceName={{ singular: 'customer', plural: 'customers' }}
+          items={pages}
+          renderItem={(item) => {
+            const { id, shop, isPublished } = item;
+            const publishTone: Tone = isPublished ? 'success' : 'attention';
+            const publishProgress: Progress = isPublished
+              ? 'complete'
+              : 'incomplete';
+            const badgeText = isPublished ? 'Published' : 'Not published';
+            return (
+              <ResourceItem
+                id={id}
+                url={`/app/additional?pageId=${id}`}
+                accessibilityLabel={`View details for ${name}`}
+              >
+                <Text variant="bodyMd" fontWeight="bold" as="h3">
+                  {id}
+                </Text>
+                <Badge tone={publishTone} progress={publishProgress}>
+                  {badgeText}
+                </Badge>
+                <div>{shop}</div>
+              </ResourceItem>
+            );
+          }}
+        />
+      </Card>
+    </Page>
   );
 }
