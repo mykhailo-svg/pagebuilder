@@ -1,49 +1,110 @@
+import type { LoaderFunction } from '@remix-run/node';
+import { json } from '@remix-run/node';
+import { useLoaderData } from '@remix-run/react';
 import {
-  LegacyCard,
   ResourceList,
-  Avatar,
   ResourceItem,
   Text,
+  Badge,
+  Card,
+  Page,
+  EmptyState,
 } from '@shopify/polaris';
+import type {
+  Progress,
+  Tone,
+} from '@shopify/polaris/build/ts/src/components/Badge';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { authenticate } from '~/shopify.server';
+type PageType = {
+  id: string;
+  css: string;
+  html: string;
+  themeId: string;
+  shop: string;
+  isPublished: boolean;
+  isInShopify: boolean;
+};
+
+type InitialLoaderResponse = {
+  pagesData: PageType[];
+};
+
+export const loader: LoaderFunction = async ({ request }) => {
+  try {
+    const { admin } = await authenticate.admin(request);
+
+    const pages = await axios
+      .get(`http://localhost:4000/v1/page/created/test2r3`)
+      .catch((error) => {
+        console.error('Помилка відправлення POST-запиту:', error);
+      });
+    const pagesData = pages ? pages.data : null;
+
+    return json({ pagesData });
+  } catch (error) {
+    console.error('Error fetching data:', error);
+
+    return json([]);
+  }
+};
 
 export default function Pages() {
-  return (
-    <LegacyCard>
-      <ResourceList
-        resourceName={{ singular: 'customer', plural: 'customers' }}
-        items={[
-          {
-            id: '100',
-            url: '#',
-            name: 'Mae Jemison',
-            location: 'Decatur, USA',
-          },
-          {
-            id: '200',
-            url: '#',
-            name: 'Ellen Ochoa',
-            location: 'Los Angeles, USA',
-          },
-        ]}
-        renderItem={(item) => {
-          const { id, url, name, location } = item;
-          const media = <Avatar customer size="md" name={name} />;
+  const [pages, setPages] = useState<PageType[]>([]);
+  const response = useLoaderData<InitialLoaderResponse>();
+  console.log(pages);
 
-          return (
-            <ResourceItem
-              id={id}
-              url={url}
-              media={media}
-              accessibilityLabel={`View details for ${name}`}
-            >
-              <Text variant="bodyMd" fontWeight="bold" as="h3">
-                {name}
-              </Text>
-              <div>{location}</div>
-            </ResourceItem>
-          );
-        }}
-      />
-    </LegacyCard>
+  useEffect(() => {
+    setPages(response.pagesData);
+  }, []);
+
+  return (
+    <Page>
+      <ui-title-bar title="Pages"></ui-title-bar>
+      <Card>
+        {pages.length ? (
+          <ResourceList
+            resourceName={{ singular: 'customer', plural: 'customers' }}
+            items={pages}
+            renderItem={(item) => {
+              const { id, shop, isPublished } = item;
+              const publishTone: Tone = isPublished ? 'success' : 'attention';
+              const publishProgress: Progress = isPublished
+                ? 'complete'
+                : 'incomplete';
+              const badgeText = isPublished ? 'Published' : 'Not published';
+              return (
+                <ResourceItem
+                  id={id}
+                  url={`/app/additional?pageId=${id}`}
+                  accessibilityLabel={`View details for ${name}`}
+                >
+                  <Text variant="bodyMd" fontWeight="bold" as="h3">
+                    {id}
+                  </Text>
+                  <Badge tone={publishTone} progress={publishProgress}>
+                    {badgeText}
+                  </Badge>
+                  <div>{shop}</div>
+                </ResourceItem>
+              );
+            }}
+          />
+        ) : (
+          <EmptyState
+            heading="You don't have created pages"
+            action={{ content: 'Create page +', url: '/app/createPage' }}
+            secondaryAction={{
+              content: 'Go to Dashboard',
+              url: '/app',
+            }}
+            image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
+          >
+            <p>Track and receive your incoming inventory from suppliers.</p>
+          </EmptyState>
+        )}
+      </Card>
+    </Page>
   );
 }
