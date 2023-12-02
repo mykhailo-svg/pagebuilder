@@ -6,6 +6,7 @@ import grapesjs from 'grapesjs';
 import gjsPresetWebpage from 'grapesjs-preset-webpage';
 import gjsPluginBlocksBasic from 'grapesjs-blocks-basic';
 import gjsPluginCkEditor from 'grapesjs-plugin-ckeditor';
+import bootstrapCss from 'bootstrap/dist/css/bootstrap.min.css';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
 import type { LoaderFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
@@ -13,7 +14,10 @@ import { authenticate } from '~/shopify.server';
 import { useLoaderData } from '@remix-run/react';
 import axios from 'axios';
 
-export const links = () => [{ rel: 'stylesheet', href: grapesStyles }];
+export const links = () => [
+  { rel: 'stylesheet', href: grapesStyles },
+  { rel: 'stylesheet', href: bootstrapCss },
+];
 
 type PageType = {
   id: string;
