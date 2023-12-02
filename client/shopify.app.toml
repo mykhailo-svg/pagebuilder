@@ -2,19 +2,19 @@
 
 name = "pages-builder"
 client_id = "b559767290b67b4db00a3d213d55c281"
-application_url = "https://aware-interaction-windsor-db.trycloudflare.com"
+application_url = "https://belts-classics-enemy-dirt.trycloudflare.com"
 embedded = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "write_products, read_themes"
+scopes = "write_products,read_themes"
 
 [auth]
 redirect_urls = [
-  "https://aware-interaction-windsor-db.trycloudflare.com/auth/callback",
-  "https://aware-interaction-windsor-db.trycloudflare.com/auth/shopify/callback",
-  "https://aware-interaction-windsor-db.trycloudflare.com/api/auth/callback",
-  "https://aware-interaction-windsor-db.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://belts-classics-enemy-dirt.trycloudflare.com/auth/callback",
+  "https://belts-classics-enemy-dirt.trycloudflare.com/auth/shopify/callback",
+  "https://belts-classics-enemy-dirt.trycloudflare.com/api/auth/callback",
+  "https://belts-classics-enemy-dirt.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]

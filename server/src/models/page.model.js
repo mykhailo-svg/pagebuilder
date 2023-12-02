@@ -1,0 +1,18 @@
+const mongoose = require('mongoose');
+const { toJSON } = require('./plugins');
+
+const pageSchema = mongoose.Schema(
+  {
+    themeId: { type: String, required: true },
+    html: { type: String, default: 'none' },
+    css: { type: String, default: 'none' },
+    shop: { type: String, required: true }
+  },
+  { timestamps: true }
+);
+
+pageSchema.plugin(toJSON);
+
+const Page = mongoose.model('pages', pageSchema);
+
+module.exports = Page;
