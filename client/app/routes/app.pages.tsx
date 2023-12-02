@@ -9,6 +9,7 @@ import {
   Badge,
   Card,
   Page,
+  EmptyState,
 } from '@shopify/polaris';
 import { Progress, Tone } from '@shopify/polaris/build/ts/src/components/Badge';
 import axios from 'axios';
@@ -61,33 +62,47 @@ export default function Pages() {
     <Page>
       <ui-title-bar title="Pages"></ui-title-bar>
       <Card>
-        <ResourceList
-          resourceName={{ singular: 'customer', plural: 'customers' }}
-          items={pages}
-          renderItem={(item) => {
-            const { id, shop, isPublished } = item;
-            const publishTone: Tone = isPublished ? 'success' : 'attention';
-            const publishProgress: Progress = isPublished
-              ? 'complete'
-              : 'incomplete';
-            const badgeText = isPublished ? 'Published' : 'Not published';
-            return (
-              <ResourceItem
-                id={id}
-                url={`/app/additional?pageId=${id}`}
-                accessibilityLabel={`View details for ${name}`}
-              >
-                <Text variant="bodyMd" fontWeight="bold" as="h3">
-                  {id}
-                </Text>
-                <Badge tone={publishTone} progress={publishProgress}>
-                  {badgeText}
-                </Badge>
-                <div>{shop}</div>
-              </ResourceItem>
-            );
-          }}
-        />
+        {pages.length ? (
+          <ResourceList
+            resourceName={{ singular: 'customer', plural: 'customers' }}
+            items={pages}
+            renderItem={(item) => {
+              const { id, shop, isPublished } = item;
+              const publishTone: Tone = isPublished ? 'success' : 'attention';
+              const publishProgress: Progress = isPublished
+                ? 'complete'
+                : 'incomplete';
+              const badgeText = isPublished ? 'Published' : 'Not published';
+              return (
+                <ResourceItem
+                  id={id}
+                  url={`/app/additional?pageId=${id}`}
+                  accessibilityLabel={`View details for ${name}`}
+                >
+                  <Text variant="bodyMd" fontWeight="bold" as="h3">
+                    {id}
+                  </Text>
+                  <Badge tone={publishTone} progress={publishProgress}>
+                    {badgeText}
+                  </Badge>
+                  <div>{shop}</div>
+                </ResourceItem>
+              );
+            }}
+          />
+        ) : (
+          <EmptyState
+            heading="You don't have created pages"
+            action={{ content: 'Create page +', url: '/app/createPage' }}
+            secondaryAction={{
+              content: 'Go to Dashboard',
+              url: '/app',
+            }}
+            image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
+          >
+            <p>Track and receive your incoming inventory from suppliers.</p>
+          </EmptyState>
+        )}
       </Card>
     </Page>
   );
