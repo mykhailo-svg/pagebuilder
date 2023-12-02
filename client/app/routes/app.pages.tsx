@@ -5,7 +5,6 @@ import {
   ResourceItem,
   Text,
 } from '@shopify/polaris';
-import React from 'react';
 
 export default function Pages() {
   return (
