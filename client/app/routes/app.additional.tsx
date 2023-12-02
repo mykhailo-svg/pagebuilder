@@ -7,6 +7,7 @@ import gjsPresetWebpage from 'grapesjs-preset-webpage';
 import gjsPluginBlocksBasic from 'grapesjs-blocks-basic';
 import gjsPluginCkEditor from 'grapesjs-plugin-ckeditor';
 import bootstrapCss from 'bootstrap/dist/css/bootstrap.min.css';
+import mainCss from '../styles/main.css';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
 import type { LoaderFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
@@ -17,6 +18,7 @@ import axios from 'axios';
 export const links = () => [
   { rel: 'stylesheet', href: grapesStyles },
   { rel: 'stylesheet', href: bootstrapCss },
+  { rel: 'stylesheet', href: mainCss },
 ];
 
 type PageType = {
