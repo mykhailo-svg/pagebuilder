@@ -1,17 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Button, Form, Page } from '@shopify/polaris';
+import { Button, Page } from '@shopify/polaris';
 import type { Editor } from 'grapesjs';
 import grapesjs from 'grapesjs';
 import gjsPresetWebpage from 'grapesjs-preset-webpage';
 import gjsPluginBlocksBasic from 'grapesjs-blocks-basic';
 import gjsPluginCkEditor from 'grapesjs-plugin-ckeditor';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
-import { parseIntoLiquid } from '~/helpers/parseIntoLiquid';
 import type { LoaderFunction } from '@remix-run/node';
-import { ActionFunctionArgs, json, redirect } from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { authenticate } from '~/shopify.server';
-import { createNewPage, getPageById } from '~/models/page.server';
-import { useActionData, useLoaderData } from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 import axios from 'axios';
 
 export const links = () => [{ rel: 'stylesheet', href: grapesStyles }];
