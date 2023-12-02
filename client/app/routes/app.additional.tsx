@@ -24,6 +24,9 @@ type PageType = {
   css: string;
   html: string;
   themeId: string;
+  shop: string;
+  isPublished: boolean;
+  isInShopify: boolean;
 };
 
 type LoaderResponse = {
@@ -53,25 +56,20 @@ export const loader: LoaderFunction = async ({ request }) => {
   }
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const formData = await request.formData();
-
-  const formDataObject: Record<string, string> = {};
-  formData.forEach((value, key) => {
-    formDataObject[key] = value.toString();
-  });
-
-  return json({
-    form: formDataObject,
-  });
-};
-
 export default function AdditionalPage() {
   const [editor, setEditor] = useState<Editor>();
-  const [formData, setFormData] = useState<Record<string, string>>({}); // Додавання стейту для даних форми
+  const [serverPage, setServerPAge] = useState<PageType>({
+    id: '',
+    shop: '',
+    themeId: '',
+    css: '',
+    html: '',
+    isInShopify: false,
+    isPublished: false,
+  });
+
   const response = useLoaderData<LoaderResponse>();
-  const updatePageResponse = useActionData<typeof action>();
-  console.log(updatePageResponse + 'sd');
+  console.log(response);
 
   useEffect(() => {
     const editor = grapesjs.init({
@@ -83,23 +81,37 @@ export default function AdditionalPage() {
         gjsPluginBlocksBasic: {},
       },
     });
+    setServerPAge(response.newPageData);
     editor.setComponents(response.newPageData.html);
     setEditor(editor);
   }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const html = editor?.getHtml() ?? '';
     const css = editor?.getCss() ?? '';
-    console.log(parseIntoLiquid({ html, css }));
+    // URL для PUT-запиту
+    const url = `http://localhost:4000/v1/page/${serverPage.id}`;
 
-    // Оновлення стейту з даними форми
-    const newFormData = { ...formData, html, css };
-    setFormData(newFormData);
+    // JSON-об'єкт для відправлення у тілі PUT-запиту
+    const data = {
+      css,
+      html,
+    };
+
+    // Виконання PUT-запиту з використанням Axios
+    const response = await axios
+      .put(url, data)
+      .then((response) => {
+        console.log('Відповідь сервера:', response.data);
+      })
+      .catch((error) => {
+        console.error('Помилка при виконанні PUT-запиту:', error);
+      });
   };
 
   return (
     <Page fullWidth>
-      <Button submit>Export</Button>
+      <Button onClick={handleSubmit}>Export</Button>
       <div id="editor"></div>
     </Page>
   );

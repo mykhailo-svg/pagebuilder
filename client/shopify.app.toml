@@ -2,7 +2,7 @@
 
 name = "pages-builder"
 client_id = "b559767290b67b4db00a3d213d55c281"
-application_url = "https://ol-usa-machinery-nebraska.trycloudflare.com"
+application_url = "https://referenced-determine-everything-reducing.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products,read_themes"
 
 [auth]
 redirect_urls = [
-  "https://ol-usa-machinery-nebraska.trycloudflare.com/auth/callback",
-  "https://ol-usa-machinery-nebraska.trycloudflare.com/auth/shopify/callback",
-  "https://ol-usa-machinery-nebraska.trycloudflare.com/api/auth/callback",
-  "https://ol-usa-machinery-nebraska.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://referenced-determine-everything-reducing.trycloudflare.com/auth/callback",
+  "https://referenced-determine-everything-reducing.trycloudflare.com/auth/shopify/callback",
+  "https://referenced-determine-everything-reducing.trycloudflare.com/api/auth/callback",
+  "https://referenced-determine-everything-reducing.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]
