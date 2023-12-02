@@ -9,6 +9,7 @@ import {
 } from '@remix-run/node';
 import { Form, useActionData, useLoaderData } from '@remix-run/react';
 import { createNewPage, getPages } from '~/models/page.server';
+import axios from 'axios';
 
 type Shop = {
   name: string;
@@ -36,12 +37,23 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const page: any = await createNewPage({
     themeId: formDataObject.themePicker,
   });
-  if (page) {
-    return redirect(`/app/additional?pageId=${page.id}`);
+  const newPage = await axios
+    .post('http://localhost:4000/v1/page', {
+      themeId: formDataObject.themePicker,
+      shop: 'test2r3',
+    })
+    .catch((error) => {
+      // Обробка помилки, якщо її виникне
+      console.error('Помилка відправлення POST-запиту:', error);
+    });
+  const newPageData = newPage ? newPage.data : null;
+  if (newPageData) {
+    return redirect(`/app/additional?pageId=${newPageData.id}`);
   }
   return json({
     page,
     form: formDataObject,
+    newPageData,
   });
 };
 
@@ -92,6 +104,8 @@ export default function createPage() {
   const handleChange = useCallback((value: string[]) => setSelected(value), []);
 
   useEffect(() => {
+    console.log(response);
+
     setShop(response.shop);
     setThemes(response.themes);
     setSelected([response?.themes[0].id.toString()]);

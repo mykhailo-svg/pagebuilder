@@ -15,6 +15,7 @@ import {
 import { authenticate } from '~/shopify.server';
 import { createNewPage, getPageById } from '~/models/page.server';
 import { useActionData, useLoaderData } from '@remix-run/react';
+import axios from 'axios';
 
 export const links = () => [{ rel: 'stylesheet', href: grapesStyles }];
 
@@ -27,6 +28,7 @@ type PageType = {
 
 type LoaderResponse = {
   page: PageType;
+  newPageData: PageType;
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -35,8 +37,15 @@ export const loader: LoaderFunction = async ({ request }) => {
     const url = new URL(request.url);
     const pageId = url.searchParams.get('pageId') || '';
     const page = await getPageById(pageId);
+    const newPage = await axios
+      .get(`http://localhost:4000/v1/page/${pageId}`)
+      .catch((error) => {
+        // Обробка помилки, якщо її виникне
+        console.error('Помилка відправлення POST-запиту:', error);
+      });
+    const newPageData = newPage ? newPage.data : null;
 
-    return json({ page });
+    return json({ page, newPageData });
   } catch (error) {
     console.error('Error fetching data:', error);
 
@@ -74,7 +83,7 @@ export default function AdditionalPage() {
         gjsPluginBlocksBasic: {},
       },
     });
-    editor.setComponents(response.page.html);
+    editor.setComponents(response.newPageData.html);
     setEditor(editor);
   }, []);
 
@@ -90,14 +99,8 @@ export default function AdditionalPage() {
 
   return (
     <Page fullWidth>
-      <Form method="post" onSubmit={handleSubmit}>
-        <Button submit>Export</Button>
-        <div id="editor"></div>
-        <div>
-          Submitted Form Data:
-          <pre>{JSON.stringify(updatePageResponse?.form, null, 2)}</pre>
-        </div>
-      </Form>
+      <Button submit>Export</Button>
+      <div id="editor"></div>
     </Page>
   );
 }
