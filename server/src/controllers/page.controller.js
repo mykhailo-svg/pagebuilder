@@ -32,4 +32,9 @@ const updatePage = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(page);
 });
 
-module.exports = { createPage, getPageById, updatePage };
+const getPaginatedPages = catchAsync(async (req, res) => {
+  const pages = await Page.find({ shop: req.params.shopName });
+  res.status(httpStatus.OK).send(pages);
+});
+
+module.exports = { createPage, getPageById, updatePage, getPaginatedPages };
