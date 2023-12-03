@@ -15,6 +15,7 @@ import { useLoaderData, useLocation, useParams } from '@remix-run/react';
 import axios from 'axios';
 import { Sidebar } from '~/components/Sidebar/Sidebar';
 import { initEditorConfig } from '~/helpers/editorConfig';
+import { TopNav } from '~/components/TopNav/TopNav';
 
 export const links = () => [
   { rel: 'stylesheet', href: grapesStyles },
@@ -104,8 +105,7 @@ export default function AdditionalPage() {
           <Card>
             <nav className="navbar navbar-light">
               <div className="container-fluid">
-                <div className="panel__devices"></div>
-                <div className="panel__basic-actions"></div>
+                <TopNav />
               </div>
             </nav>
             <div id="editor"></div>
