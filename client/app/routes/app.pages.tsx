@@ -17,20 +17,9 @@ import type {
 } from '@shopify/polaris/build/ts/src/components/Badge';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { PagePublishStatus } from '~/global_types';
+import { PagePublishStatus, PageType } from '~/global_types';
 import { definePageBadgesStatus } from '~/helpers/definePageBadge';
 import { authenticate } from '~/shopify.server';
-type PageType = {
-  id: string;
-  css: string;
-  html: string;
-  themeId: string;
-  shop: string;
-  name: string;
-  status: PagePublishStatus;
-  isPublished: boolean;
-  isInShopify: boolean;
-};
 
 type InitialLoaderResponse = {
   pagesData: PageType[];

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Button, Card, InlineGrid, Page } from '@shopify/polaris';
+import { Button, Card, InlineGrid, Page, Text } from '@shopify/polaris';
 import type { Editor } from 'grapesjs';
 import grapesjs from 'grapesjs';
 import gjsPresetWebpage from 'grapesjs-preset-webpage';
@@ -16,6 +16,7 @@ import axios from 'axios';
 import { Sidebar } from '~/components/Sidebar/Sidebar';
 import { initEditorConfig } from '~/helpers/editorConfig';
 import { TopNav } from '~/components/TopNav/TopNav';
+import { PageType } from '~/global_types';
 
 export const links = () => [
   { rel: 'stylesheet', href: grapesStyles },
@@ -23,23 +24,13 @@ export const links = () => [
   { rel: 'stylesheet', href: mainCss },
 ];
 
-type PageType = {
-  id: string;
-  css: string;
-  html: string;
-  themeId: string;
-  shop: string;
-  isPublished: boolean;
-  isInShopify: boolean;
-};
-
 type LoaderResponse = {
   pageData: PageType;
 };
 
 export default function AdditionalPage() {
   const [editor, setEditor] = useState<Editor>();
-  const [serverPage, setServerPAge] = useState();
+  const [serverPage, setServerPAge] = useState<PageType>();
   console.log(serverPage);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -54,7 +45,7 @@ export default function AdditionalPage() {
         );
         const pageData = response.data; // Assuming the data you need is in the response
 
-        const editor = initEditorConfig(pageData.component);
+        const editor = initEditorConfig(pageData.html);
 
         editor.Commands.add('set-device-desktop', {
           run: (editor) => editor.setDevice('Desktop'),
@@ -74,6 +65,8 @@ export default function AdditionalPage() {
 
     // Call the fetchData function
   }, []);
+
+  console.log(serverPage);
 
   const handleSubmit = async () => {
     const html = editor?.getHtml() ?? '';
@@ -99,7 +92,10 @@ export default function AdditionalPage() {
     <Page fullWidth>
       <Button onClick={handleSubmit}>Export</Button>
       <div style={{ display: 'flex', gap: '30px' }}>
-        <Sidebar />
+        <Sidebar
+          pageName={serverPage?.name ?? ''}
+          pageStatus={serverPage?.status ?? 'neverPublished'}
+        />
 
         <div style={{ flex: '1 1 auto' }}>
           <Card>

@@ -13,9 +13,7 @@ const createPage = catchAsync(async (req, res) => {
 
 const getPageById = catchAsync(async (req, res) => {
   const page = await Page.findById(req.params.pageId);
-  const object = { component: page.html };
-  console.log(object);
-  res.status(httpStatus.OK).send(object);
+  res.status(httpStatus.OK).send(page);
 });
 
 const updatePage = catchAsync(async (req, res) => {

@@ -1,7 +1,23 @@
-import { BlockStack, Card, Divider, Layout, Text } from '@shopify/polaris';
+import {
+  Badge,
+  BlockStack,
+  Card,
+  Divider,
+  InlineGrid,
+  Layout,
+  Text,
+} from '@shopify/polaris';
 import React, { useEffect, useRef } from 'react';
+import { PagePublishStatus } from '~/global_types';
+import { definePageBadgesStatus } from '~/helpers/definePageBadge';
 
-export function Sidebar() {
+export function Sidebar({
+  pageName,
+  pageStatus,
+}: {
+  pageName: string;
+  pageStatus: PagePublishStatus;
+}) {
   useEffect(() => {
     console.log('sd');
   }, []);
@@ -22,6 +38,18 @@ export function Sidebar() {
       <div style={{ width: '300px' }}>
         <Card>
           <BlockStack gap="1000">
+            <Card>
+              <InlineGrid columns={2}>
+                <Text as="h4">{pageName}</Text>
+                <Badge
+                  size="small"
+                  tone={definePageBadgesStatus(pageStatus).tone}
+                  progress={definePageBadgesStatus(pageStatus).progress}
+                >
+                  {definePageBadgesStatus(pageStatus).text}
+                </Badge>
+              </InlineGrid>
+            </Card>
             <BlockStack gap="500">
               <Text as="h5">Blocks</Text>
               <div id="blocks" ref={blocksRef}></div>
