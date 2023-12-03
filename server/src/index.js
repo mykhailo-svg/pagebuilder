@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const config = require('./config/config.js');
 const path = require('path');
 const morgan = require('./config/morgan');
-const routes  = require('./routes/v1/index.js');
+const routes = require('./routes/v1/index.js');
 const mongoose = require('mongoose');
 
 dotenv.config();
@@ -21,8 +21,14 @@ app.use(express.static(path.join(path.resolve(path.dirname(''), 'public/static')
 // Serve image files from the "public/images" directory
 app.use('/images', express.static(path.join(path.resolve(path.dirname(''), 'public/images'))));
 // enable cors
-app.use(cors());
-app.options('*', cors());
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    callback(null, true);
+  }
+};
+corsOptions.credentials = true;
+app.use(cors(corsOptions));
 
 // parse json request body
 app.use(express.json());

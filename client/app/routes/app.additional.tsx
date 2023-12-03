@@ -36,22 +36,63 @@ type LoaderResponse = {
 
 export default function AdditionalPage() {
   const [editor, setEditor] = useState<Editor>();
-  const [serverPage, setServerPAge] = useState<PageType>({
-    id: '',
-    shop: '',
-    themeId: '',
-    css: '',
-    html: '',
-    isInShopify: false,
-    isPublished: false,
-  });
+  const [serverPage, setServerPAge] = useState();
+  console.log(serverPage);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          'http://localhost:4000/v1/page/656b1874ef9ce64efc9704bc'
+        );
+        const pageData = response.data; // Assuming the data you need is in the response
+
+        // Process the pageData as needed
+
+        setServerPAge(pageData);
+        console.log(pageData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+    console.log(serverPage);
+
+    // Call the fetchData function
+
     const editor = grapesjs.init({
       container: '#editor',
       blockManager: {
         appendTo: '#blocks',
       },
+      projectData: {
+        pages: [
+          {
+            component: `
+                <div class="test">Initial content</div>
+                <style>.test { color: red }</style>
+              `,
+          },
+        ],
+      },
+      // storageManager: {
+      //   type: 'remote',
+      //   stepsBeforeSave: 3,
+      //   options: {
+      //     remote: {
+      //       fetchOptions: (opts) =>
+      //         opts.method === 'OPTIONS' ? { method: 'GET' } : {},
+      //       urlLoad: 'http://localhost:4000/v1/page/656b1874ef9ce64efc9704bc',
+      //       urlStore: 'http://localhost:4000/v1/page/656b1874ef9ce64efc9704bc',
+      //       onLoad: (result) => {
+      //         const pageData = result.component;
+      //         console.log(pageData);
+
+      //         return pageData;
+      //       },
+      //     },
+      //   },
+      // },
       styleManager: {
         appendTo: '#styles-container',
         sectors: [
@@ -144,6 +185,7 @@ export default function AdditionalPage() {
     editor.Commands.add('set-device-mobile', {
       run: (editor) => editor.setDevice('Mobile'),
     });
+    editor.Panels.removeButton('devices-c', 'block-editor');
 
     setEditor(editor);
   }, []);
@@ -151,7 +193,7 @@ export default function AdditionalPage() {
   const handleSubmit = async () => {
     const html = editor?.getHtml() ?? '';
     const css = editor?.getCss() ?? '';
-    const url = `http://localhost:4000/v1/page/${serverPage.id}`;
+    const url = `http://localhost:4000/v1/page/s`;
 
     const data = {
       css,
