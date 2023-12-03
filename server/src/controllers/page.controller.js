@@ -24,7 +24,9 @@ const updatePage = catchAsync(async (req, res) => {
     req.params.pageId,
     {
       css: req.body.css,
-      html: req.body.html
+      html: req.body.html,
+      shouldPublish: true,
+      status: 'notPublished'
     },
     { new: true }
   );

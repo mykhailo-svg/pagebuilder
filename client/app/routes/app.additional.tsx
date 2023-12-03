@@ -55,6 +55,7 @@ export default function AdditionalPage() {
         });
         editor.Panels.removeButton('devices-c', 'block-editor');
         setServerPAge(pageData);
+        setEditor(editor);
         return pageData;
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -69,23 +70,29 @@ export default function AdditionalPage() {
   console.log(serverPage);
 
   const handleSubmit = async () => {
-    const html = editor?.getHtml() ?? '';
-    const css = editor?.getCss() ?? '';
-    const url = `http://localhost:4000/v1/page/s`;
+    if (!serverPage?.shouldPublish) {
+      const html = editor?.getHtml() ?? '';
+      const css = editor?.getCss() ?? '';
+      const url = `http://localhost:4000/v1/page/${myParam}`;
 
-    const data = {
-      css,
-      html,
-    };
+      const data = {
+        css,
+        html,
+      };
+      console.log(data);
 
-    const response = await axios
-      .put(url, data)
-      .then((response) => {
-        console.log('Відповідь сервера:', response.data);
-      })
-      .catch((error) => {
-        console.error('Помилка при виконанні PUT-запиту:', error);
-      });
+      const response = await axios
+        .put(url, data)
+        .then((response) => {
+          console.log('Відповідь сервера:', response.data);
+          setServerPAge(response.data);
+        })
+        .catch((error) => {
+          console.error('Помилка при виконанні PUT-запиту:', error);
+        });
+    } else {
+      console.log('Publish');
+    }
   };
 
   return (
@@ -100,7 +107,10 @@ export default function AdditionalPage() {
           <Card>
             <nav className="navbar navbar-light">
               <div className="container-fluid">
-                <TopNav shouldPublish={serverPage?.shouldPublish ?? false} />
+                <TopNav
+                  submit={handleSubmit}
+                  shouldPublish={serverPage?.shouldPublish ?? false}
+                />
               </div>
             </nav>
             <div id="editor"></div>
