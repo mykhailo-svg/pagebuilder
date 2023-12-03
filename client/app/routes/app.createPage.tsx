@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Button, ChoiceList, Page, TextField } from '@shopify/polaris';
+import {
+  BlockStack,
+  Button,
+  Card,
+  ChoiceList,
+  Page,
+  TextField,
+} from '@shopify/polaris';
 import { authenticate } from '~/shopify.server';
 import type { ActionFunctionArgs, LoaderFunction } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
@@ -78,6 +85,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function createPage() {
   const [shop, setShop] = useState<Shop>({ id: '', name: '' });
+  const [name, setName] = useState('');
   const [themes, setThemes] = useState<Theme[]>([]);
   const choices = themes.map((theme) => {
     return {
@@ -100,28 +108,41 @@ export default function createPage() {
 
   return (
     <Page fullWidth>
-      <Form method="post">
-        {themes ? (
-          <>
-            <TextField
-              label="Your shop"
-              value={shop.name}
-              autoComplete=""
-              name="shopField"
-            />
-            <ChoiceList
-              name="themePicker"
-              title="Pick theme"
-              choices={choices}
-              selected={selected}
-              onChange={handleChange}
-            />
-          </>
-        ) : (
-          ''
-        )}
-        <Button submit>Log</Button>
-      </Form>
+      <Card>
+        <Form method="post">
+          {themes ? (
+            <>
+              <BlockStack gap="500">
+                <TextField
+                  readOnly
+                  label="Your shop"
+                  value={shop.name}
+                  autoComplete=""
+                  name="shopField"
+                />
+                <TextField
+                  label="Your page name"
+                  value={name}
+                  onChange={(e) => setName(e.valueOf())}
+                  autoComplete=""
+                  placeholder="Beautiful page..."
+                  name="nameField"
+                />
+                <ChoiceList
+                  name="themePicker"
+                  title="Pick theme"
+                  choices={choices}
+                  selected={selected}
+                  onChange={handleChange}
+                />
+              </BlockStack>
+            </>
+          ) : (
+            ''
+          )}
+          <Button submit>Log</Button>
+        </Form>
+      </Card>
     </Page>
   );
 }
