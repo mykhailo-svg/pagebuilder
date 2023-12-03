@@ -17,6 +17,8 @@ import type {
 } from '@shopify/polaris/build/ts/src/components/Badge';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { PagePublishStatus } from '~/global_types';
+import { definePageBadgesStatus } from '~/helpers/definePageBadge';
 import { authenticate } from '~/shopify.server';
 type PageType = {
   id: string;
@@ -25,6 +27,7 @@ type PageType = {
   themeId: string;
   shop: string;
   name: string;
+  status: PagePublishStatus;
   isPublished: boolean;
   isInShopify: boolean;
 };
@@ -70,7 +73,7 @@ export default function Pages() {
             resourceName={{ singular: 'customer', plural: 'customers' }}
             items={pages}
             renderItem={(item) => {
-              const { id, shop, isPublished, name } = item;
+              const { id, shop, isPublished, name, status } = item;
               const publishTone: Tone = isPublished ? 'success' : 'attention';
               const publishProgress: Progress = isPublished
                 ? 'complete'
@@ -86,8 +89,11 @@ export default function Pages() {
                     <Text variant="bodyMd" fontWeight="bold" as="h3">
                       {name}
                     </Text>
-                    <Badge tone={publishTone} progress={publishProgress}>
-                      {badgeText}
+                    <Badge
+                      tone={definePageBadgesStatus(status).tone}
+                      progress={definePageBadgesStatus(status).progress}
+                    >
+                      {definePageBadgesStatus(status).text}
                     </Badge>
                   </InlineGrid>
                 </ResourceItem>
