@@ -62,38 +62,13 @@ export function Sidebar() {
         </li>
       </ul>
       <div className="tab-content">
-        <div
-          className="tab-pane fade"
-          id="block"
-          role="tabpanel"
-          aria-labelledby="block-tab"
-        >
-          <div id="blocks"></div>
-        </div>
-        <div
-          className="tab-pane fade"
-          id="layer"
-          role="tabpanel"
-          aria-labelledby="layer-tab"
-        >
-          <div id="layers-container"></div>
-        </div>
-        <div
-          className="tab-pane fade show active"
-          id="style"
-          role="tabpanel"
-          aria-labelledby="style-tab"
-        >
-          <div id="styles-container"></div>
-        </div>
-        <div
-          className="tab-pane fade"
-          id="trait"
-          role="tabpanel"
-          aria-labelledby="trait-tab"
-        >
-          <div id="trait-container"></div>
-        </div>
+        <div id="blocks"></div>
+
+        <div id="layers-container"></div>
+
+        <div id="styles-container"></div>
+
+        <div id="trait-container"></div>
       </div>
     </>
   );
