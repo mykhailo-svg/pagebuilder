@@ -2,7 +2,7 @@
 
 name = "pages-builder"
 client_id = "b559767290b67b4db00a3d213d55c281"
-application_url = "https://um-carl-livestock-letter.trycloudflare.com"
+application_url = "https://leaf-models-brochures-charleston.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products,read_themes"
 
 [auth]
 redirect_urls = [
-  "https://um-carl-livestock-letter.trycloudflare.com/auth/callback",
-  "https://um-carl-livestock-letter.trycloudflare.com/auth/shopify/callback",
-  "https://um-carl-livestock-letter.trycloudflare.com/api/auth/callback",
-  "https://um-carl-livestock-letter.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://leaf-models-brochures-charleston.trycloudflare.com/auth/callback",
+  "https://leaf-models-brochures-charleston.trycloudflare.com/auth/shopify/callback",
+  "https://leaf-models-brochures-charleston.trycloudflare.com/api/auth/callback",
+  "https://leaf-models-brochures-charleston.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]

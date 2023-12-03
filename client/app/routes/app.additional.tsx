@@ -98,11 +98,6 @@ export default function AdditionalPage() {
     <Page fullWidth>
       <Button onClick={handleSubmit}>Export</Button>
       <div id="navbar" className="sidenav d-flex flex-column overflow-scroll">
-        <nav className="navbar navbar-light">
-          <div className="container-fluid">
-            <span className="navbar-brand mb-0 h3 logo">Code Dexterous</span>
-          </div>
-        </nav>
         <Sidebar />
       </div>
       <div className="main-content">
