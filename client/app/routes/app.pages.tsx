@@ -73,12 +73,8 @@ export default function Pages() {
             resourceName={{ singular: 'customer', plural: 'customers' }}
             items={pages}
             renderItem={(item) => {
-              const { id, shop, isPublished, name, status } = item;
-              const publishTone: Tone = isPublished ? 'success' : 'attention';
-              const publishProgress: Progress = isPublished
-                ? 'complete'
-                : 'incomplete';
-              const badgeText = isPublished ? 'Published' : 'Not published';
+              const { id, name, status } = item;
+
               return (
                 <ResourceItem
                   id={id}
