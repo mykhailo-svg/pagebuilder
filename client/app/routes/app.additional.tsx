@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { useState, useEffect } from 'react';
 import { Button, Page } from '@shopify/polaris';
 import type { Editor } from 'grapesjs';
@@ -35,26 +34,6 @@ type LoaderResponse = {
   pageData: PageType;
 };
 
-export const loader: LoaderFunction = async ({ request }) => {
-  try {
-    const { admin } = await authenticate.admin(request);
-    const url = new URL(request.url);
-    const pageId = url.searchParams.get('pageId') || '';
-    const page = await axios
-      .get(`http://localhost:4000/v1/page/${pageId}`)
-      .catch((error) => {
-        console.error('Помилка відправлення POST-запиту:', error);
-      });
-    const pageData = page ? page.data : null;
-
-    return json({ pageData });
-  } catch (error) {
-    console.error('Error fetching data:', error);
-
-    return json([]);
-  }
-};
-
 export default function AdditionalPage() {
   const [editor, setEditor] = useState<Editor>();
   const [serverPage, setServerPAge] = useState<PageType>({
@@ -66,8 +45,6 @@ export default function AdditionalPage() {
     isInShopify: false,
     isPublished: false,
   });
-
-  const response = useLoaderData<LoaderResponse>();
 
   useEffect(() => {
     const editor = grapesjs.init({
@@ -114,7 +91,7 @@ export default function AdditionalPage() {
                 id: 'visibility',
                 active: true, // active by default
                 className: 'btn-toggle-borders',
-                label: '<i class="fa fa-clone"></i>',
+                // label: '<i class="fa fa-clone"></i>',
                 command: 'sw-visibility', // Built-in command
               },
             ],
@@ -125,14 +102,15 @@ export default function AdditionalPage() {
             buttons: [
               {
                 id: 'device-desktop',
-                label: '<i class="fa fa-television"></i>',
+                // label: '<i class="fa fa-television"></i>',
                 command: 'set-device-desktop',
                 active: true,
                 togglable: false,
               },
               {
                 id: 'device-mobile',
-                label: '<i class="fa fa-mobile"></i>',
+
+                // label: '<i class="fa fa-mobile"></i>',
                 command: 'set-device-mobile',
                 togglable: false,
               },
@@ -166,8 +144,7 @@ export default function AdditionalPage() {
     editor.Commands.add('set-device-mobile', {
       run: (editor) => editor.setDevice('Mobile'),
     });
-    setServerPAge(response.pageData);
-    editor.setComponents(response.pageData.html);
+
     setEditor(editor);
   }, []);
 
