@@ -7,6 +7,5 @@ export type PageType = {
   shop: string;
   name: string;
   status: PagePublishStatus;
-  isPublished: boolean;
-  isInShopify: boolean;
+  shouldPublish: boolean;
 };

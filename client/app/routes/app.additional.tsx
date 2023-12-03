@@ -90,7 +90,6 @@ export default function AdditionalPage() {
 
   return (
     <Page fullWidth>
-      <Button onClick={handleSubmit}>Export</Button>
       <div style={{ display: 'flex', gap: '30px' }}>
         <Sidebar
           pageName={serverPage?.name ?? ''}
@@ -101,7 +100,7 @@ export default function AdditionalPage() {
           <Card>
             <nav className="navbar navbar-light">
               <div className="container-fluid">
-                <TopNav />
+                <TopNav shouldPublish={serverPage?.shouldPublish ?? false} />
               </div>
             </nav>
             <div id="editor"></div>
