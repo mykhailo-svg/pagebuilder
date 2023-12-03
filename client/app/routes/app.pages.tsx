@@ -9,6 +9,7 @@ import {
   Card,
   Page,
   EmptyState,
+  InlineGrid,
 } from '@shopify/polaris';
 import type {
   Progress,
@@ -80,13 +81,14 @@ export default function Pages() {
                   url={`/app/additional?pageId=${id}`}
                   accessibilityLabel={`View details for ${name}`}
                 >
-                  <Text variant="bodyMd" fontWeight="bold" as="h3">
-                    {id}
-                  </Text>
-                  <Badge tone={publishTone} progress={publishProgress}>
-                    {badgeText}
-                  </Badge>
-                  <div>{shop}</div>
+                  <InlineGrid columns={2}>
+                    <Text variant="bodyMd" fontWeight="bold" as="h3">
+                      {id}
+                    </Text>
+                    <Badge tone={publishTone} progress={publishProgress}>
+                      {badgeText}
+                    </Badge>
+                  </InlineGrid>
                 </ResourceItem>
               );
             }}
