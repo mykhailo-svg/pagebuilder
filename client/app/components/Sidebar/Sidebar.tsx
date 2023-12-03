@@ -19,7 +19,7 @@ export function Sidebar() {
 
   return (
     <>
-      <div style={{ width: '400px' }}>
+      <div style={{ width: '300px' }}>
         <Card>
           <BlockStack gap="1000">
             <BlockStack gap="500">
