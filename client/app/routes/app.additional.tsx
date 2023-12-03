@@ -53,6 +53,9 @@ export default function AdditionalPage() {
         editor.Commands.add('set-device-mobile', {
           run: (editor) => editor.setDevice('Mobile'),
         });
+        editor.on('update', () => {
+          console.log('Update');
+        });
         editor.Panels.removeButton('devices-c', 'block-editor');
         setServerPAge(pageData);
         setEditor(editor);
