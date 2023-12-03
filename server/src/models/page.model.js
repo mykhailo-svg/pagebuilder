@@ -9,6 +9,7 @@ const pageSchema = mongoose.Schema(
     shop: { type: String, required: true },
     isInShopify: { type: Boolean, default: false },
     isPublished: { type: Boolean, default: false },
+    name: { type: String, default: 'Untitled page' },
     status: {
       type: String,
       enum: ['neverPublished', 'published', 'notPublished'],

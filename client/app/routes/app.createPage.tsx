@@ -41,6 +41,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     .post('http://localhost:4000/v1/page', {
       themeId: formDataObject.themePicker,
       shop: formDataObject.shopField,
+      name: formDataObject.nameField,
     })
     .catch((error) => {
       console.error('Помилка відправлення POST-запиту:', error);

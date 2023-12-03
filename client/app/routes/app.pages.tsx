@@ -24,6 +24,7 @@ type PageType = {
   html: string;
   themeId: string;
   shop: string;
+  name: string;
   isPublished: boolean;
   isInShopify: boolean;
 };
@@ -69,7 +70,7 @@ export default function Pages() {
             resourceName={{ singular: 'customer', plural: 'customers' }}
             items={pages}
             renderItem={(item) => {
-              const { id, shop, isPublished } = item;
+              const { id, shop, isPublished, name } = item;
               const publishTone: Tone = isPublished ? 'success' : 'attention';
               const publishProgress: Progress = isPublished
                 ? 'complete'
@@ -83,7 +84,7 @@ export default function Pages() {
                 >
                   <InlineGrid columns={2}>
                     <Text variant="bodyMd" fontWeight="bold" as="h3">
-                      {id}
+                      {name}
                     </Text>
                     <Badge tone={publishTone} progress={publishProgress}>
                       {badgeText}

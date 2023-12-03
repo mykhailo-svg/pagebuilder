@@ -5,8 +5,7 @@ const httpStatus = require('http-status');
 
 const createPage = catchAsync(async (req, res) => {
   const options = {
-    themeId: req.body.themeId,
-    shop: req.body.shop
+    ...req.body
   };
   const page = await Page.create(options);
   res.status(httpStatus.OK).send(page);
