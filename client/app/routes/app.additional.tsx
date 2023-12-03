@@ -100,6 +100,18 @@ export default function AdditionalPage() {
                   },
                 ],
               },
+              {
+                name: 'Typography',
+                properties: [
+                  {
+                    type: 'number',
+                    label: 'Font size',
+                    property: 'font-size',
+                    units: ['px', '%', 'em', 'rem', 'vh', 'vw'],
+                    min: 0,
+                  },
+                ],
+              },
             ],
           },
           layerManager: {
@@ -277,7 +289,7 @@ export default function AdditionalPage() {
           </ul>
           <div className="tab-content">
             <div
-              className="tab-pane fade show active"
+              className="tab-pane fade"
               id="block"
               role="tabpanel"
               aria-labelledby="block-tab"
@@ -293,7 +305,7 @@ export default function AdditionalPage() {
               <div id="layers-container"></div>
             </div>
             <div
-              className="tab-pane fade"
+              className="tab-pane fade show active"
               id="style"
               role="tabpanel"
               aria-labelledby="style-tab"
