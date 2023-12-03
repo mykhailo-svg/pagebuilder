@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Button, InlineGrid, Page } from '@shopify/polaris';
+import { Button, Card, InlineGrid, Page } from '@shopify/polaris';
 import type { Editor } from 'grapesjs';
 import grapesjs from 'grapesjs';
 import gjsPresetWebpage from 'grapesjs-preset-webpage';
@@ -97,17 +97,19 @@ export default function AdditionalPage() {
   return (
     <Page fullWidth>
       <Button onClick={handleSubmit}>Export</Button>
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', gap: '30px' }}>
         <Sidebar />
 
-        <div className="main-content">
-          <nav className="navbar navbar-light">
-            <div className="container-fluid">
-              <div className="panel__devices"></div>
-              <div className="panel__basic-actions"></div>
-            </div>
-          </nav>
-          <div id="editor"></div>
+        <div style={{ flex: '1 1 auto' }}>
+          <Card>
+            <nav className="navbar navbar-light">
+              <div className="container-fluid">
+                <div className="panel__devices"></div>
+                <div className="panel__basic-actions"></div>
+              </div>
+            </nav>
+            <div id="editor"></div>
+          </Card>
         </div>
       </div>
     </Page>

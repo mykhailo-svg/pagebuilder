@@ -2,6 +2,7 @@ import grapesjs from 'grapesjs';
 import gjsPresetWebpage from 'grapesjs-preset-webpage';
 import gjsPluginBlocksBasic from 'grapesjs-blocks-basic';
 import gjsPluginCkEditor from 'grapesjs-plugin-ckeditor';
+import { BuyButtonButtonLayoutMajor } from '@shopify/polaris-icons';
 export const initEditorConfig = (html: string) => {
   return grapesjs.init({
     container: '#editor',
@@ -57,6 +58,7 @@ export const initEditorConfig = (html: string) => {
     selectorManager: {
       appendTo: '#styles-container',
     },
+
     panels: {
       defaults: [
         {
@@ -67,7 +69,7 @@ export const initEditorConfig = (html: string) => {
               id: 'visibility',
               active: true, // active by default
               className: 'btn-toggle-borders',
-              // label: '<i class="fa fa-clone"></i>',
+              label: '<i class="fa fa-clone"></i>',
               command: 'sw-visibility', // Built-in command
             },
           ],
@@ -78,7 +80,7 @@ export const initEditorConfig = (html: string) => {
           buttons: [
             {
               id: 'device-desktop',
-              // label: '<i class="fa fa-television"></i>',
+              label: '<i class="fa fa-television"></i>',
               command: 'set-device-desktop',
               active: true,
               togglable: false,
@@ -86,7 +88,7 @@ export const initEditorConfig = (html: string) => {
             {
               id: 'device-mobile',
 
-              // label: '<i class="fa fa-mobile"></i>',
+              label: '<i class="fa fa-mobile"></i>',
               command: 'set-device-mobile',
               togglable: false,
             },
