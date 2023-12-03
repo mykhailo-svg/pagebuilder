@@ -1,74 +1,28 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 export function Sidebar() {
+  useEffect(() => {
+    console.log('sd');
+  }, []);
+  const blocksRef = useRef<null | HTMLDivElement>(null);
+  if (blocksRef.current && blocksRef.current.children.length === 2) {
+    blocksRef.current.children[0].outerHTML = '';
+  }
   return (
     <>
-      <ul className="nav nav-tabs" id="myTab" role="tablist">
-        <li className="nav-item" role="presentation">
-          <button
-            className="nav-link active"
-            id="block-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#block"
-            type="button"
-            role="tab"
-            aria-controls="block"
-            aria-selected="true"
-          >
-            <i className="fa fa-cubes"></i>
-          </button>
-        </li>
-        <li className="nav-item" role="presentation">
-          <button
-            className="nav-link"
-            id="layer-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#layer"
-            type="button"
-            role="tab"
-            aria-controls="layer"
-            aria-selected="false"
-          >
-            <i className="fa fa-tasks"></i>
-          </button>
-        </li>
-        <li className="nav-item" role="presentation">
-          <button
-            className="nav-link"
-            id="style-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#style"
-            type="button"
-            role="tab"
-            aria-controls="style"
-            aria-selected="false"
-          >
-            <i className="fa fa-paint-brush"></i>
-          </button>
-        </li>
-        <li className="nav-item" role="presentation">
-          <button
-            className="nav-link"
-            id="trait-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#trait"
-            type="button"
-            role="tab"
-            aria-controls="trait"
-            aria-selected="false"
-          >
-            <i className="fa fa-cog"></i>
-          </button>
-        </li>
-      </ul>
       <div className="tab-content">
-        <div id="blocks"></div>
-
-        <div id="layers-container"></div>
-
-        <div id="styles-container"></div>
-
-        <div id="trait-container"></div>
+        <div id="blocks" ref={blocksRef}></div>
+        <p>
+          dfdfd
+          <div id="layers-container"></div>
+        </p>
+        {/* <p>
+          dfldkfd
+          <div id="styles-container"></div>
+        </p> */}
+        {/* <p>
+          dfdf<div id="trait-container"></div>
+        </p> */}
       </div>
     </>
   );
