@@ -6,7 +6,11 @@ export const TopNav = () => {
       <div style={{ width: '100%' }}>
         <Card>
           <InlineGrid columns={2}>
-            <div>
+            <div
+              style={{
+                background: 'var(--bs-white)',
+              }}
+            >
               <div className="panel__devices"></div>
             </div>
             <div
