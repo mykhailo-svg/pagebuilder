@@ -103,7 +103,7 @@ export default function Pages() {
             }}
             image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
           >
-            <p>Track and receive your incoming inventory from suppliers.</p>
+            <p>Create new page to start developing!</p>
           </EmptyState>
         )}
       </Card>

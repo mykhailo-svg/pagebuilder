@@ -135,12 +135,14 @@ export default function createPage() {
                   selected={selected}
                   onChange={handleChange}
                 />
+                <Button variant="primary" submit>
+                  Create page
+                </Button>
               </BlockStack>
             </>
           ) : (
             ''
           )}
-          <Button submit>Log</Button>
         </Form>
       </Card>
     </Page>
