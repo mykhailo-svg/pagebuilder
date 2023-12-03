@@ -1,6 +1,21 @@
 import { Card, InlineGrid } from '@shopify/polaris';
+import { useRef } from 'react';
 
 export const TopNav = () => {
+  const deviceButtonsRef = useRef<null | HTMLDivElement>(null);
+  const basicButtonsRef = useRef<null | HTMLDivElement>(null);
+  if (
+    deviceButtonsRef.current &&
+    deviceButtonsRef.current.children.length === 2
+  ) {
+    deviceButtonsRef.current.children[0].outerHTML = '';
+  }
+  if (
+    basicButtonsRef.current &&
+    basicButtonsRef.current.children.length === 2
+  ) {
+    basicButtonsRef.current.children[0].outerHTML = '';
+  }
   return (
     <>
       <div style={{ width: '100%' }}>
@@ -11,9 +26,10 @@ export const TopNav = () => {
                 background: 'var(--bs-white)',
               }}
             >
-              <div className="panel__devices"></div>
+              <div className="panel__devices" ref={deviceButtonsRef}></div>
             </div>
             <div
+              ref={basicButtonsRef}
               className="panel__basic-actions"
               style={{
                 display: 'flex',
