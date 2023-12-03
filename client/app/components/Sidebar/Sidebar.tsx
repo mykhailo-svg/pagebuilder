@@ -40,7 +40,9 @@ export function Sidebar({
           <BlockStack gap="1000">
             <Card>
               <InlineGrid columns={2}>
-                <Text as="h4">{pageName}</Text>
+                <Text truncate as="h4">
+                  {pageName}sdsdsdsdsddssd
+                </Text>
                 <Badge
                   size="small"
                   tone={definePageBadgesStatus(pageStatus).tone}
