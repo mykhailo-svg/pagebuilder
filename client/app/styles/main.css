@@ -1,5 +1,5 @@
-.sidenav {
-    position: fixed;
+/* .sidenav {
+
     top: 0;
     left: 0;
     width: 15%;
@@ -9,7 +9,7 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
 
-}
+} */
 
 .sidenav .logo {
     border-bottom: 1px solid rgba(0, 0, 0, 0.3);
@@ -25,9 +25,7 @@
 }
 
 .main-content {
-    position: relative;
-    width: 85%;
-    left: 15%;
+flex: 1 1 auto;
 }
 
 .main-content .navbar {

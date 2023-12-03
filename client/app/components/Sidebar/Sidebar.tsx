@@ -1,4 +1,4 @@
-import { BlockStack, Card, Divider, Text } from '@shopify/polaris';
+import { BlockStack, Card, Divider, Layout, Text } from '@shopify/polaris';
 import React, { useEffect, useRef } from 'react';
 
 export function Sidebar() {
@@ -19,22 +19,24 @@ export function Sidebar() {
 
   return (
     <>
-      <Card>
-        <BlockStack gap="1000">
-          <BlockStack gap="500">
-            <Text as="h5">Blocks</Text>
-            <div id="blocks" ref={blocksRef}></div>
+      <div style={{ width: '400px' }}>
+        <Card>
+          <BlockStack gap="1000">
+            <BlockStack gap="500">
+              <Text as="h5">Blocks</Text>
+              <div id="blocks" ref={blocksRef}></div>
+            </BlockStack>
+            <BlockStack gap="500">
+              <Text as="h5">Layers</Text>
+              <div id="layers-container"></div>
+            </BlockStack>
+            <BlockStack gap="500">
+              <Text as="h5">Styles</Text>
+              <div ref={stylesRef} id="styles-container"></div>
+            </BlockStack>
           </BlockStack>
-          <BlockStack gap="500">
-            <Text as="h5">Layers</Text>
-            <div id="layers-container"></div>
-          </BlockStack>
-          <BlockStack gap="500">
-            <Text as="h5">Styles</Text>
-            <div ref={stylesRef} id="styles-container"></div>
-          </BlockStack>
-        </BlockStack>
-      </Card>
+        </Card>
+      </div>
     </>
   );
 }
