@@ -1,4 +1,4 @@
-import { BlockStack, Divider, Text } from '@shopify/polaris';
+import { BlockStack, Card, Divider, Text } from '@shopify/polaris';
 import React, { useEffect, useRef } from 'react';
 
 export function Sidebar() {
@@ -19,7 +19,7 @@ export function Sidebar() {
 
   return (
     <>
-      <div className="tab-content">
+      <Card>
         <BlockStack gap="1000">
           <BlockStack gap="500">
             <Text as="h5">Blocks</Text>
@@ -34,7 +34,7 @@ export function Sidebar() {
             <div ref={stylesRef} id="styles-container"></div>
           </BlockStack>
         </BlockStack>
-      </div>
+      </Card>
     </>
   );
 }

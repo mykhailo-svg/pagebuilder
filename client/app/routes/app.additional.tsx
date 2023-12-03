@@ -97,7 +97,7 @@ export default function AdditionalPage() {
   return (
     <Page fullWidth>
       <Button onClick={handleSubmit}>Export</Button>
-      <div id="navbar" className="sidenav d-flex flex-column overflow-scroll">
+      <div id="navbar" className="sidenav">
         <Sidebar />
       </div>
       <div className="main-content">
