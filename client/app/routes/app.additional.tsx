@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Button, Card, InlineGrid, Page, Text } from '@shopify/polaris';
+import { Button, Card, Icon, InlineGrid, Page, Text } from '@shopify/polaris';
 import type { Editor } from 'grapesjs';
 import grapesjs from 'grapesjs';
 import gjsPresetWebpage from 'grapesjs-preset-webpage';
@@ -17,7 +17,7 @@ import { Sidebar } from '~/components/Sidebar/Sidebar';
 import { initEditorConfig } from '~/helpers/editorConfig';
 import { TopNav } from '~/components/TopNav/TopNav';
 import { PageType } from '~/global_types';
-
+import { MobileBackArrowMajor } from '@shopify/polaris-icons';
 export const links = () => [
   { rel: 'stylesheet', href: grapesStyles },
   { rel: 'stylesheet', href: bootstrapCss },
@@ -97,7 +97,8 @@ export default function AdditionalPage() {
 
   return (
     <Page fullWidth>
-      <div style={{ display: 'flex', gap: '30px' }}>
+      <Button url="/app/pages">{'< Back '}</Button>
+      <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
         <Sidebar
           pageName={serverPage?.name ?? ''}
           pageStatus={serverPage?.status ?? 'neverPublished'}
