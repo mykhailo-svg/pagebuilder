@@ -11,7 +11,7 @@ import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
 import type { LoaderFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { authenticate } from '~/shopify.server';
-import { useLoaderData } from '@remix-run/react';
+import { useLoaderData, useLocation, useParams } from '@remix-run/react';
 import axios from 'axios';
 
 export const links = () => [
@@ -38,19 +38,145 @@ export default function AdditionalPage() {
   const [editor, setEditor] = useState<Editor>();
   const [serverPage, setServerPAge] = useState();
   console.log(serverPage);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const myParam = queryParams.get('pageId');
+  console.log(myParam);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:4000/v1/page/656b1874ef9ce64efc9704bc'
+          `http://localhost:4000/v1/page/${myParam}`
         );
         const pageData = response.data; // Assuming the data you need is in the response
 
         // Process the pageData as needed
+        const editor = grapesjs.init({
+          container: '#editor',
+          blockManager: {
+            appendTo: '#blocks',
+          },
+          projectData: {
+            pages: [
+              {
+                component: pageData.component,
+              },
+            ],
+          },
+          // storageManager: {
+          //   type: 'remote',
+          //   stepsBeforeSave: 3,
+          //   options: {
+          //     remote: {
+          //       fetchOptions: (opts) =>
+          //         opts.method === 'OPTIONS' ? { method: 'GET' } : {},
+          //       urlLoad: 'http://localhost:4000/v1/page/656b1874ef9ce64efc9704bc',
+          //       urlStore: 'http://localhost:4000/v1/page/656b1874ef9ce64efc9704bc',
+          //       onLoad: (result) => {
+          //         const pageData = result.component;
+          //         console.log(pageData);
 
+          //         return pageData;
+          //       },
+          //     },
+          //   },
+          // },
+          styleManager: {
+            appendTo: '#styles-container',
+            sectors: [
+              {
+                name: 'Dimension',
+                open: false,
+                buildProps: ['width', 'min-height', 'padding'],
+                properties: [
+                  {
+                    type: 'integer',
+                    name: 'The width',
+                    property: 'width',
+                    // units: ['px', '%'],
+                    defaults: 'auto',
+                    // min: 0,
+                  },
+                ],
+              },
+            ],
+          },
+          layerManager: {
+            appendTo: '#layers-container',
+          },
+          traitManager: {
+            appendTo: '#trait-container',
+          },
+          selectorManager: {
+            appendTo: '#styles-container',
+          },
+          panels: {
+            defaults: [
+              {
+                id: 'basic-actions',
+                el: '.panel__basic-actions',
+                buttons: [
+                  {
+                    id: 'visibility',
+                    active: true, // active by default
+                    className: 'btn-toggle-borders',
+                    // label: '<i class="fa fa-clone"></i>',
+                    command: 'sw-visibility', // Built-in command
+                  },
+                ],
+              },
+              {
+                id: 'panel-devices',
+                el: '.panel__devices',
+                buttons: [
+                  {
+                    id: 'device-desktop',
+                    // label: '<i class="fa fa-television"></i>',
+                    command: 'set-device-desktop',
+                    active: true,
+                    togglable: false,
+                  },
+                  {
+                    id: 'device-mobile',
+
+                    // label: '<i class="fa fa-mobile"></i>',
+                    command: 'set-device-mobile',
+                    togglable: false,
+                  },
+                ],
+              },
+            ],
+          },
+          deviceManager: {
+            devices: [
+              {
+                name: 'Desktop',
+                width: '',
+              },
+              {
+                name: 'Mobile',
+                width: '320px',
+                widthMedia: '480px',
+              },
+            ],
+          },
+          plugins: [gjsPluginCkEditor, gjsPluginBlocksBasic],
+          pluginsOpts: {
+            gjsPluginCkEditor: {},
+            gjsPluginBlocksBasic: {},
+          },
+        });
+        // Commands
+        editor.Commands.add('set-device-desktop', {
+          run: (editor) => editor.setDevice('Desktop'),
+        });
+        editor.Commands.add('set-device-mobile', {
+          run: (editor) => editor.setDevice('Mobile'),
+        });
+        editor.Panels.removeButton('devices-c', 'block-editor');
         setServerPAge(pageData);
-        console.log(pageData);
+        return pageData;
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -59,135 +185,6 @@ export default function AdditionalPage() {
     console.log(serverPage);
 
     // Call the fetchData function
-
-    const editor = grapesjs.init({
-      container: '#editor',
-      blockManager: {
-        appendTo: '#blocks',
-      },
-      projectData: {
-        pages: [
-          {
-            component: `
-                <div class="test">Initial content</div>
-                <style>.test { color: red }</style>
-              `,
-          },
-        ],
-      },
-      // storageManager: {
-      //   type: 'remote',
-      //   stepsBeforeSave: 3,
-      //   options: {
-      //     remote: {
-      //       fetchOptions: (opts) =>
-      //         opts.method === 'OPTIONS' ? { method: 'GET' } : {},
-      //       urlLoad: 'http://localhost:4000/v1/page/656b1874ef9ce64efc9704bc',
-      //       urlStore: 'http://localhost:4000/v1/page/656b1874ef9ce64efc9704bc',
-      //       onLoad: (result) => {
-      //         const pageData = result.component;
-      //         console.log(pageData);
-
-      //         return pageData;
-      //       },
-      //     },
-      //   },
-      // },
-      styleManager: {
-        appendTo: '#styles-container',
-        sectors: [
-          {
-            name: 'Dimension',
-            open: false,
-            buildProps: ['width', 'min-height', 'padding'],
-            properties: [
-              {
-                type: 'integer',
-                name: 'The width',
-                property: 'width',
-                // units: ['px', '%'],
-                defaults: 'auto',
-                // min: 0,
-              },
-            ],
-          },
-        ],
-      },
-      layerManager: {
-        appendTo: '#layers-container',
-      },
-      traitManager: {
-        appendTo: '#trait-container',
-      },
-      selectorManager: {
-        appendTo: '#styles-container',
-      },
-      panels: {
-        defaults: [
-          {
-            id: 'basic-actions',
-            el: '.panel__basic-actions',
-            buttons: [
-              {
-                id: 'visibility',
-                active: true, // active by default
-                className: 'btn-toggle-borders',
-                // label: '<i class="fa fa-clone"></i>',
-                command: 'sw-visibility', // Built-in command
-              },
-            ],
-          },
-          {
-            id: 'panel-devices',
-            el: '.panel__devices',
-            buttons: [
-              {
-                id: 'device-desktop',
-                // label: '<i class="fa fa-television"></i>',
-                command: 'set-device-desktop',
-                active: true,
-                togglable: false,
-              },
-              {
-                id: 'device-mobile',
-
-                // label: '<i class="fa fa-mobile"></i>',
-                command: 'set-device-mobile',
-                togglable: false,
-              },
-            ],
-          },
-        ],
-      },
-      deviceManager: {
-        devices: [
-          {
-            name: 'Desktop',
-            width: '',
-          },
-          {
-            name: 'Mobile',
-            width: '320px',
-            widthMedia: '480px',
-          },
-        ],
-      },
-      plugins: [gjsPluginCkEditor, gjsPluginBlocksBasic],
-      pluginsOpts: {
-        gjsPluginCkEditor: {},
-        gjsPluginBlocksBasic: {},
-      },
-    });
-    // Commands
-    editor.Commands.add('set-device-desktop', {
-      run: (editor) => editor.setDevice('Desktop'),
-    });
-    editor.Commands.add('set-device-mobile', {
-      run: (editor) => editor.setDevice('Mobile'),
-    });
-    editor.Panels.removeButton('devices-c', 'block-editor');
-
-    setEditor(editor);
   }, []);
 
   const handleSubmit = async () => {
