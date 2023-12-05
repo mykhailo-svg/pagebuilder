@@ -4,17 +4,12 @@ import type { Editor } from 'grapesjs';
 import bootstrapCss from 'bootstrap/dist/css/bootstrap.min.css';
 import mainCss from '../styles/main.css';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
-import {
-  Form,
-  useActionData,
-  useLoaderData,
-  useLocation,
-} from '@remix-run/react';
+import { Form, useLoaderData } from '@remix-run/react';
 import { Sidebar } from '~/components/Sidebar/Sidebar';
 import { initEditorConfig } from '~/helpers/editorConfig';
 import { TopNav } from '~/components/TopNav/TopNav';
 import type { PageType } from '~/global_types';
-import type { ActionFunctionArgs, LoaderFunction} from '@remix-run/node';
+import type { ActionFunctionArgs, LoaderFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { getPageById, updatePage } from '~/models/page.server';
 
@@ -61,7 +56,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function AdditionalPage() {
   const [editor, setEditor] = useState<Editor>();
-  const [serverPage, setServerPAge] = useState<PageType>();
   const [pageHTML, setPageHTML] = useState('');
 
   const pageResponse = useLoaderData<PageType>();
@@ -87,8 +81,6 @@ export default function AdditionalPage() {
       console.error('Error fetching data:', error);
     }
   }, []);
-
-  const pageUpdateResponse = useActionData<typeof action>();
 
   return (
     <Page fullWidth>
