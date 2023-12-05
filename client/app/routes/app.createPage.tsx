@@ -90,7 +90,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   }
 };
 
-export default function createPage() {
+export default function CreatePage() {
   const [shop, setShop] = useState<Shop>({ id: '', name: '' });
   const [name, setName] = useState('');
   const [themes, setThemes] = useState<Theme[]>([]);

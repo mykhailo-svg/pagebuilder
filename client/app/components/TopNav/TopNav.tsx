@@ -1,13 +1,7 @@
 import { Button, Card, InlineGrid } from '@shopify/polaris';
 import { useRef } from 'react';
 
-export const TopNav = ({
-  shouldPublish,
-  submit,
-}: {
-  shouldPublish: boolean;
-  submit: () => void;
-}) => {
+export const TopNav = ({ shouldPublish }: { shouldPublish: boolean }) => {
   const deviceButtonsRef = useRef<null | HTMLDivElement>(null);
   const basicButtonsRef = useRef<null | HTMLDivElement>(null);
   if (
@@ -36,7 +30,7 @@ export const TopNav = ({
               }}
             >
               <div className="panel__devices" ref={deviceButtonsRef}></div>{' '}
-              <Button variant="primary" onClick={submit}>
+              <Button variant="primary" submit>
                 {shouldPublish ? 'Publish' : 'Save'}
               </Button>
             </div>

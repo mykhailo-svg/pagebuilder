@@ -17,29 +17,24 @@ import { TopNav } from '~/components/TopNav/TopNav';
 import type { PageType } from '~/global_types';
 import { ActionFunctionArgs, LoaderFunction, json } from '@remix-run/node';
 import { getPageById, updatePage } from '~/models/page.server';
-import { authenticate } from '~/shopify.server';
+
 export const links = () => [
   { rel: 'stylesheet', href: grapesStyles },
   { rel: 'stylesheet', href: bootstrapCss },
   { rel: 'stylesheet', href: mainCss },
 ];
 
-type FormFields = {
-  htmlField: string;
-  shopNameField: string;
-  themeIdName: string;
-};
-
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
-
+  const url = new URL(request.url);
+  const pageId = url.searchParams.get('pageId') || '';
   const formDataObject: Record<string, string> = {};
   formData.forEach((value, key) => {
     formDataObject[key] = value.toString();
   });
 
   const updatedPage = await updatePage({
-    id: '1701755268861-exahj6',
+    id: pageId,
     css: 'sd',
     html: formDataObject.htmlField,
   });
@@ -99,34 +94,6 @@ export default function AdditionalPage() {
 
   const pageUpdateResponse = useActionData<typeof action>();
 
-  const handleSubmit = async () => {
-    if (!serverPage?.shouldPublish) {
-      const html = editor?.getHtml() ?? '';
-      const css = editor?.getCss() ?? '';
-      const url = `http://localhost:4000/v1/page/${pageIdQueryParam}`;
-
-      const data = {
-        css,
-        html,
-      };
-      console.log(data);
-
-      const response = await axios
-        .put(url, data)
-        .then((response) => {
-          console.log('Відповідь сервера:', response.data);
-          setServerPAge(response.data);
-          setPageHTML(response.data.html);
-        })
-        .catch((error) => {
-          console.error('Помилка при виконанні PUT-запиту:', error);
-        });
-    } else {
-      console.log('Publish');
-    }
-  };
-  console.log(pageUpdateResponse);
-
   return (
     <Page fullWidth>
       <Button url="/app/pages">{'< Back '}</Button>
@@ -156,10 +123,7 @@ export default function AdditionalPage() {
           <Card>
             <nav className="navbar navbar-light">
               <div className="container-fluid">
-                <TopNav
-                  submit={handleSubmit}
-                  shouldPublish={serverPage?.shouldPublish ?? false}
-                />
+                <TopNav shouldPublish={serverPage?.shouldPublish ?? false} />
               </div>
             </nav>
             <div id="editor"></div>
