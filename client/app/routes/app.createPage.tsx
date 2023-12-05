@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   ChoiceList,
+  Divider,
   Page,
   TextField,
 } from '@shopify/polaris';
@@ -12,7 +13,6 @@ import type { ActionFunctionArgs, LoaderFunction } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
 import { Form, useLoaderData } from '@remix-run/react';
 import { createNewPage } from '~/models/page.server';
-import axios from 'axios';
 
 type Shop = {
   name: string;
@@ -37,22 +37,17 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   formData.forEach((value, key) => {
     formDataObject[key] = value.toString();
   });
-  const newPage = await axios
-    .post('http://localhost:4000/v1/page', {
-      themeId: formDataObject.themePicker,
-      shop: formDataObject.shopField,
-      name: formDataObject.nameField,
-    })
-    .catch((error) => {
-      console.error('Помилка відправлення POST-запиту:', error);
-    });
 
-  const newPageData = newPage ? newPage.data : null;
-  if (newPageData) {
-    return redirect(`/app/additional?pageId=${newPageData.id}`);
+  const page: any = await createNewPage({
+    themeId: formDataObject.themePicker,
+    shop: formDataObject.shopField,
+    name: formDataObject.nameField,
+  });
+  if (page) {
+    return redirect(`/app/editor?pageId=${page.id}`);
   }
   return json({
-    newPageData,
+    page,
   });
 };
 
@@ -73,10 +68,10 @@ export const loader: LoaderFunction = async ({ request }) => {
     const themesResponse = await admin.rest.resources.Theme.all({
       session: session,
     });
-    const pages = await createNewPage({ themeId: 'dgfdtae2' });
+
     const data = await response.json();
 
-    return json({ ...data.data, themes: themesResponse.data, pages });
+    return json({ ...data.data, themes: themesResponse.data });
   } catch (error) {
     console.error('Error fetching data:', error);
 
@@ -84,10 +79,19 @@ export const loader: LoaderFunction = async ({ request }) => {
   }
 };
 
-export default function createPage() {
+export default function CreatePage() {
   const [shop, setShop] = useState<Shop>({ id: '', name: '' });
   const [name, setName] = useState('');
+  const [nameError, setNameError] = useState<string>('');
   const [themes, setThemes] = useState<Theme[]>([]);
+  useEffect(() => {
+    if (name.length < 5) {
+      setNameError('Enter 5 digit page name');
+    } else {
+      setNameError('');
+    }
+  }, [name]);
+
   const choices = themes.map((theme) => {
     return {
       label: `${theme.name} --- ${theme.role}`,
@@ -121,6 +125,8 @@ export default function createPage() {
                   autoComplete=""
                   name="shopField"
                 />
+
+                <Divider />
                 <TextField
                   label="Your page name"
                   value={name}
@@ -128,6 +134,7 @@ export default function createPage() {
                   autoComplete=""
                   placeholder="Beautiful page..."
                   name="nameField"
+                  error={nameError}
                 />
                 <ChoiceList
                   name="themePicker"

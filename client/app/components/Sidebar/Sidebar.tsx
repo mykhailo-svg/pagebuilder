@@ -33,7 +33,7 @@ export function Sidebar({
             <Card>
               <InlineGrid columns={2}>
                 <Text truncate as="h4">
-                  {pageName}sdsdsdsdsddssd
+                  {pageName}
                 </Text>
                 <Badge
                   size="small"
@@ -48,10 +48,10 @@ export function Sidebar({
               <Text as="h5">Blocks</Text>
               <div id="blocks" ref={blocksRef}></div>
             </BlockStack>
-            <BlockStack gap="500">
+            {/* <BlockStack gap="500">
               <Text as="h5">Layers</Text>
               <div id="layers-container"></div>
-            </BlockStack>
+            </BlockStack> */}
             <BlockStack gap="500">
               <Text as="h5">Styles</Text>
               <div ref={stylesRef} id="styles-container"></div>

@@ -11,28 +11,15 @@ import {
   EmptyState,
   InlineGrid,
 } from '@shopify/polaris';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
 import type { PageType } from '~/global_types';
 import { definePageBadgesStatus } from '~/helpers/definePageBadge';
-import { authenticate } from '~/shopify.server';
-
-type InitialLoaderResponse = {
-  pagesData: PageType[];
-};
+import { getPages } from '~/models/page.server';
 
 export const loader: LoaderFunction = async ({ request }) => {
   try {
-    const { admin } = await authenticate.admin(request);
+    const pages = await getPages();
 
-    const pages = await axios
-      .get(`http://localhost:4000/v1/page/created/test2r3`)
-      .catch((error) => {
-        console.error('Помилка відправлення POST-запиту:', error);
-      });
-    const pagesData = pages ? pages.data : null;
-
-    return json({ pagesData });
+    return json(pages);
   } catch (error) {
     console.error('Error fetching data:', error);
 
@@ -41,29 +28,23 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function Pages() {
-  const [pages, setPages] = useState<PageType[]>([]);
-  const response = useLoaderData<InitialLoaderResponse>();
-  console.log(pages);
-
-  useEffect(() => {
-    setPages(response.pagesData);
-  }, []);
+  const response = useLoaderData<PageType[]>();
 
   return (
     <Page>
       <ui-title-bar title="Pages"></ui-title-bar>
       <Card>
-        {pages.length ? (
+        {response.length ? (
           <ResourceList
             resourceName={{ singular: 'customer', plural: 'customers' }}
-            items={pages}
+            items={response}
             renderItem={(item) => {
               const { id, name, status } = item;
 
               return (
                 <ResourceItem
                   id={id}
-                  url={`/app/additional?pageId=${id}`}
+                  url={`/app/editor?pageId=${id}`}
                   accessibilityLabel={`View details for ${name}`}
                 >
                   <InlineGrid columns={2}>

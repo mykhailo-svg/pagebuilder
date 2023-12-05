@@ -10,9 +10,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   asset.key = 'templates/olol.liquid';
   asset.value =
     "<img src='backsoon-postit.png'><p>We are busy updating the store for you and will be back within the hour.</p>";
-  const response = await asset.save();
+  await asset.save();
   return json({
-    asset, 
+    asset,
   });
 };
 
