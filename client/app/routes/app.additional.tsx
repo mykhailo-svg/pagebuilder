@@ -56,7 +56,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     const pageId = url.searchParams.get('pageId') || '';
     const page = await getPageById(pageId);
 
-    return json({});
+    return json(page);
   } catch (error) {
     console.error('Error fetching data:', error);
 
@@ -73,32 +73,28 @@ export default function AdditionalPage() {
   const queryParams = new URLSearchParams(location.search);
   const pageIdQueryParam = queryParams.get('pageId');
 
-  const pageResponse = useLoaderData();
+  const pageResponse = useLoaderData<PageType>();
   console.log(pageResponse);
 
   useEffect(() => {
-    const initEditor = async () => {
-      try {
-        const editor = initEditorConfig('nan');
+    try {
+      const editor = initEditorConfig(pageResponse.html);
 
-        editor.Commands.add('set-device-desktop', {
-          run: (editor) => editor.setDevice('Desktop'),
-        });
-        editor.Commands.add('set-device-mobile', {
-          run: (editor) => editor.setDevice('Mobile'),
-        });
-        editor.on('update', () => {
-          setPageHTML(editor.getHtml());
-        });
-        editor.Panels.removeButton('devices-c', 'block-editor');
-        // setServerPAge(pageData);
-        setEditor(editor);
-        // return pageData;
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-    initEditor();
+      editor.Commands.add('set-device-desktop', {
+        run: (editor) => editor.setDevice('Desktop'),
+      });
+      editor.Commands.add('set-device-mobile', {
+        run: (editor) => editor.setDevice('Mobile'),
+      });
+      editor.on('update', () => {
+        setPageHTML(editor.getHtml());
+      });
+      editor.Panels.removeButton('devices-c', 'block-editor');
+
+      setEditor(editor);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   }, []);
 
   const pageUpdateResponse = useActionData<typeof action>();
