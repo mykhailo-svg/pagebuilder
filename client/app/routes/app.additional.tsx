@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Button, Card, Page } from '@shopify/polaris';
+import { Button, Card, Page, TextField } from '@shopify/polaris';
 import type { Editor } from 'grapesjs';
 import bootstrapCss from 'bootstrap/dist/css/bootstrap.min.css';
 import mainCss from '../styles/main.css';
@@ -19,6 +19,7 @@ export const links = () => [
 export default function AdditionalPage() {
   const [editor, setEditor] = useState<Editor>();
   const [serverPage, setServerPAge] = useState<PageType>();
+  const [pageHTML, setPageHTML] = useState('');
   console.log(serverPage);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -42,7 +43,7 @@ export default function AdditionalPage() {
           run: (editor) => editor.setDevice('Mobile'),
         });
         editor.on('update', () => {
-          console.log('Update');
+          setPageHTML(editor.getHtml() + editor.getCss());
         });
         editor.Panels.removeButton('devices-c', 'block-editor');
         setServerPAge(pageData);
@@ -55,6 +56,7 @@ export default function AdditionalPage() {
     initEditor();
     console.log(serverPage);
   }, []);
+  console.log(pageHTML);
 
   console.log(serverPage);
 
@@ -75,6 +77,7 @@ export default function AdditionalPage() {
         .then((response) => {
           console.log('Відповідь сервера:', response.data);
           setServerPAge(response.data);
+          setPageHTML(response.data.html);
         })
         .catch((error) => {
           console.error('Помилка при виконанні PUT-запиту:', error);
@@ -87,6 +90,10 @@ export default function AdditionalPage() {
   return (
     <Page fullWidth>
       <Button url="/app/pages">{'< Back '}</Button>
+
+      <TextField value={pageHTML} autoComplete="" label="" />
+      <TextField value={serverPage?.id} autoComplete="" label="" />
+      <TextField value={serverPage?.themeId} autoComplete="" label="" />
       <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
         <Sidebar
           pageName={serverPage?.name ?? ''}
