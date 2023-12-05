@@ -11,13 +11,9 @@ import {
   EmptyState,
   InlineGrid,
 } from '@shopify/polaris';
-import type {
-  Progress,
-  Tone,
-} from '@shopify/polaris/build/ts/src/components/Badge';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { PagePublishStatus, PageType } from '~/global_types';
+import type { PageType } from '~/global_types';
 import { definePageBadgesStatus } from '~/helpers/definePageBadge';
 import { authenticate } from '~/shopify.server';
 

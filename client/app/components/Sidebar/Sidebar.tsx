@@ -1,14 +1,6 @@
-import {
-  Badge,
-  BlockStack,
-  Card,
-  Divider,
-  InlineGrid,
-  Layout,
-  Text,
-} from '@shopify/polaris';
-import React, { useEffect, useRef } from 'react';
-import { PagePublishStatus } from '~/global_types';
+import { Badge, BlockStack, Card, InlineGrid, Text } from '@shopify/polaris';
+import { useEffect, useRef } from 'react';
+import type { PagePublishStatus } from '~/global_types';
 import { definePageBadgesStatus } from '~/helpers/definePageBadge';
 
 export function Sidebar({

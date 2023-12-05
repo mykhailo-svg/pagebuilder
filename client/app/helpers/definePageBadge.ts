@@ -1,5 +1,5 @@
-import { Progress, Tone } from '@shopify/polaris/build/ts/src/components/Badge';
-import { PagePublishStatus } from '~/global_types';
+import type { Progress, Tone } from '@shopify/polaris/build/ts/src/components/Badge';
+import type { PagePublishStatus } from '~/global_types';
 
 export const definePageBadgesStatus = (status: PagePublishStatus) => {
   let initialObject: { tone: Tone; progress: Progress; text: string } = {

@@ -1,32 +1,20 @@
 import { useState, useEffect } from 'react';
-import { Button, Card, Icon, InlineGrid, Page, Text } from '@shopify/polaris';
+import { Button, Card, Page } from '@shopify/polaris';
 import type { Editor } from 'grapesjs';
-import grapesjs from 'grapesjs';
-import gjsPresetWebpage from 'grapesjs-preset-webpage';
-import gjsPluginBlocksBasic from 'grapesjs-blocks-basic';
-import gjsPluginCkEditor from 'grapesjs-plugin-ckeditor';
 import bootstrapCss from 'bootstrap/dist/css/bootstrap.min.css';
 import mainCss from '../styles/main.css';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
-import type { LoaderFunction } from '@remix-run/node';
-import { json } from '@remix-run/node';
-import { authenticate } from '~/shopify.server';
-import { useLoaderData, useLocation, useParams } from '@remix-run/react';
+import { useLocation } from '@remix-run/react';
 import axios from 'axios';
 import { Sidebar } from '~/components/Sidebar/Sidebar';
 import { initEditorConfig } from '~/helpers/editorConfig';
 import { TopNav } from '~/components/TopNav/TopNav';
-import { PageType } from '~/global_types';
-import { MobileBackArrowMajor } from '@shopify/polaris-icons';
+import type { PageType } from '~/global_types';
 export const links = () => [
   { rel: 'stylesheet', href: grapesStyles },
   { rel: 'stylesheet', href: bootstrapCss },
   { rel: 'stylesheet', href: mainCss },
 ];
-
-type LoaderResponse = {
-  pageData: PageType;
-};
 
 export default function AdditionalPage() {
   const [editor, setEditor] = useState<Editor>();
@@ -34,16 +22,16 @@ export default function AdditionalPage() {
   console.log(serverPage);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const myParam = queryParams.get('pageId');
-  console.log(myParam);
+  const pageIdQueryParam = queryParams.get('pageId');
+  console.log(pageIdQueryParam);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const initEditor = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4000/v1/page/${myParam}`
+          `http://localhost:4000/v1/page/${pageIdQueryParam}`
         );
-        const pageData = response.data; // Assuming the data you need is in the response
+        const pageData = response.data;
 
         const editor = initEditorConfig(pageData.html);
 
@@ -64,10 +52,8 @@ export default function AdditionalPage() {
         console.error('Error fetching data:', error);
       }
     };
-    fetchData();
+    initEditor();
     console.log(serverPage);
-
-    // Call the fetchData function
   }, []);
 
   console.log(serverPage);
@@ -76,7 +62,7 @@ export default function AdditionalPage() {
     if (!serverPage?.shouldPublish) {
       const html = editor?.getHtml() ?? '';
       const css = editor?.getCss() ?? '';
-      const url = `http://localhost:4000/v1/page/${myParam}`;
+      const url = `http://localhost:4000/v1/page/${pageIdQueryParam}`;
 
       const data = {
         css,

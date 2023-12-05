@@ -1,8 +1,8 @@
 import grapesjs from 'grapesjs';
-import gjsPresetWebpage from 'grapesjs-preset-webpage';
 import gjsPluginBlocksBasic from 'grapesjs-blocks-basic';
 import gjsPluginCkEditor from 'grapesjs-plugin-ckeditor';
-import { BuyButtonButtonLayoutMajor } from '@shopify/polaris-icons';
+
+//Не звертай уваги на помилки воно їх видає але без них воно не працює
 export const initEditorConfig = (html: string) => {
   return grapesjs.init({
     container: '#editor',
