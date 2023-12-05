@@ -101,13 +101,13 @@ export default function AdditionalPage() {
         <TextField name="htmlField" value={pageHTML} autoComplete="" label="" />
         <TextField
           name="pageIdField"
-          value={serverPage?.id}
+          value={pageResponse.id}
           autoComplete=""
           label=""
         />
         <TextField
           name="themeIdField"
-          value={serverPage?.themeId}
+          value={pageResponse.themeId}
           autoComplete=""
           label=""
         />
@@ -115,15 +115,15 @@ export default function AdditionalPage() {
       </Form>
       <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
         <Sidebar
-          pageName={serverPage?.name ?? ''}
-          pageStatus={serverPage?.status ?? 'neverPublished'}
+          pageName={pageResponse.name}
+          pageStatus={pageResponse.status}
         />
 
         <div style={{ flex: '1 1 auto' }}>
           <Card>
             <nav className="navbar navbar-light">
               <div className="container-fluid">
-                <TopNav shouldPublish={serverPage?.shouldPublish ?? false} />
+                <TopNav shouldPublish={pageResponse.shouldPublish} />
               </div>
             </nav>
             <div id="editor"></div>

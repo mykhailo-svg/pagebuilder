@@ -33,7 +33,7 @@ export function Sidebar({
             <Card>
               <InlineGrid columns={2}>
                 <Text truncate as="h4">
-                  {pageName}sdsdsdsdsddssd
+                  {pageName}
                 </Text>
                 <Badge
                   size="small"

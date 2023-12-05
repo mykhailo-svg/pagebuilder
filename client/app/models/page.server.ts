@@ -24,10 +24,10 @@ type CreatePageArgs = {
 
 export async function createNewPage({ themeId, shop, name }: CreatePageArgs) {
   try {
-    const pages = await db.page.create({
+    const page = await db.page.create({
       data: { themeId, id: generateUniqueID(), shop, name },
     });
-    return pages;
+    return page;
   } catch (error) {
     return error;
   }

@@ -13,6 +13,7 @@ import { json, redirect } from '@remix-run/node';
 import { Form, useLoaderData } from '@remix-run/react';
 import { createNewPage } from '~/models/page.server';
 import axios from 'axios';
+import { PageType } from '~/global_types';
 
 type Shop = {
   name: string;
@@ -37,28 +38,17 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   formData.forEach((value, key) => {
     formDataObject[key] = value.toString();
   });
-  const newPage = await axios
-    .post('http://localhost:4000/v1/page', {
-      themeId: formDataObject.themePicker,
-      shop: formDataObject.shopField,
-      name: formDataObject.nameField,
-    })
-    .catch((error) => {
-      console.error('Помилка відправлення POST-запиту:', error);
-    });
 
-  const newPageData = newPage ? newPage.data : null;
-  const pages = await createNewPage({
+  const page: any = await createNewPage({
     themeId: formDataObject.themePicker,
     shop: formDataObject.shopField,
     name: formDataObject.nameField,
   });
-  if (newPageData) {
-    return redirect(`/app/additional?pageId=${newPageData.id}`);
+  if (page) {
+    return redirect(`/app/additional?pageId=${page.id}`);
   }
   return json({
-    newPageData,
-    pages,
+    page,
   });
 };
 
