@@ -52,16 +52,12 @@ type UpdatePageArgs = {
 };
 
 export async function updatePage({ id, css, html }: UpdatePageArgs) {
-  try {
-    const page = await db.page.update({
-      where: { id },
-      data: {
-        css,
-        html,
-      },
-    });
-    return page;
-  } catch (error) {
-    return error;
-  }
+  const page = await db.page.update({
+    where: { id },
+    data: {
+      css,
+      html: html.replace(/\\/g, ''),
+    },
+  });
+  return page;
 }

@@ -4,27 +4,54 @@ import type { Editor } from 'grapesjs';
 import bootstrapCss from 'bootstrap/dist/css/bootstrap.min.css';
 import mainCss from '../styles/main.css';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
-import { useLocation } from '@remix-run/react';
+import { Form, useActionData, useLocation } from '@remix-run/react';
 import axios from 'axios';
 import { Sidebar } from '~/components/Sidebar/Sidebar';
 import { initEditorConfig } from '~/helpers/editorConfig';
 import { TopNav } from '~/components/TopNav/TopNav';
 import type { PageType } from '~/global_types';
+import { ActionFunctionArgs, json } from '@remix-run/node';
+import { updatePage } from '~/models/page.server';
 export const links = () => [
   { rel: 'stylesheet', href: grapesStyles },
   { rel: 'stylesheet', href: bootstrapCss },
   { rel: 'stylesheet', href: mainCss },
 ];
 
+type FormFields = {
+  htmlField: string;
+  shopNameField: string;
+  themeIdName: string;
+};
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+  const formData = await request.formData();
+
+  const formDataObject: Record<string, string> = {};
+  formData.forEach((value, key) => {
+    formDataObject[key] = value.toString();
+  });
+
+  const updatedPage = await updatePage({
+    id: '1701755268861-exahj6',
+    css: 'sd',
+    html: formDataObject.htmlField,
+  });
+
+  return json({
+    formDataObject,
+    updatedPage,
+  });
+};
+
 export default function AdditionalPage() {
   const [editor, setEditor] = useState<Editor>();
   const [serverPage, setServerPAge] = useState<PageType>();
   const [pageHTML, setPageHTML] = useState('');
-  console.log(serverPage);
+
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const pageIdQueryParam = queryParams.get('pageId');
-  console.log(pageIdQueryParam);
 
   useEffect(() => {
     const initEditor = async () => {
@@ -43,7 +70,7 @@ export default function AdditionalPage() {
           run: (editor) => editor.setDevice('Mobile'),
         });
         editor.on('update', () => {
-          setPageHTML(editor.getHtml() + editor.getCss());
+          setPageHTML(editor.getHtml());
         });
         editor.Panels.removeButton('devices-c', 'block-editor');
         setServerPAge(pageData);
@@ -54,11 +81,9 @@ export default function AdditionalPage() {
       }
     };
     initEditor();
-    console.log(serverPage);
   }, []);
-  console.log(pageHTML);
 
-  console.log(serverPage);
+  const pageUpdateResponse = useActionData<typeof action>();
 
   const handleSubmit = async () => {
     if (!serverPage?.shouldPublish) {
@@ -86,14 +111,27 @@ export default function AdditionalPage() {
       console.log('Publish');
     }
   };
+  console.log(pageUpdateResponse);
 
   return (
     <Page fullWidth>
       <Button url="/app/pages">{'< Back '}</Button>
-
-      <TextField value={pageHTML} autoComplete="" label="" />
-      <TextField value={serverPage?.id} autoComplete="" label="" />
-      <TextField value={serverPage?.themeId} autoComplete="" label="" />
+      <Form method="post">
+        <TextField name="htmlField" value={pageHTML} autoComplete="" label="" />
+        <TextField
+          name="pageIdField"
+          value={serverPage?.id}
+          autoComplete=""
+          label=""
+        />
+        <TextField
+          name="themeIdField"
+          value={serverPage?.themeId}
+          autoComplete=""
+          label=""
+        />
+        <Button submit>Export</Button>
+      </Form>
       <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
         <Sidebar
           pageName={serverPage?.name ?? ''}
