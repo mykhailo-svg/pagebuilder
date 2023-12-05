@@ -14,7 +14,8 @@ import { Sidebar } from '~/components/Sidebar/Sidebar';
 import { initEditorConfig } from '~/helpers/editorConfig';
 import { TopNav } from '~/components/TopNav/TopNav';
 import type { PageType } from '~/global_types';
-import { ActionFunctionArgs, LoaderFunction, json } from '@remix-run/node';
+import type { ActionFunctionArgs, LoaderFunction} from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { getPageById, updatePage } from '~/models/page.server';
 
 export const links = () => [
@@ -58,14 +59,10 @@ export const loader: LoaderFunction = async ({ request }) => {
   }
 };
 
-export default function Editor() {
+export default function AdditionalPage() {
   const [editor, setEditor] = useState<Editor>();
   const [serverPage, setServerPAge] = useState<PageType>();
   const [pageHTML, setPageHTML] = useState('');
-
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const pageIdQueryParam = queryParams.get('pageId');
 
   const pageResponse = useLoaderData<PageType>();
   console.log(pageResponse);
