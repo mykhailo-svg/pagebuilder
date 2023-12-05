@@ -22,8 +22,12 @@ model Session {
 }
 
 model Page {
-  id      String @id
-  css     String @default("none")
-  html    String @default("none")
-  themeId String
+  id            String  @id
+  css           String  @default("none")
+  html          String  @default("none")
+  themeId       String
+  shouldPublish Boolean @default(false)
+  name          String
+  shop          String
+  status        String  @default("neverPublished")
 }
