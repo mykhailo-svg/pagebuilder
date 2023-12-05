@@ -12,8 +12,6 @@ import type { ActionFunctionArgs, LoaderFunction } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
 import { Form, useLoaderData } from '@remix-run/react';
 import { createNewPage } from '~/models/page.server';
-import axios from 'axios';
-import { PageType } from '~/global_types';
 
 type Shop = {
   name: string;
@@ -45,7 +43,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     name: formDataObject.nameField,
   });
   if (page) {
-    return redirect(`/app/additional?pageId=${page.id}`);
+    return redirect(`/app/editor?pageId=${page.id}`);
   }
   return json({
     page,

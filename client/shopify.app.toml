@@ -2,7 +2,7 @@
 
 name = "pages-builder"
 client_id = "b559767290b67b4db00a3d213d55c281"
-application_url = "https://attempted-abroad-driving-pj.trycloudflare.com"
+application_url = "https://terror-terms-solved-highlights.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products,read_themes,write_themes"
 
 [auth]
 redirect_urls = [
-  "https://attempted-abroad-driving-pj.trycloudflare.com/auth/callback",
-  "https://attempted-abroad-driving-pj.trycloudflare.com/auth/shopify/callback",
-  "https://attempted-abroad-driving-pj.trycloudflare.com/api/auth/callback",
-  "https://attempted-abroad-driving-pj.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://terror-terms-solved-highlights.trycloudflare.com/auth/callback",
+  "https://terror-terms-solved-highlights.trycloudflare.com/auth/shopify/callback",
+  "https://terror-terms-solved-highlights.trycloudflare.com/api/auth/callback",
+  "https://terror-terms-solved-highlights.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]

@@ -10,7 +10,6 @@ import {
   useLoaderData,
   useLocation,
 } from '@remix-run/react';
-import axios from 'axios';
 import { Sidebar } from '~/components/Sidebar/Sidebar';
 import { initEditorConfig } from '~/helpers/editorConfig';
 import { TopNav } from '~/components/TopNav/TopNav';
@@ -59,7 +58,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   }
 };
 
-export default function AdditionalPage() {
+export default function Editor() {
   const [editor, setEditor] = useState<Editor>();
   const [serverPage, setServerPAge] = useState<PageType>();
   const [pageHTML, setPageHTML] = useState('');
