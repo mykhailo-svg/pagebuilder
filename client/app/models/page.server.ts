@@ -1,15 +1,15 @@
 import db from '../db.server';
 
-export async function getPages() {
-  try {
-    const pages = await db.page.create({
-      data: { themeId: 'sfsf', id: generateUniqueID() },
-    });
-    return pages;
-  } catch (error) {
-    return error;
-  }
-}
+// export async function getPages() {
+//   try {
+//     const pages = await db.page.create({
+//       data: { themeId: 'sfsf', id: generateUniqueID() },
+//     });
+//     return pages;
+//   } catch (error) {
+//     return error;
+//   }
+// }
 
 export function generateUniqueID() {
   const timestamp = new Date().getTime(); // Get current timestamp
@@ -20,12 +20,14 @@ export function generateUniqueID() {
 
 type CreatePageArgs = {
   themeId: string;
+  shop: string;
+  name: string;
 };
 
-export async function createNewPage({ themeId }: CreatePageArgs) {
+export async function createNewPage({ themeId, shop, name }: CreatePageArgs) {
   try {
     const pages = await db.page.create({
-      data: { themeId, id: generateUniqueID() },
+      data: { themeId, id: generateUniqueID(), shop, name },
     });
     return pages;
   } catch (error) {

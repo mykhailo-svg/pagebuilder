@@ -48,11 +48,17 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     });
 
   const newPageData = newPage ? newPage.data : null;
+  const pages = await createNewPage({
+    themeId: formDataObject.themePicker,
+    shop: formDataObject.shopField,
+    name: formDataObject.nameField,
+  });
   if (newPageData) {
     return redirect(`/app/additional?pageId=${newPageData.id}`);
   }
   return json({
     newPageData,
+    pages,
   });
 };
 
@@ -73,10 +79,10 @@ export const loader: LoaderFunction = async ({ request }) => {
     const themesResponse = await admin.rest.resources.Theme.all({
       session: session,
     });
-    const pages = await createNewPage({ themeId: 'dgfdtae2' });
+
     const data = await response.json();
 
-    return json({ ...data.data, themes: themesResponse.data, pages });
+    return json({ ...data.data, themes: themesResponse.data });
   } catch (error) {
     console.error('Error fetching data:', error);
 
