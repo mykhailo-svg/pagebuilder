@@ -2,23 +2,23 @@
 
 name = "pages-builder"
 client_id = "b559767290b67b4db00a3d213d55c281"
-application_url = "https://belly-generate-transmission-listprice.trycloudflare.com"
+application_url = "https://vitamin-skating-lucas-verizon.trycloudflare.com"
 embedded = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "write_products,read_themes"
+scopes = "write_products,read_themes,write_themes"
 
 [auth]
 redirect_urls = [
-  "https://belly-generate-transmission-listprice.trycloudflare.com/auth/callback",
-  "https://belly-generate-transmission-listprice.trycloudflare.com/auth/shopify/callback",
-  "https://belly-generate-transmission-listprice.trycloudflare.com/api/auth/callback",
-  "https://belly-generate-transmission-listprice.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://vitamin-skating-lucas-verizon.trycloudflare.com/auth/callback",
+  "https://vitamin-skating-lucas-verizon.trycloudflare.com/auth/shopify/callback",
+  "https://vitamin-skating-lucas-verizon.trycloudflare.com/api/auth/callback",
+  "https://vitamin-skating-lucas-verizon.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]
-api_version = "2023-10"
+api_version = "2023-01"
 
 [pos]
 embedded = false

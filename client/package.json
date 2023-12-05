@@ -32,6 +32,7 @@
     "@shopify/shopify-app-remix": "^2.1.0",
     "@shopify/shopify-app-session-storage-prisma": "^2.0.0",
     "axios": "^1.6.2",
+    "bootstrap": "^5.3.2",
     "grapesjs": "^0.21.7",
     "grapesjs-blocks-basic": "^1.0.2",
     "grapesjs-plugin-ckeditor": "^1.0.1",

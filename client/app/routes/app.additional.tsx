@@ -1,106 +1,112 @@
 import { useState, useEffect } from 'react';
-import { Button, Page } from '@shopify/polaris';
+import { Button, Card, Page } from '@shopify/polaris';
 import type { Editor } from 'grapesjs';
-import grapesjs from 'grapesjs';
-import gjsPresetWebpage from 'grapesjs-preset-webpage';
-import gjsPluginBlocksBasic from 'grapesjs-blocks-basic';
-import gjsPluginCkEditor from 'grapesjs-plugin-ckeditor';
+import bootstrapCss from 'bootstrap/dist/css/bootstrap.min.css';
+import mainCss from '../styles/main.css';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
-import type { LoaderFunction } from '@remix-run/node';
-import { json } from '@remix-run/node';
-import { authenticate } from '~/shopify.server';
-import { useLoaderData } from '@remix-run/react';
+import { useLocation } from '@remix-run/react';
 import axios from 'axios';
-
-export const links = () => [{ rel: 'stylesheet', href: grapesStyles }];
-
-type PageType = {
-  id: string;
-  css: string;
-  html: string;
-  themeId: string;
-  shop: string;
-  isPublished: boolean;
-  isInShopify: boolean;
-};
-
-type LoaderResponse = {
-  pageData: PageType;
-};
-
-export const loader: LoaderFunction = async ({ request }) => {
-  try {
-    const { admin } = await authenticate.admin(request);
-    const url = new URL(request.url);
-    const pageId = url.searchParams.get('pageId') || '';
-    const page = await axios
-      .get(`http://localhost:4000/v1/page/${pageId}`)
-      .catch((error) => {
-        console.error('Помилка відправлення POST-запиту:', error);
-      });
-    const pageData = page ? page.data : null;
-
-    return json({ pageData });
-  } catch (error) {
-    console.error('Error fetching data:', error);
-
-    return json([]);
-  }
-};
+import { Sidebar } from '~/components/Sidebar/Sidebar';
+import { initEditorConfig } from '~/helpers/editorConfig';
+import { TopNav } from '~/components/TopNav/TopNav';
+import type { PageType } from '~/global_types';
+export const links = () => [
+  { rel: 'stylesheet', href: grapesStyles },
+  { rel: 'stylesheet', href: bootstrapCss },
+  { rel: 'stylesheet', href: mainCss },
+];
 
 export default function AdditionalPage() {
   const [editor, setEditor] = useState<Editor>();
-  const [serverPage, setServerPAge] = useState<PageType>({
-    id: '',
-    shop: '',
-    themeId: '',
-    css: '',
-    html: '',
-    isInShopify: false,
-    isPublished: false,
-  });
-
-  const response = useLoaderData<LoaderResponse>();
+  const [serverPage, setServerPAge] = useState<PageType>();
+  console.log(serverPage);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const pageIdQueryParam = queryParams.get('pageId');
+  console.log(pageIdQueryParam);
 
   useEffect(() => {
-    const editor = grapesjs.init({
-      container: '#editor',
-      plugins: [gjsPresetWebpage, gjsPluginCkEditor, gjsPluginBlocksBasic],
-      pluginsOpts: {
-        gjsPresetWebpage: {},
-        gjsPluginCkEditor: {},
-        gjsPluginBlocksBasic: {},
-      },
-    });
-    setServerPAge(response.pageData);
-    editor.setComponents(response.pageData.html);
-    setEditor(editor);
+    const initEditor = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:4000/v1/page/${pageIdQueryParam}`
+        );
+        const pageData = response.data;
+
+        const editor = initEditorConfig(pageData.html);
+
+        editor.Commands.add('set-device-desktop', {
+          run: (editor) => editor.setDevice('Desktop'),
+        });
+        editor.Commands.add('set-device-mobile', {
+          run: (editor) => editor.setDevice('Mobile'),
+        });
+        editor.on('update', () => {
+          console.log('Update');
+        });
+        editor.Panels.removeButton('devices-c', 'block-editor');
+        setServerPAge(pageData);
+        setEditor(editor);
+        return pageData;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    initEditor();
+    console.log(serverPage);
   }, []);
 
+  console.log(serverPage);
+
   const handleSubmit = async () => {
-    const html = editor?.getHtml() ?? '';
-    const css = editor?.getCss() ?? '';
-    const url = `http://localhost:4000/v1/page/${serverPage.id}`;
+    if (!serverPage?.shouldPublish) {
+      const html = editor?.getHtml() ?? '';
+      const css = editor?.getCss() ?? '';
+      const url = `http://localhost:4000/v1/page/${pageIdQueryParam}`;
 
-    const data = {
-      css,
-      html,
-    };
+      const data = {
+        css,
+        html,
+      };
+      console.log(data);
 
-    const response = await axios
-      .put(url, data)
-      .then((response) => {
-        console.log('Відповідь сервера:', response.data);
-      })
-      .catch((error) => {
-        console.error('Помилка при виконанні PUT-запиту:', error);
-      });
+      const response = await axios
+        .put(url, data)
+        .then((response) => {
+          console.log('Відповідь сервера:', response.data);
+          setServerPAge(response.data);
+        })
+        .catch((error) => {
+          console.error('Помилка при виконанні PUT-запиту:', error);
+        });
+    } else {
+      console.log('Publish');
+    }
   };
 
   return (
     <Page fullWidth>
-      <Button onClick={handleSubmit}>Export</Button>
-      <div id="editor"></div>
+      <Button url="/app/pages">{'< Back '}</Button>
+      <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
+        <Sidebar
+          pageName={serverPage?.name ?? ''}
+          pageStatus={serverPage?.status ?? 'neverPublished'}
+        />
+
+        <div style={{ flex: '1 1 auto' }}>
+          <Card>
+            <nav className="navbar navbar-light">
+              <div className="container-fluid">
+                <TopNav
+                  submit={handleSubmit}
+                  shouldPublish={serverPage?.shouldPublish ?? false}
+                />
+              </div>
+            </nav>
+            <div id="editor"></div>
+          </Card>
+        </div>
+      </div>
     </Page>
   );
 }
