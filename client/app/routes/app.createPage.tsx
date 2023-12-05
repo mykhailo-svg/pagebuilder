@@ -81,7 +81,16 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function CreatePage() {
   const [shop, setShop] = useState<Shop>({ id: '', name: '' });
   const [name, setName] = useState('');
+  const [nameError, setNameError] = useState<string>('');
   const [themes, setThemes] = useState<Theme[]>([]);
+  useEffect(() => {
+    if (name.length < 5) {
+      setNameError('Enter 5 digit page name');
+    } else {
+      setNameError('');
+    }
+  }, [name]);
+
   const choices = themes.map((theme) => {
     return {
       label: `${theme.name} --- ${theme.role}`,
@@ -122,6 +131,7 @@ export default function CreatePage() {
                   autoComplete=""
                   placeholder="Beautiful page..."
                   name="nameField"
+                  error={nameError}
                 />
                 <ChoiceList
                   name="themePicker"

@@ -25,7 +25,13 @@ type CreatePageArgs = {
 export async function createNewPage({ themeId, shop, name }: CreatePageArgs) {
   try {
     const page = await db.page.create({
-      data: { themeId, id: generateUniqueID(), shop, name },
+      data: {
+        themeId,
+        id: generateUniqueID(),
+        shop,
+        name,
+        html: '<body id="i7ys"><div id="i0sg"><p>My first page here!</p></div></body>',
+      },
     });
     return page;
   } catch (error) {
