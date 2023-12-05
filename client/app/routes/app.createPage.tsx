@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   ChoiceList,
+  Divider,
   Page,
   TextField,
 } from '@shopify/polaris';
@@ -124,6 +125,8 @@ export default function CreatePage() {
                   autoComplete=""
                   name="shopField"
                 />
+
+                <Divider />
                 <TextField
                   label="Your page name"
                   value={name}
