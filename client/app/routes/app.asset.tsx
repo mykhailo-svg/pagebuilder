@@ -6,10 +6,14 @@ import { authenticate } from '~/shopify.server';
 export const action = async ({ request }: ActionFunctionArgs) => {
   const { admin, session } = await authenticate.admin(request);
   const asset = new admin.rest.resources.Asset({ session: session });
-  asset.theme_id = 131827335324;
-  asset.key = 'templates/olol.liquid';
+  asset.theme_id = 163021127986;
+
+  // 163021127986;
+  // 131827335324;
+
+  asset.key = 'sections/a2.liquid';
   asset.value =
-    "<img src='backsoon-postit.png'><p>We are busy updating the store for you and will be back within the hour.</p>";
+    "<div><img src='backsoon-postit.png'><p>We are busy updating the store for you and will be back within the hour.</p></div>";
   await asset.save();
   return json({
     asset,

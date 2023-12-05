@@ -23,6 +23,7 @@ export default function App() {
           Home
         </Link>
         <Link to="/app/editor">Additional page</Link>
+        <Link to="/app/asset">Create assets</Link>
       </ui-nav-menu>
       <Outlet />
     </AppProvider>
