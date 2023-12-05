@@ -15,72 +15,47 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import type { PageType } from '~/global_types';
 import { definePageBadgesStatus } from '~/helpers/definePageBadge';
+import { getPages } from '~/models/page.server';
 import { authenticate } from '~/shopify.server';
 
 type InitialLoaderResponse = {
   pagesData: PageType[];
 };
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async () => {
   try {
-    const { admin } = await authenticate.admin(request);
+    const pages = await getPages();
 
-    const pages = await axios
-      .get(`http://localhost:4000/v1/page/created/test2r3`)
-      .catch((error) => {
-        console.error('Помилка відправлення POST-запиту:', error);
-      });
-    const pagesData = pages ? pages.data : null;
-
-    return json({ pagesData });
+    return json(pages);
   } catch (error) {
-    console.error('Error fetching data:', error);
-
     return json([]);
   }
 };
 
 export default function Pages() {
-  const [pages, setPages] = useState<PageType[]>([]);
-  const response = useLoaderData<InitialLoaderResponse>();
-  console.log(pages);
-
-  useEffect(() => {
-    setPages(response.pagesData);
-  }, []);
+  const [pages, setPages] = useState<PageType[]>();
+  const response = useLoaderData<PageType[]>();
 
   return (
     <Page>
       <ui-title-bar title="Pages"></ui-title-bar>
       <Card>
-        {pages.length ? (
-          <ResourceList
-            resourceName={{ singular: 'customer', plural: 'customers' }}
-            items={pages}
-            renderItem={(item) => {
-              const { id, name, status } = item;
-
-              return (
-                <ResourceItem
-                  id={id}
-                  url={`/app/additional?pageId=${id}`}
-                  accessibilityLabel={`View details for ${name}`}
+        {response.length ? (
+          response.map((page) => (
+            <ResourceItem url={`/app/additional?pageId=${page.id}`} id="">
+              <InlineGrid columns={2}>
+                <Text variant="bodyMd" fontWeight="bold" as="h3">
+                  {page.name}
+                </Text>
+                <Badge
+                  tone={definePageBadgesStatus(page.status).tone}
+                  progress={definePageBadgesStatus(page.status).progress}
                 >
-                  <InlineGrid columns={2}>
-                    <Text variant="bodyMd" fontWeight="bold" as="h3">
-                      {name}
-                    </Text>
-                    <Badge
-                      tone={definePageBadgesStatus(status).tone}
-                      progress={definePageBadgesStatus(status).progress}
-                    >
-                      {definePageBadgesStatus(status).text}
-                    </Badge>
-                  </InlineGrid>
-                </ResourceItem>
-              );
-            }}
-          />
+                  {definePageBadgesStatus(page.status).text}
+                </Badge>
+              </InlineGrid>
+            </ResourceItem>
+          ))
         ) : (
           <EmptyState
             heading="You don't have created pages"

@@ -4,14 +4,20 @@ import type { Editor } from 'grapesjs';
 import bootstrapCss from 'bootstrap/dist/css/bootstrap.min.css';
 import mainCss from '../styles/main.css';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
-import { Form, useActionData, useLocation } from '@remix-run/react';
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useLocation,
+} from '@remix-run/react';
 import axios from 'axios';
 import { Sidebar } from '~/components/Sidebar/Sidebar';
 import { initEditorConfig } from '~/helpers/editorConfig';
 import { TopNav } from '~/components/TopNav/TopNav';
 import type { PageType } from '~/global_types';
-import { ActionFunctionArgs, json } from '@remix-run/node';
-import { updatePage } from '~/models/page.server';
+import { ActionFunctionArgs, LoaderFunction, json } from '@remix-run/node';
+import { getPageById, updatePage } from '~/models/page.server';
+import { authenticate } from '~/shopify.server';
 export const links = () => [
   { rel: 'stylesheet', href: grapesStyles },
   { rel: 'stylesheet', href: bootstrapCss },
@@ -44,6 +50,20 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   });
 };
 
+export const loader: LoaderFunction = async ({ request }) => {
+  try {
+    const url = new URL(request.url);
+    const pageId = url.searchParams.get('pageId') || '';
+    const page = await getPageById(pageId);
+
+    return json({});
+  } catch (error) {
+    console.error('Error fetching data:', error);
+
+    return json([]);
+  }
+};
+
 export default function AdditionalPage() {
   const [editor, setEditor] = useState<Editor>();
   const [serverPage, setServerPAge] = useState<PageType>();
@@ -53,15 +73,13 @@ export default function AdditionalPage() {
   const queryParams = new URLSearchParams(location.search);
   const pageIdQueryParam = queryParams.get('pageId');
 
+  const pageResponse = useLoaderData();
+  console.log(pageResponse);
+
   useEffect(() => {
     const initEditor = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:4000/v1/page/${pageIdQueryParam}`
-        );
-        const pageData = response.data;
-
-        const editor = initEditorConfig(pageData.html);
+        const editor = initEditorConfig('nan');
 
         editor.Commands.add('set-device-desktop', {
           run: (editor) => editor.setDevice('Desktop'),
@@ -73,9 +91,9 @@ export default function AdditionalPage() {
           setPageHTML(editor.getHtml());
         });
         editor.Panels.removeButton('devices-c', 'block-editor');
-        setServerPAge(pageData);
+        // setServerPAge(pageData);
         setEditor(editor);
-        return pageData;
+        // return pageData;
       } catch (error) {
         console.error('Error fetching data:', error);
       }
