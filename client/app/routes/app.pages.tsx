@@ -11,21 +11,12 @@ import {
   EmptyState,
   InlineGrid,
 } from '@shopify/polaris';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
 import type { PageType } from '~/global_types';
 import { definePageBadgesStatus } from '~/helpers/definePageBadge';
 import { getPages } from '~/models/page.server';
-import { authenticate } from '~/shopify.server';
-
-type InitialLoaderResponse = {
-  pagesData: PageType[];
-};
 
 export const loader: LoaderFunction = async ({ request }) => {
   try {
-    const { admin } = await authenticate.admin(request);
-
     const pages = await getPages();
 
     return json(pages);
@@ -37,24 +28,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function Pages() {
-  const [pages, setPages] = useState<PageType[]>([
-    {
-      id: 'ssf',
-      name: 'sdsd',
-      css: 'df',
-      html: 'fd',
-      themeId: 'dfdfF',
-      shouldPublish: false,
-      shop: 'sd',
-      status: 'neverPublished',
-    },
-  ]);
   const response = useLoaderData<PageType[]>();
-
-  useEffect(() => {
-    setPages(response);
-  }, []);
-  console.log(pages);
 
   return (
     <Page>
