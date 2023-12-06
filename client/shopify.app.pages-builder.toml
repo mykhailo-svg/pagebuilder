@@ -2,7 +2,7 @@
 
 name = "pages-builder"
 client_id = "13197c1c3fd2aca39c9036b71b5be751"
-application_url = "https://plug-designs-cathedral-father.trycloudflare.com"
+application_url = "https://id-makes-denmark-graduate.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products,read_themes,write_themes"
 
 [auth]
 redirect_urls = [
-  "https://plug-designs-cathedral-father.trycloudflare.com/auth/callback",
-  "https://plug-designs-cathedral-father.trycloudflare.com/auth/shopify/callback",
-  "https://plug-designs-cathedral-father.trycloudflare.com/api/auth/callback",
-  "https://plug-designs-cathedral-father.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://id-makes-denmark-graduate.trycloudflare.com/auth/callback",
+  "https://id-makes-denmark-graduate.trycloudflare.com/auth/shopify/callback",
+  "https://id-makes-denmark-graduate.trycloudflare.com/api/auth/callback",
+  "https://id-makes-denmark-graduate.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]

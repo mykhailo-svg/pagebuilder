@@ -11,15 +11,14 @@
     "noEmit": true,
     "allowJs": true,
     "jsx": "react-jsx",
-    "module": "Node16",
-    "moduleResolution": "Node16",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
     "target": "ES2019",
     "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"]
     },
-    "types": [
-      "node", "@shopify/app-bridge-types"
-    ]
+    "types": ["node", "@shopify/app-bridge-types"]
   }
 }
