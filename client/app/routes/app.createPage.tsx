@@ -14,11 +14,6 @@ import { json, redirect } from '@remix-run/node';
 import { Form, useLoaderData } from '@remix-run/react';
 import { createNewPage } from '~/models/page.server';
 
-type Shop = {
-  name: string;
-  id: string;
-};
-
 type Theme = {
   id: number;
   name: string;
@@ -26,12 +21,12 @@ type Theme = {
 };
 
 type InitialResponse = {
-  shop: Shop;
   themes: Theme[];
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
+  const { session } = await authenticate.admin(request);
 
   const formDataObject: Record<string, string> = {};
   formData.forEach((value, key) => {
@@ -40,7 +35,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const page: any = await createNewPage({
     themeId: formDataObject.themePicker,
-    shop: formDataObject.shopField,
+    shop: session.shop,
     name: formDataObject.nameField,
   });
   if (page) {
@@ -55,23 +50,11 @@ export const loader: LoaderFunction = async ({ request }) => {
   try {
     const { admin, session } = await authenticate.admin(request);
 
-    const getProducts = `#graphql
-      {
-        shop {
-          name
-          id
-        }
-      }
-    `;
-
-    const response = await admin.graphql(getProducts);
     const themesResponse = await admin.rest.resources.Theme.all({
       session: session,
     });
 
-    const data = await response.json();
-
-    return json({ ...data.data, themes: themesResponse.data });
+    return json({ themes: themesResponse.data });
   } catch (error) {
     console.error('Error fetching data:', error);
 
@@ -80,7 +63,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function CreatePage() {
-  const [shop, setShop] = useState<Shop>({ id: '', name: '' });
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState<string>('');
   const [themes, setThemes] = useState<Theme[]>([]);
@@ -106,7 +88,6 @@ export default function CreatePage() {
   const handleChange = useCallback((value: string[]) => setSelected(value), []);
 
   useEffect(() => {
-    setShop(response.shop);
     setThemes(response.themes);
     setSelected([response?.themes[0].id.toString()]);
   }, []);
@@ -118,15 +99,6 @@ export default function CreatePage() {
           {themes ? (
             <>
               <BlockStack gap="500">
-                <TextField
-                  readOnly
-                  label="Your shop"
-                  value={shop.name}
-                  autoComplete=""
-                  name="shopField"
-                />
-
-                <Divider />
                 <TextField
                   label="Your page name"
                   value={name}
