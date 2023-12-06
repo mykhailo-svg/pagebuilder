@@ -17,11 +17,11 @@ export default function Todos() {
     console.log(formRef.current);
 
     const formData = new FormData(formRef.current as HTMLFormElement);
-    formData.set('arbitraryData', 'sds2dfsfa');
+    formData.append('arbitraryData', 'sds2dfsfa');
 
     submit(
       formData, //Notice this change
-      { method: 'post', action: '/app/asset' }
+      { method: 'post', action: '#' }
     );
   };
   return (
