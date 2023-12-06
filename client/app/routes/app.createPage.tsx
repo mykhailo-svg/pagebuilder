@@ -5,6 +5,7 @@ import {
   Card,
   ChoiceList,
   Divider,
+  OptionList,
   Page,
   TextField,
 } from '@shopify/polaris';
@@ -108,13 +109,19 @@ export default function CreatePage() {
                   name="nameField"
                   error={nameError}
                 />
-                <ChoiceList
-                  name="themePicker"
-                  title="Pick theme"
-                  choices={choices}
+
+                <OptionList
+                  title="Inventory Location"
+                  onChange={setSelected}
+                  options={themes.map((theme) => {
+                    return {
+                      value: theme.id.toString(),
+                      label: `${theme.name}${theme.role}`,
+                    };
+                  })}
                   selected={selected}
-                  onChange={handleChange}
                 />
+
                 <Button variant="primary" submit>
                   Create page
                 </Button>
