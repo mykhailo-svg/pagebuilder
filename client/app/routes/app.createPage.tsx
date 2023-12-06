@@ -113,12 +113,12 @@ export default function CreatePage() {
                 />
 
                 <OptionList
-                  title="Inventory Location"
+                  title="Pick theme"
                   onChange={setSelected}
                   options={themes.map((theme) => {
                     return {
                       value: theme.id.toString(),
-                      label: `${theme.name}${theme.role}`,
+                      label: theme.name,
                     };
                   })}
                   selected={selected}
