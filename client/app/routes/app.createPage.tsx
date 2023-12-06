@@ -64,20 +64,20 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function CreatePage() {
+  const response = useLoaderData<InitialResponse>();
+
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState<string>('');
-  const [themes, setThemes] = useState<Theme[]>([]);
+  const [themes, setThemes] = useState<Theme[]>(response.themes);
   useEffect(() => {
-    if (name.length < 5) {
-      setNameError('Enter 5 digit page name');
-    } else {
+    if (name.length >= 5) {
       setNameError('');
     }
   }, [name]);
 
-  const response = useLoaderData<InitialResponse>();
-
-  const [selected, setSelected] = useState<string[]>(['']);
+  const [selected, setSelected] = useState<string[]>([
+    response.themes[0].id.toString(),
+  ]);
 
   const submit = useSubmit();
   const formRef = useRef<HTMLFormElement>(null);
@@ -85,15 +85,15 @@ export default function CreatePage() {
   const handleSubmit = (event: any) => {
     event.preventDefault();
 
-    const formData = new FormData(formRef.current as HTMLFormElement);
-    formData.append('themePicker', selected[0]);
+    if (name.length < 5) {
+      setNameError('Enter 5 digit page name');
+    } else {
+      const formData = new FormData(formRef.current as HTMLFormElement);
+      formData.append('themePicker', selected[0]);
 
-    submit(formData, { method: 'post', action: '/app/createPage' });
+      submit(formData, { method: 'post', action: '/app/createPage' });
+    }
   };
-  useEffect(() => {
-    setThemes(response.themes);
-    setSelected([response?.themes[0].id.toString()]);
-  }, []);
 
   return (
     <Page fullWidth>
