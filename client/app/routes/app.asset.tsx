@@ -1,29 +1,30 @@
-import type { ActionFunctionArgs } from '@remix-run/node'; // or cloudflare/deno
-import { json, redirect } from '@remix-run/node'; // or cloudflare/deno
+import type { ActionFunctionArgs } from '@remix-run/node';
+import { json, redirect } from '@remix-run/node';
 import { Form, useActionData, useSubmit } from '@remix-run/react';
 import { useRef } from 'react';
 
 export async function action({ request }: ActionFunctionArgs) {
-  const body = await request.formData();
+  const formData = await request.formData();
+  const arbitraryData = formData.get('arbitraryData');
 
-  return json(body.get('arbitraryData'));
+  return json(arbitraryData);
 }
 
 export default function Todos() {
   console.log(useActionData());
+
   const submit = useSubmit();
-  const formRef = useRef<HTMLFormElement>(null); //Add a form ref.
+  const formRef = useRef<HTMLFormElement>(null);
+
   const handleSubmit = (event: any) => {
-    console.log(formRef.current);
+    event.preventDefault();
 
     const formData = new FormData(formRef.current as HTMLFormElement);
-    formData.append('arbitraryData', 'sds2dfsfa');
+    formData.append('arbitraryData', 'sd1');
 
-    submit(
-      formData, //Notice this change
-      { method: 'post', action: '#' }
-    );
+    submit(formData, { method: 'post', action: '/app/asset' });
   };
+
   return (
     <div>
       <Form ref={formRef} method="post" onSubmit={handleSubmit}>
