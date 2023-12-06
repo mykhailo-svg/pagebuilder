@@ -6,8 +6,9 @@ import { useRef } from 'react';
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const arbitraryData = formData.get('arbitraryData');
+  const title = formData.get('title');
 
-  return json(arbitraryData);
+  return json({ arbitraryData, title });
 }
 
 export default function Todos() {

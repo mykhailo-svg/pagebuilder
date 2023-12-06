@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   BlockStack,
   Button,
@@ -12,7 +12,7 @@ import {
 import { authenticate } from '~/shopify.server';
 import type { ActionFunctionArgs, LoaderFunction } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
-import { Form, useLoaderData } from '@remix-run/react';
+import { Form, useLoaderData, useSubmit } from '@remix-run/react';
 import { createNewPage } from '~/models/page.server';
 
 type Theme = {
@@ -35,7 +35,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   });
 
   const page: any = await createNewPage({
-    themeId: formDataObject.themePicker,
+    themeId: (formData.get('themePicker') as string) || 's',
     shop: session.shop,
     name: formDataObject.nameField,
   });
@@ -75,19 +75,21 @@ export default function CreatePage() {
     }
   }, [name]);
 
-  const choices = themes.map((theme) => {
-    return {
-      label: `${theme.name} --- ${theme.role}`,
-      value: theme.id.toString(),
-    };
-  });
-
   const response = useLoaderData<InitialResponse>();
 
   const [selected, setSelected] = useState<string[]>(['']);
 
-  const handleChange = useCallback((value: string[]) => setSelected(value), []);
+  const submit = useSubmit();
+  const formRef = useRef<HTMLFormElement>(null);
 
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+
+    const formData = new FormData(formRef.current as HTMLFormElement);
+    formData.append('themePicker', selected[0]);
+
+    submit(formData, { method: 'post', action: '/app/createPage' });
+  };
   useEffect(() => {
     setThemes(response.themes);
     setSelected([response?.themes[0].id.toString()]);
@@ -96,7 +98,7 @@ export default function CreatePage() {
   return (
     <Page fullWidth>
       <Card>
-        <Form method="post">
+        <Form method="post" ref={formRef} onSubmit={handleSubmit}>
           {themes ? (
             <>
               <BlockStack gap="500">
