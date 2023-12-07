@@ -44,7 +44,7 @@ export default function Pages() {
               return (
                 <ResourceItem
                   id={id}
-                  url={`/app/editor?pageId=${id}`}
+                  url={`/app/editor?pageId=${id}&fullscreen=true`}
                   accessibilityLabel={`View details for ${name}`}
                 >
                   <InlineGrid columns={2}>
