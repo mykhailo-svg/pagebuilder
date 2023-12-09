@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   BlockStack,
   Button,
@@ -6,6 +6,7 @@ import {
   Divider,
   OptionList,
   Page,
+  Select,
   TextField,
 } from '@shopify/polaris';
 import { authenticate } from '~/shopify.server';
@@ -110,6 +111,13 @@ export default function CreatePage() {
     }
   };
 
+  const [selectedTemplate, setSelectedTemplate] = useState('today');
+
+  const handleSelectChange = useCallback(
+    (value: string) => setSelectedTemplate(value),
+    []
+  );
+
   return (
     <Page fullWidth>
       <Card>
@@ -127,7 +135,20 @@ export default function CreatePage() {
                   error={nameError}
                 />
                 <Divider />
-
+                <Select
+                  label="Date range"
+                  options={response.templates.map((template) => {
+                    return {
+                      value: template.key,
+                      label: template.key.slice(
+                        10,
+                        template.key.indexOf('.json')
+                      ),
+                    };
+                  })}
+                  onChange={handleSelectChange}
+                  value={selectedTemplate}
+                />
                 <OptionList
                   title="Pick theme"
                   onChange={setSelected}
