@@ -20,8 +20,13 @@ type Theme = {
   role: string;
 };
 
+type Template = {
+  key: string;
+};
+
 type InitialResponse = {
   themes: Theme[];
+  templates: Template[];
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -48,8 +53,23 @@ export const loader: LoaderFunction = async ({ request }) => {
     const themesResponse = await admin.rest.resources.Theme.all({
       session: session,
     });
+    const assets = await admin.rest.resources.Asset.all({
+      session: session,
+      theme_id: themesResponse.data[0].id,
+      fields: ['key'],
+    });
+    const templates = assets.data.filter((asset) => {
+      if (asset.key) {
+        if (
+          asset.key?.indexOf('templates/') > -1 &&
+          asset.key?.indexOf('.json') > -1
+        ) {
+          return asset;
+        }
+      }
+    });
 
-    return json({ themes: themesResponse.data });
+    return json({ themes: themesResponse.data, templates });
   } catch (error) {
     console.error('Error fetching data:', error);
 
@@ -59,6 +79,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function CreatePage() {
   const response = useLoaderData<InitialResponse>();
+  console.log(response);
 
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState<string>('');
