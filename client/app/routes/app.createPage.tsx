@@ -1,9 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
+  Badge,
   BlockStack,
   Button,
   Card,
   Divider,
+  InlineGrid,
+  InlineStack,
+  LegacyStack,
   OptionList,
   Page,
   Select,
@@ -155,7 +159,28 @@ export default function CreatePage() {
                   options={themes.map((theme) => {
                     return {
                       value: theme.id.toString(),
-                      label: theme.name,
+                      label: (
+                        <div
+                          style={{
+                            minWidth: '300px',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                          }}
+                        >
+                          {theme.name}
+                          <Badge
+                            size="large"
+                            tone={
+                              theme.role === 'main' ? 'success' : 'critical'
+                            }
+                            progress={
+                              theme.role === 'main' ? 'complete' : 'incomplete'
+                            }
+                          >
+                            Not
+                          </Badge>
+                        </div>
+                      ),
                     };
                   })}
                   selected={selected}
