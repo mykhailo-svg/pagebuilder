@@ -67,7 +67,8 @@ export const loader: LoaderFunction = async ({ request }) => {
       if (asset.key) {
         if (
           asset.key?.indexOf('templates/') > -1 &&
-          asset.key?.indexOf('.json') > -1
+          asset.key?.indexOf('.json') > -1 &&
+          asset.key?.indexOf('.') > -1
         ) {
           return asset;
         }
@@ -140,16 +141,19 @@ export default function CreatePage() {
                 />
                 <Divider />
                 <Select
-                  label="Date range"
-                  options={response.templates.map((template) => {
-                    return {
-                      value: template.key,
-                      label: template.key.slice(
-                        10,
-                        template.key.indexOf('.json')
-                      ),
-                    };
-                  })}
+                  label="Pick templete as starter"
+                  options={[
+                    { value: '', label: 'Empty page' },
+                    ...response.templates.map((template) => {
+                      return {
+                        value: template.key,
+                        label: template.key.slice(
+                          10,
+                          template.key.indexOf('.json')
+                        ),
+                      };
+                    }),
+                  ]}
                   onChange={handleSelectChange}
                   value={selectedTemplate}
                 />
