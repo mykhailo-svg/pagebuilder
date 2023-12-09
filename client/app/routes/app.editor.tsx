@@ -17,6 +17,7 @@ import type { PageType } from '~/global_types';
 import type { ActionFunctionArgs, LoaderFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { getPageById, updatePage } from '~/models/page.server';
+import { authenticate } from '~/shopify.server';
 
 export const links = () => [
   { rel: 'stylesheet', href: grapesStyles },
@@ -33,6 +34,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     formDataObject[key] = value.toString();
   });
 
+  const { admin, session } = await authenticate.admin(request);
+  const asset = new admin.rest.resources.Asset({ session: session });
+  asset.theme_id = 131827335324;
+  asset.key = 'templates/olol.liquid';
+  asset.value = formData.get('html')?.toString() || 'Failed to save';
+  await asset.save();
+
   const updatedPage = await updatePage({
     id: pageId,
     css: 'sd',
@@ -42,6 +50,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   return json({
     formDataObject: formData.get('html'),
     updatedPage,
+    asset,
   });
 };
 
@@ -91,7 +100,11 @@ export default function AdditionalPage() {
     event.preventDefault();
 
     const formData = new FormData(formRef.current as HTMLFormElement);
-    formData.append('html', `${editor?.getHtml()}`);
+    formData.append(
+      'liquidKey',
+      `sections/${pageResponse.name}-${pageResponse.id}.liquid`
+    );
+    formData.append('html', `${editor?.getHtml().toString()}`);
 
     submit(formData, {
       method: 'post',
