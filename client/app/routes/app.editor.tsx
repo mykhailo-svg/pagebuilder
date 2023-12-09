@@ -35,13 +35,33 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     formDataObject[key] = value.toString();
   });
 
-  const sectionKey = formData.get('liquidKey') ?? 'templates/error.liquid';
+  const pageAssetName = formData.get('liquidName');
 
+  const sectionKey =
+    `sections/${formData.get('liquidName')}.liquid` ?? 'templates/error.liquid';
+  const templateKey = `templates/page.${formData.get('liquidName')}.json`;
   const asset = new admin.rest.resources.Asset({ session: session });
   asset.theme_id = 131827335324;
   asset.key = sectionKey as string;
   asset.value = formData.get('html')?.toString() || 'Failed to save';
   await asset.save();
+
+  const jsonAsset = new admin.rest.resources.Asset({ session: session });
+  jsonAsset.theme_id = 131827335324;
+  jsonAsset.key = templateKey as string;
+  jsonAsset.value = `{
+    "sections": {
+      "${pageAssetName}": {
+        "type": "${pageAssetName}",
+        "settings": {
+        }
+      }
+    },
+    "order": [
+      "${pageAssetName}"
+    ]
+  }`;
+  await jsonAsset.save();
 
   const updatedPage = await updatePage({
     id: pageId,
@@ -53,6 +73,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     formDataObject: formData.get('html'),
     updatedPage,
     asset,
+    jsonAsset,
   });
 };
 
@@ -102,10 +123,7 @@ export default function AdditionalPage() {
     event.preventDefault();
 
     const formData = new FormData(formRef.current as HTMLFormElement);
-    formData.append(
-      'liquidKey',
-      `sections/${pageResponse.name}-${pageResponse.id}.liquid`
-    );
+    formData.append('liquidName', `${pageResponse.name}-${pageResponse.id}`);
     formData.append('html', `${editor?.getHtml().toString()}`);
 
     submit(formData, {
