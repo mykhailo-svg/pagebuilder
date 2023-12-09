@@ -30,6 +30,7 @@ export async function createNewPage({ themeId, shop, name }: CreatePageArgs) {
         id: generateUniqueID(),
         shop,
         name,
+        template: 'sdsd',
         html: '<body id="i7ys"><div id="i0sg"><p>My first page here!</p></div></body>',
       },
     });

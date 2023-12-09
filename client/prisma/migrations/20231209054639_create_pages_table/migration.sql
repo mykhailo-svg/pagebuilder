@@ -3,6 +3,7 @@ CREATE TABLE "Page" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "css" TEXT NOT NULL DEFAULT 'none',
     "html" TEXT NOT NULL DEFAULT 'none',
+    "template" TEXT NOT NULL,
     "themeId" TEXT NOT NULL,
     "shouldPublish" BOOLEAN NOT NULL DEFAULT false,
     "name" TEXT NOT NULL,
