@@ -178,11 +178,8 @@ export default function CreatePage() {
                             tone={
                               theme.role === 'main' ? 'success' : 'critical'
                             }
-                            progress={
-                              theme.role === 'main' ? 'complete' : 'incomplete'
-                            }
                           >
-                            Not
+                            {theme.role}
                           </Badge>
                         </div>
                       ),
