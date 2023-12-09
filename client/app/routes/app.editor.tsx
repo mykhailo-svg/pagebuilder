@@ -36,18 +36,19 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   });
 
   const pageAssetName = formData.get('liquidName');
+  const themeId = parseInt(formData.get('themeId') as string);
 
   const sectionKey =
     `sections/${formData.get('liquidName')}.liquid` ?? 'templates/error.liquid';
   const templateKey = `templates/page.${formData.get('liquidName')}.json`;
   const asset = new admin.rest.resources.Asset({ session: session });
-  asset.theme_id = 131827335324;
+  asset.theme_id = themeId;
   asset.key = sectionKey as string;
   asset.value = formData.get('html')?.toString() || 'Failed to save';
   await asset.save();
 
   const jsonAsset = new admin.rest.resources.Asset({ session: session });
-  jsonAsset.theme_id = 131827335324;
+  jsonAsset.theme_id = themeId
   jsonAsset.key = templateKey as string;
   jsonAsset.value = `{
     "sections": {
@@ -125,6 +126,7 @@ export default function AdditionalPage() {
     const formData = new FormData(formRef.current as HTMLFormElement);
     formData.append('liquidName', `${pageResponse.name}-${pageResponse.id}`);
     formData.append('html', `${editor?.getHtml().toString()}`);
+    formData.append('themeId', pageResponse.themeId);
 
     submit(formData, {
       method: 'post',
