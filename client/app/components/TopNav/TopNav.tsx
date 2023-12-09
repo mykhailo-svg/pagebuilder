@@ -1,7 +1,11 @@
 import { Button, Card, InlineGrid } from '@shopify/polaris';
 import { useRef } from 'react';
 
-export const TopNav = ({ shouldPublish }: { shouldPublish: boolean }) => {
+export const TopNav = ({
+  shouldPublish,
+}: {
+  shouldPublish: boolean;
+}) => {
   const deviceButtonsRef = useRef<null | HTMLDivElement>(null);
   const basicButtonsRef = useRef<null | HTMLDivElement>(null);
   if (

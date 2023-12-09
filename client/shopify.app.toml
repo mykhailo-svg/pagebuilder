@@ -2,7 +2,7 @@
 
 name = "pages-builder"
 client_id = "b559767290b67b4db00a3d213d55c281"
-application_url = "https://compression-programmers-austria-gross.trycloudflare.com"
+application_url = "https://clearing-poster-vegetables-male.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products,read_themes,write_themes"
 
 [auth]
 redirect_urls = [
-  "https://compression-programmers-austria-gross.trycloudflare.com/auth/callback",
-  "https://compression-programmers-austria-gross.trycloudflare.com/auth/shopify/callback",
-  "https://compression-programmers-austria-gross.trycloudflare.com/api/auth/callback",
-  "https://compression-programmers-austria-gross.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://clearing-poster-vegetables-male.trycloudflare.com/auth/callback",
+  "https://clearing-poster-vegetables-male.trycloudflare.com/auth/shopify/callback",
+  "https://clearing-poster-vegetables-male.trycloudflare.com/api/auth/callback",
+  "https://clearing-poster-vegetables-male.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]

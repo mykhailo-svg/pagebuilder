@@ -3,6 +3,7 @@ import {
   BlockStack,
   Button,
   Card,
+  Divider,
   OptionList,
   Page,
   TextField,
@@ -27,15 +28,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const { session } = await authenticate.admin(request);
 
-  const formDataObject: Record<string, string> = {};
-  formData.forEach((value, key) => {
-    formDataObject[key] = value.toString();
-  });
-
   const page: any = await createNewPage({
     themeId: (formData.get('themePicker') as string) || 's',
     shop: session.shop,
-    name: formDataObject.nameField,
+    name: formData.get('nameField') as string,
   });
   if (page) {
     return redirect(`/app/editor?pageId=${page.id}`);
@@ -109,6 +105,7 @@ export default function CreatePage() {
                   name="nameField"
                   error={nameError}
                 />
+                <Divider />
 
                 <OptionList
                   title="Pick theme"

@@ -17,6 +17,7 @@ import type { PageType } from '~/global_types';
 import type { ActionFunctionArgs, LoaderFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { getPageById, updatePage } from '~/models/page.server';
+import { authenticate } from '~/shopify.server';
 
 export const links = () => [
   { rel: 'stylesheet', href: grapesStyles },
@@ -26,12 +27,38 @@ export const links = () => [
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
+  const { admin, session } = await authenticate.admin(request);
   const url = new URL(request.url);
   const pageId = url.searchParams.get('pageId') || '';
-  const formDataObject: Record<string, string> = {};
-  formData.forEach((value, key) => {
-    formDataObject[key] = value.toString();
-  });
+
+  const pageAssetName = formData.get('liquidName');
+  const themeId = parseInt(formData.get('themeId') as string);
+
+  const sectionKey =
+    `sections/${formData.get('liquidName')}.liquid` ?? 'templates/error.liquid';
+  const templateKey = `templates/page.${formData.get('liquidName')}.json`;
+  const asset = new admin.rest.resources.Asset({ session: session });
+  asset.theme_id = themeId;
+  asset.key = sectionKey as string;
+  asset.value = formData.get('html')?.toString() || 'Failed to save';
+  await asset.save();
+
+  const jsonAsset = new admin.rest.resources.Asset({ session: session });
+  jsonAsset.theme_id = themeId;
+  jsonAsset.key = templateKey as string;
+  jsonAsset.value = `{
+    "sections": {
+      "${pageAssetName}": {
+        "type": "${pageAssetName}",
+        "settings": {
+        }
+      }
+    },
+    "order": [
+      "${pageAssetName}"
+    ]
+  }`;
+  await jsonAsset.save();
 
   const updatedPage = await updatePage({
     id: pageId,
@@ -42,6 +69,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   return json({
     formDataObject: formData.get('html'),
     updatedPage,
+    asset,
+    jsonAsset,
   });
 };
 
@@ -91,7 +120,12 @@ export default function AdditionalPage() {
     event.preventDefault();
 
     const formData = new FormData(formRef.current as HTMLFormElement);
-    formData.append('html', `${editor?.getHtml()}`);
+    formData.append('liquidName', `${pageResponse.name}-${pageResponse.id}`);
+    formData.append(
+      'html',
+      `${editor?.getHtml().toString()} <style>${editor?.getCss()}</style>`
+    );
+    formData.append('themeId', pageResponse.themeId);
 
     submit(formData, {
       method: 'post',
@@ -103,25 +137,24 @@ export default function AdditionalPage() {
     <Page fullWidth>
       <Button url="/app/pages">{'< Back '}</Button>
       <Form ref={formRef} onSubmit={handleSubmit} method="post">
-        <Button submit>Export</Button>
-      </Form>
-      <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
-        <Sidebar
-          pageName={pageResponse.name}
-          pageStatus={pageResponse.status}
-        />
+        <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
+          <Sidebar
+            pageName={pageResponse.name}
+            pageStatus={pageResponse.status}
+          />
 
-        <div style={{ flex: '1 1 auto' }}>
-          <Card>
-            <nav className="navbar navbar-light">
-              <div className="container-fluid">
-                <TopNav shouldPublish={pageResponse.shouldPublish} />
-              </div>
-            </nav>
-            <div id="editor"></div>
-          </Card>
+          <div style={{ flex: '1 1 auto' }}>
+            <Card>
+              <nav className="navbar navbar-light">
+                <div className="container-fluid">
+                  <TopNav shouldPublish={pageResponse.shouldPublish} />
+                </div>
+              </nav>
+              <div id="editor"></div>
+            </Card>
+          </div>
         </div>
-      </div>
+      </Form>
     </Page>
   );
 }
