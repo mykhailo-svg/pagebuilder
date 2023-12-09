@@ -68,7 +68,8 @@ export const loader: LoaderFunction = async ({ request }) => {
         if (
           asset.key?.indexOf('templates/') > -1 &&
           asset.key?.indexOf('.json') > -1 &&
-          asset.key?.indexOf('.') > -1
+          asset.key?.indexOf('.') > -1 &&
+          asset.key?.indexOf('/index.') < 0
         ) {
           return asset;
         }
