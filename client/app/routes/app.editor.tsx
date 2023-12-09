@@ -48,7 +48,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   await asset.save();
 
   const jsonAsset = new admin.rest.resources.Asset({ session: session });
-  jsonAsset.theme_id = themeId
+  jsonAsset.theme_id = themeId;
   jsonAsset.key = templateKey as string;
   jsonAsset.value = `{
     "sections": {
@@ -125,7 +125,10 @@ export default function AdditionalPage() {
 
     const formData = new FormData(formRef.current as HTMLFormElement);
     formData.append('liquidName', `${pageResponse.name}-${pageResponse.id}`);
-    formData.append('html', `${editor?.getHtml().toString()}`);
+    formData.append(
+      'html',
+      `${editor?.getHtml().toString()} <style>${editor?.getCss()}</style>`
+    );
     formData.append('themeId', pageResponse.themeId);
 
     submit(formData, {
