@@ -30,10 +30,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const { admin, session } = await authenticate.admin(request);
   const url = new URL(request.url);
   const pageId = url.searchParams.get('pageId') || '';
-  const formDataObject: Record<string, string> = {};
-  formData.forEach((value, key) => {
-    formDataObject[key] = value.toString();
-  });
 
   const pageAssetName = formData.get('liquidName');
   const themeId = parseInt(formData.get('themeId') as string);
