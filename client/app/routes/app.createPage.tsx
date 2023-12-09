@@ -3,6 +3,7 @@ import {
   BlockStack,
   Button,
   Card,
+  Divider,
   OptionList,
   Page,
   TextField,
@@ -104,6 +105,7 @@ export default function CreatePage() {
                   name="nameField"
                   error={nameError}
                 />
+                <Divider />
 
                 <OptionList
                   title="Pick theme"
