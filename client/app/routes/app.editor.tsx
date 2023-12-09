@@ -27,6 +27,7 @@ export const links = () => [
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
+  const { admin, session } = await authenticate.admin(request);
   const url = new URL(request.url);
   const pageId = url.searchParams.get('pageId') || '';
   const formDataObject: Record<string, string> = {};
@@ -34,10 +35,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     formDataObject[key] = value.toString();
   });
 
-  const { admin, session } = await authenticate.admin(request);
+  const sectionKey = formData.get('liquidKey') ?? 'templates/error.liquid';
+
   const asset = new admin.rest.resources.Asset({ session: session });
   asset.theme_id = 131827335324;
-  asset.key = 'templates/olol.liquid';
+  asset.key = sectionKey as string;
   asset.value = formData.get('html')?.toString() || 'Failed to save';
   await asset.save();
 
