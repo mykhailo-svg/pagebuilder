@@ -1,10 +1,4 @@
-import {
-  Page,
-  Layout,
-  Button,
-  ButtonGroup,
-  CalloutCard,
-} from '@shopify/polaris';
+import { Page, Layout, CalloutCard } from '@shopify/polaris';
 
 export default function Index() {
   return (

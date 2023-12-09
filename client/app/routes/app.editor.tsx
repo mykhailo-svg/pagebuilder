@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Button, Card, Page, TextField } from '@shopify/polaris';
+import { Button, Card, Page } from '@shopify/polaris';
 import type { Editor } from 'grapesjs';
 import bootstrapCss from 'bootstrap/dist/css/bootstrap.min.css';
 import mainCss from '../styles/main.css';
@@ -61,7 +61,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function AdditionalPage() {
   const [editor, setEditor] = useState<Editor>();
-  const [pageHTML, setPageHTML] = useState('');
 
   console.log(useActionData());
 
@@ -77,9 +76,6 @@ export default function AdditionalPage() {
       });
       editor.Commands.add('set-device-mobile', {
         run: (editor) => editor.setDevice('Mobile'),
-      });
-      editor.on('update', () => {
-        setPageHTML(editor.getHtml());
       });
       editor.Panels.removeButton('devices-c', 'block-editor');
 

@@ -3,8 +3,6 @@ import {
   BlockStack,
   Button,
   Card,
-  ChoiceList,
-  Divider,
   OptionList,
   Page,
   TextField,
