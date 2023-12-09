@@ -26,6 +26,7 @@ model Page {
   css           String  @default("none")
   html          String  @default("none")
   template      String
+  templateType  String  @default("page")
   themeId       String
   shouldPublish Boolean @default(false)
   name          String
