@@ -137,25 +137,24 @@ export default function AdditionalPage() {
     <Page fullWidth>
       <Button url="/app/pages">{'< Back '}</Button>
       <Form ref={formRef} onSubmit={handleSubmit} method="post">
-        <Button submit>Export</Button>
-      </Form>
-      <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
-        <Sidebar
-          pageName={pageResponse.name}
-          pageStatus={pageResponse.status}
-        />
+        <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
+          <Sidebar
+            pageName={pageResponse.name}
+            pageStatus={pageResponse.status}
+          />
 
-        <div style={{ flex: '1 1 auto' }}>
-          <Card>
-            <nav className="navbar navbar-light">
-              <div className="container-fluid">
-                <TopNav shouldPublish={pageResponse.shouldPublish} />
-              </div>
-            </nav>
-            <div id="editor"></div>
-          </Card>
+          <div style={{ flex: '1 1 auto' }}>
+            <Card>
+              <nav className="navbar navbar-light">
+                <div className="container-fluid">
+                  <TopNav shouldPublish={pageResponse.shouldPublish} />
+                </div>
+              </nav>
+              <div id="editor"></div>
+            </Card>
+          </div>
         </div>
-      </div>
+      </Form>
     </Page>
   );
 }
