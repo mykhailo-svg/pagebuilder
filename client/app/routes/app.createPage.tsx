@@ -1,23 +1,17 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   BlockStack,
   Button,
   Card,
-  ChoiceList,
-  Divider,
+  OptionList,
   Page,
   TextField,
 } from '@shopify/polaris';
 import { authenticate } from '~/shopify.server';
 import type { ActionFunctionArgs, LoaderFunction } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
-import { Form, useLoaderData } from '@remix-run/react';
+import { Form, useLoaderData, useSubmit } from '@remix-run/react';
 import { createNewPage } from '~/models/page.server';
-
-type Shop = {
-  name: string;
-  id: string;
-};
 
 type Theme = {
   id: number;
@@ -26,12 +20,12 @@ type Theme = {
 };
 
 type InitialResponse = {
-  shop: Shop;
   themes: Theme[];
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
+  const { session } = await authenticate.admin(request);
 
   const formDataObject: Record<string, string> = {};
   formData.forEach((value, key) => {
@@ -39,8 +33,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   });
 
   const page: any = await createNewPage({
-    themeId: formDataObject.themePicker,
-    shop: formDataObject.shopField,
+    themeId: (formData.get('themePicker') as string) || 's',
+    shop: session.shop,
     name: formDataObject.nameField,
   });
   if (page) {
@@ -55,23 +49,11 @@ export const loader: LoaderFunction = async ({ request }) => {
   try {
     const { admin, session } = await authenticate.admin(request);
 
-    const getProducts = `#graphql
-      {
-        shop {
-          name
-          id
-        }
-      }
-    `;
-
-    const response = await admin.graphql(getProducts);
     const themesResponse = await admin.rest.resources.Theme.all({
       session: session,
     });
 
-    const data = await response.json();
-
-    return json({ ...data.data, themes: themesResponse.data });
+    return json({ themes: themesResponse.data });
   } catch (error) {
     console.error('Error fetching data:', error);
 
@@ -80,53 +62,44 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function CreatePage() {
-  const [shop, setShop] = useState<Shop>({ id: '', name: '' });
+  const response = useLoaderData<InitialResponse>();
+
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState<string>('');
-  const [themes, setThemes] = useState<Theme[]>([]);
+  const [themes, setThemes] = useState<Theme[]>(response.themes);
   useEffect(() => {
-    if (name.length < 5) {
-      setNameError('Enter 5 digit page name');
-    } else {
+    if (name.length >= 5) {
       setNameError('');
     }
   }, [name]);
 
-  const choices = themes.map((theme) => {
-    return {
-      label: `${theme.name} --- ${theme.role}`,
-      value: theme.id.toString(),
-    };
-  });
+  const [selected, setSelected] = useState<string[]>([
+    response.themes[0].id.toString(),
+  ]);
 
-  const response = useLoaderData<InitialResponse>();
+  const submit = useSubmit();
+  const formRef = useRef<HTMLFormElement>(null);
 
-  const [selected, setSelected] = useState<string[]>(['']);
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
 
-  const handleChange = useCallback((value: string[]) => setSelected(value), []);
+    if (name.length < 5) {
+      setNameError('Enter 5 digit page name');
+    } else {
+      const formData = new FormData(formRef.current as HTMLFormElement);
+      formData.append('themePicker', selected[0]);
 
-  useEffect(() => {
-    setShop(response.shop);
-    setThemes(response.themes);
-    setSelected([response?.themes[0].id.toString()]);
-  }, []);
+      submit(formData, { method: 'post', action: '/app/createPage' });
+    }
+  };
 
   return (
     <Page fullWidth>
       <Card>
-        <Form method="post">
+        <Form method="post" ref={formRef} onSubmit={handleSubmit}>
           {themes ? (
             <>
               <BlockStack gap="500">
-                <TextField
-                  readOnly
-                  label="Your shop"
-                  value={shop.name}
-                  autoComplete=""
-                  name="shopField"
-                />
-
-                <Divider />
                 <TextField
                   label="Your page name"
                   value={name}
@@ -136,13 +109,19 @@ export default function CreatePage() {
                   name="nameField"
                   error={nameError}
                 />
-                <ChoiceList
-                  name="themePicker"
+
+                <OptionList
                   title="Pick theme"
-                  choices={choices}
+                  onChange={setSelected}
+                  options={themes.map((theme) => {
+                    return {
+                      value: theme.id.toString(),
+                      label: theme.name,
+                    };
+                  })}
                   selected={selected}
-                  onChange={handleChange}
                 />
+
                 <Button variant="primary" submit>
                   Create page
                 </Button>

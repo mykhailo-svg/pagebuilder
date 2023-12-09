@@ -1,10 +1,15 @@
-import { useState, useEffect } from 'react';
-import { Button, Card, Page, TextField } from '@shopify/polaris';
+import { useState, useEffect, useRef } from 'react';
+import { Button, Card, Page } from '@shopify/polaris';
 import type { Editor } from 'grapesjs';
 import bootstrapCss from 'bootstrap/dist/css/bootstrap.min.css';
 import mainCss from '../styles/main.css';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
-import { Form, useLoaderData } from '@remix-run/react';
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useSubmit,
+} from '@remix-run/react';
 import { Sidebar } from '~/components/Sidebar/Sidebar';
 import { initEditorConfig } from '~/helpers/editorConfig';
 import { TopNav } from '~/components/TopNav/TopNav';
@@ -31,11 +36,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const updatedPage = await updatePage({
     id: pageId,
     css: 'sd',
-    html: formDataObject.htmlField,
+    html: formData.get('html')?.toString() || 'Failed to save',
   });
 
   return json({
-    formDataObject,
+    formDataObject: formData.get('html'),
     updatedPage,
   });
 };
@@ -56,7 +61,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function AdditionalPage() {
   const [editor, setEditor] = useState<Editor>();
-  const [pageHTML, setPageHTML] = useState('');
+
+  console.log(useActionData());
 
   const pageResponse = useLoaderData<PageType>();
   console.log(pageResponse);
@@ -71,9 +77,6 @@ export default function AdditionalPage() {
       editor.Commands.add('set-device-mobile', {
         run: (editor) => editor.setDevice('Mobile'),
       });
-      editor.on('update', () => {
-        setPageHTML(editor.getHtml());
-      });
       editor.Panels.removeButton('devices-c', 'block-editor');
 
       setEditor(editor);
@@ -81,24 +84,25 @@ export default function AdditionalPage() {
       console.error('Error fetching data:', error);
     }
   }, []);
+  const submit = useSubmit();
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+
+    const formData = new FormData(formRef.current as HTMLFormElement);
+    formData.append('html', `${editor?.getHtml()}`);
+
+    submit(formData, {
+      method: 'post',
+      action: `/app/editor?pageId=${pageResponse.id}`,
+    });
+  };
 
   return (
     <Page fullWidth>
       <Button url="/app/pages">{'< Back '}</Button>
-      <Form method="post">
-        <TextField name="htmlField" value={pageHTML} autoComplete="" label="" />
-        <TextField
-          name="pageIdField"
-          value={pageResponse.id}
-          autoComplete=""
-          label=""
-        />
-        <TextField
-          name="themeIdField"
-          value={pageResponse.themeId}
-          autoComplete=""
-          label=""
-        />
+      <Form ref={formRef} onSubmit={handleSubmit} method="post">
         <Button submit>Export</Button>
       </Form>
       <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
