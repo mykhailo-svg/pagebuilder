@@ -3,13 +3,7 @@ import { useEffect, useRef } from 'react';
 import type { PagePublishStatus } from '~/global_types';
 import { definePageBadgesStatus } from '~/helpers/definePageBadge';
 
-export function Sidebar({
-  pageName,
-  pageStatus,
-}: {
-  pageName: string;
-  pageStatus: PagePublishStatus;
-}) {
+export function Sidebar() {
   useEffect(() => {
     console.log('sd');
   }, []);

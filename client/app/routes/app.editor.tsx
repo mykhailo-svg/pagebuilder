@@ -133,10 +133,7 @@ export default function AdditionalPage() {
       <EditorHeader page={pageResponse} />
       <Form ref={formRef} onSubmit={handleSubmit} method="post">
         <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
-          <Sidebar
-            pageName={pageResponse.name}
-            pageStatus={pageResponse.status}
-          />
+          <Sidebar />
 
           <div style={{ flex: '1 1 auto' }}>
             <Card>
