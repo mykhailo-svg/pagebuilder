@@ -10,7 +10,9 @@ import {
   Page,
   EmptyState,
   InlineGrid,
+  ResourceListProps,
 } from '@shopify/polaris';
+import { useState } from 'react';
 import type { PageType } from '~/global_types';
 import { definePageBadgesStatus } from '~/helpers/definePageBadge';
 import { getPages } from '~/models/page.server';
@@ -30,6 +32,52 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function Pages() {
   const response = useLoaderData<PageType[]>();
 
+  const [selectedItems, setSelectedItems] = useState<
+    ResourceListProps['selectedItems']
+  >([]);
+
+  const resourceName = {
+    singular: 'customer',
+    plural: 'customers',
+  };
+
+  const items = [
+    {
+      id: '103',
+      url: '#',
+      name: 'Mae Jemison',
+      location: 'Decatur, USA',
+    },
+    {
+      id: '203',
+      url: '#',
+      name: 'Ellen Ochoa',
+      location: 'Los Angeles, USA',
+    },
+  ];
+
+  const promotedBulkActions = [
+    {
+      content: 'Edit customers',
+      onAction: () => console.log('Todo: implement bulk edit'),
+    },
+  ];
+
+  const bulkActions = [
+    {
+      content: 'Add tags',
+      onAction: () => console.log('Todo: implement bulk add tags'),
+    },
+    {
+      content: 'Remove tags',
+      onAction: () => console.log('Todo: implement bulk remove tags'),
+    },
+    {
+      content: 'Delete customers',
+      onAction: () => console.log('Todo: implement bulk delete'),
+    },
+  ];
+
   return (
     <Page>
       <ui-title-bar title="Pages"></ui-title-bar>
@@ -38,8 +86,11 @@ export default function Pages() {
           <ResourceList
             resourceName={{ singular: 'customer', plural: 'customers' }}
             items={response}
+            selectedItems={selectedItems}
+            onSelectionChange={setSelectedItems}
+            selectable
             renderItem={(item) => {
-              const { id, name, status } = item;
+              const { id, name, status, templateType } = item;
 
               return (
                 <ResourceItem
@@ -47,9 +98,12 @@ export default function Pages() {
                   url={`/app/editor?pageId=${id}`}
                   accessibilityLabel={`View details for ${name}`}
                 >
-                  <InlineGrid columns={2}>
+                  <InlineGrid columns={3}>
                     <Text variant="bodyMd" fontWeight="bold" as="h3">
                       {name}
+                    </Text>
+                    <Text variant="bodyMd" fontWeight="bold" as="h3">
+                      {templateType}
                     </Text>
                     <Badge
                       tone={definePageBadgesStatus(status).tone}
