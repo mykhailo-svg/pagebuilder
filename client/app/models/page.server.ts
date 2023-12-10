@@ -150,3 +150,18 @@ export async function updatePage({ id, css, html }: UpdatePageArgs) {
   });
   return page;
 }
+
+type DeletePagesArgs = {
+  ids: string[];
+};
+
+export async function deletePages({ ids }: DeletePagesArgs) {
+  const page = await db.page.deleteMany({
+    where: {
+      id: {
+        in: ids,
+      },
+    },
+  });
+  return page;
+}
