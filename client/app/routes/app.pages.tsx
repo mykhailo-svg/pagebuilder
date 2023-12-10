@@ -16,7 +16,6 @@ import {
   useIndexResourceState,
   Link,
 } from '@shopify/polaris';
-import { BulkAction } from '@shopify/polaris/build/ts/src/components/BulkActions';
 import { useRef } from 'react';
 import type { PageType } from '~/global_types';
 import { definePageBadgesStatus } from '~/helpers/definePageBadge';

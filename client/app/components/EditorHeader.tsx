@@ -8,17 +8,15 @@ import {
   InlineGrid,
   InlineStack,
 } from '@shopify/polaris';
-import { useState, useCallback } from 'react';
-import { PageType } from '~/global_types';
+import type { PageType } from '~/global_types';
 import { definePageBadgesStatus } from '~/helpers/definePageBadge';
 
 export function EditorHeader({ page }: { page: PageType }) {
-  const [isFullscreen, setFullscreen] = useState(true);
   const navigate = useNavigate();
 
-  const handleActionClick = useCallback(() => {
+  const handleActionClick = () => {
     navigate('/app/pages');
-  }, []);
+  };
 
   return (
     <FullscreenBar onAction={handleActionClick}>

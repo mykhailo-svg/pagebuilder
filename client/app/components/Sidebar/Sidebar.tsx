@@ -1,7 +1,5 @@
-import { Badge, BlockStack, Card, InlineGrid, Text } from '@shopify/polaris';
+import { BlockStack, Card, Text } from '@shopify/polaris';
 import { useEffect, useRef } from 'react';
-import type { PagePublishStatus } from '~/global_types';
-import { definePageBadgesStatus } from '~/helpers/definePageBadge';
 
 export function Sidebar() {
   useEffect(() => {

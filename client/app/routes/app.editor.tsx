@@ -6,7 +6,6 @@ import mainCss from '../styles/main.css';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
 import {
   Form,
-  useActionData,
   useLoaderData,
   useSubmit,
 } from '@remix-run/react';
@@ -32,7 +31,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const url = new URL(request.url);
   const pageId = url.searchParams.get('pageId') || '';
 
-  const pageAssetName = formData.get('liquidName');
+
   const themeId = parseInt(formData.get('themeId') as string);
 
   const sectionKey =
