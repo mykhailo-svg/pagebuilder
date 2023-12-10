@@ -5,9 +5,6 @@ import {
   Button,
   Card,
   Divider,
-  InlineGrid,
-  InlineStack,
-  LegacyStack,
   OptionList,
   Page,
   Select,
@@ -54,25 +51,8 @@ export const loader: LoaderFunction = async ({ request }) => {
     const themesResponse = await admin.rest.resources.Theme.all({
       session: session,
     });
-    const assets = await admin.rest.resources.Asset.all({
-      session: session,
-      theme_id: themesResponse.data[0].id,
-      fields: ['key'],
-    });
-    const templates = assets.data.filter((asset) => {
-      if (asset.key) {
-        if (
-          asset.key?.indexOf('templates/') > -1 &&
-          asset.key?.indexOf('.json') > -1 &&
-          asset.key?.indexOf('.') > -1 &&
-          asset.key?.indexOf('/index.') < 0
-        ) {
-          return asset;
-        }
-      }
-    });
 
-    return json({ themes: themesResponse.data, templates });
+    return json({ themes: themesResponse.data });
   } catch (error) {
     console.error('Error fetching data:', error);
 

@@ -9,10 +9,8 @@ import {
   Page,
   EmptyState,
   useIndexResourceState,
-  ResourceListProps,
   Link,
 } from '@shopify/polaris';
-import { useState } from 'react';
 import type { PageType } from '~/global_types';
 import { definePageBadgesStatus } from '~/helpers/definePageBadge';
 import { getPages } from '~/models/page.server';
