@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Button, Card, Page } from '@shopify/polaris';
+import { Card, Page } from '@shopify/polaris';
 import type { Editor } from 'grapesjs';
 import bootstrapCss from 'bootstrap/dist/css/bootstrap.min.css';
 import mainCss from '../styles/main.css';
@@ -18,6 +18,7 @@ import type { ActionFunctionArgs, LoaderFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { getPageById, updatePage } from '~/models/page.server';
 import { authenticate } from '~/shopify.server';
+import { EditorHeader } from '~/components/EditorHeader';
 
 export const links = () => [
   { rel: 'stylesheet', href: grapesStyles },
@@ -129,7 +130,7 @@ export default function AdditionalPage() {
 
   return (
     <Page fullWidth>
-      <Button url="/app/pages">{'< Back '}</Button>
+      <EditorHeader page={pageResponse} />
       <Form ref={formRef} onSubmit={handleSubmit} method="post">
         <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
           <Sidebar

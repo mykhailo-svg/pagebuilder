@@ -30,20 +30,6 @@ export function Sidebar({
       <div style={{ width: '300px' }}>
         <Card>
           <BlockStack gap="1000">
-            <Card>
-              <InlineGrid columns={2}>
-                <Text truncate as="h4">
-                  {pageName}
-                </Text>
-                <Badge
-                  size="small"
-                  tone={definePageBadgesStatus(pageStatus).tone}
-                  progress={definePageBadgesStatus(pageStatus).progress}
-                >
-                  {definePageBadgesStatus(pageStatus).text}
-                </Badge>
-              </InlineGrid>
-            </Card>
             <BlockStack gap="500">
               <Text as="h5">Blocks</Text>
               <div id="blocks" ref={blocksRef}></div>
