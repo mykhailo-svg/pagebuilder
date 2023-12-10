@@ -1,4 +1,20 @@
 import db from '../db.server';
+const templates = {
+  page: (pageName: string) => {
+    return `{
+      "sections": {
+        "${pageName}": {
+          "type": "${pageName}",
+          "settings": {
+          }
+        }
+      },
+      "order": [
+        "${pageName}"
+      ]
+    }`;
+  },
+};
 
 export async function getPages() {
   try {
@@ -23,14 +39,15 @@ type CreatePageArgs = {
 };
 
 export async function createNewPage({ themeId, shop, name }: CreatePageArgs) {
+  const id = generateUniqueID();
   try {
     const page = await db.page.create({
       data: {
         themeId,
-        id: generateUniqueID(),
+        id,
         shop,
         name,
-        template: 'sdsd',
+        template: templates.page(`${name}-${id}`),
         html: '<body id="i7ys"><div id="i0sg"><p>My first page here!</p></div></body>',
       },
     });
