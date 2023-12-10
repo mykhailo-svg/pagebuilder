@@ -84,8 +84,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function AdditionalPage() {
   const [editor, setEditor] = useState<Editor>();
 
-  console.log(useActionData());
-
   const pageResponse = useLoaderData<PageType>();
   console.log(pageResponse);
 
@@ -130,23 +128,23 @@ export default function AdditionalPage() {
 
   return (
     <Page fullWidth>
-      <EditorHeader page={pageResponse} />
       <Form ref={formRef} onSubmit={handleSubmit} method="post">
-        <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
-          <Sidebar />
-
-          <div style={{ flex: '1 1 auto' }}>
-            <Card>
-              <nav className="navbar navbar-light">
-                <div className="container-fluid">
-                  <TopNav shouldPublish={pageResponse.shouldPublish} />
-                </div>
-              </nav>
-              <div id="editor"></div>
-            </Card>
-          </div>
-        </div>
+        <EditorHeader page={pageResponse} />
       </Form>
+      <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
+        <Sidebar />
+
+        <div style={{ flex: '1 1 auto' }}>
+          <Card>
+            <nav className="navbar navbar-light">
+              <div className="container-fluid">
+                <TopNav shouldPublish={pageResponse.shouldPublish} />
+              </div>
+            </nav>
+            <div id="editor"></div>
+          </Card>
+        </div>
+      </div>
     </Page>
   );
 }

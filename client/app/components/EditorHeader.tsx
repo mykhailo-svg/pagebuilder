@@ -50,9 +50,11 @@ export function EditorHeader({ page }: { page: PageType }) {
           </InlineGrid>
         </div>
         <ButtonGroup>
-          <Button onClick={() => {}}>Secondary Action</Button>
-          <Button variant="primary" onClick={() => {}}>
-            Primary Action
+          <Button submit variant="primary" onClick={() => {}}>
+            Save
+          </Button>
+          <Button variant="primary" tone="critical" onClick={() => {}}>
+            Delete
           </Button>
         </ButtonGroup>
       </div>
