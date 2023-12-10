@@ -4,14 +4,10 @@ import type { Editor } from 'grapesjs';
 import bootstrapCss from 'bootstrap/dist/css/bootstrap.min.css';
 import mainCss from '../styles/main.css';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
-import {
-  Form,
-  useLoaderData,
-  useSubmit,
-} from '@remix-run/react';
-import { Sidebar } from '~/components/Sidebar/Sidebar';
+import { Form, useLoaderData, useSubmit } from '@remix-run/react';
+import { Sidebar } from '~/components/Sidebar';
 import { initEditorConfig } from '~/helpers/editorConfig';
-import { TopNav } from '~/components/TopNav/TopNav';
+import { TopNav } from '~/components/TopNav';
 import type { PageType } from '~/global_types';
 import type { ActionFunctionArgs, LoaderFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
@@ -30,7 +26,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const { admin, session } = await authenticate.admin(request);
   const url = new URL(request.url);
   const pageId = url.searchParams.get('pageId') || '';
-
 
   const themeId = parseInt(formData.get('themeId') as string);
 
@@ -137,7 +132,7 @@ export default function AdditionalPage() {
           <Card>
             <nav className="navbar navbar-light">
               <div className="container-fluid">
-                <TopNav shouldPublish={pageResponse.shouldPublish} />
+                <TopNav />
               </div>
             </nav>
             <div id="editor"></div>
