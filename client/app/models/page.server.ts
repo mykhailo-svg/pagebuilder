@@ -14,6 +14,20 @@ const templates = {
       ]
     }`;
   },
+  product: (pageName: string) => {
+    return `{
+      "sections": {
+        "${pageName}": {
+          "type": "${pageName}",
+          "settings": {
+          }
+        }
+      },
+      "order": [
+        "${pageName}"
+      ]
+    }`;
+  },
 };
 
 export async function getPages() {
@@ -36,9 +50,15 @@ type CreatePageArgs = {
   themeId: string;
   shop: string;
   name: string;
+  templateType: string;
 };
 
-export async function createNewPage({ themeId, shop, name }: CreatePageArgs) {
+export async function createNewPage({
+  themeId,
+  shop,
+  name,
+  templateType,
+}: CreatePageArgs) {
   const id = generateUniqueID();
   try {
     const page = await db.page.create({
@@ -47,7 +67,8 @@ export async function createNewPage({ themeId, shop, name }: CreatePageArgs) {
         id,
         shop,
         name,
-        template: templates.page(`${name}-${id}`),
+        templateType,
+        template: templates[templateType as 'page'](`${name}-${id}`),
         html: '<body id="i7ys"><div id="i0sg"><p>My first page here!</p></div></body>',
       },
     });

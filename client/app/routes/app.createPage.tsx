@@ -37,6 +37,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     themeId: (formData.get('themePicker') as string) || 's',
     shop: session.shop,
     name: formData.get('nameField') as string,
+    templateType: formData.get('templatePicker') as string,
   });
   if (page) {
     return redirect(`/app/editor?pageId=${page.id}`);
@@ -82,7 +83,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function CreatePage() {
   const response = useLoaderData<InitialResponse>();
   console.log(response);
-
+  const [selectedTemplate, setSelectedTemplate] = useState('today');
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState<string>('');
   const [themes, setThemes] = useState<Theme[]>(response.themes);
@@ -107,12 +108,11 @@ export default function CreatePage() {
     } else {
       const formData = new FormData(formRef.current as HTMLFormElement);
       formData.append('themePicker', selected[0]);
+      formData.append('templatePicker', selectedTemplate);
 
       submit(formData, { method: 'post', action: '/app/createPage' });
     }
   };
-
-  const [selectedTemplate, setSelectedTemplate] = useState('today');
 
   const handleSelectChange = useCallback(
     (value: string) => setSelectedTemplate(value),

@@ -36,7 +36,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const sectionKey =
     `sections/${formData.get('liquidName')}.liquid` ?? 'templates/error.liquid';
-  const templateKey = `templates/page.${formData.get('liquidName')}.json`;
+  const templateKey = `templates/${formData.get(
+    'pageTemplateType'
+  )}.${formData.get('liquidName')}.json`;
+
   const asset = new admin.rest.resources.Asset({ session: session });
   asset.theme_id = themeId;
   asset.key = sectionKey as string;
@@ -116,6 +119,7 @@ export default function AdditionalPage() {
     );
     formData.append('themeId', pageResponse.themeId);
     formData.append('pageTemplate', pageResponse.template);
+    formData.append('pageTemplateType', pageResponse.templateType);
 
     submit(formData, {
       method: 'post',
