@@ -9,40 +9,17 @@ import {
   Card,
   Page,
   EmptyState,
+  InlineGrid,
 } from '@shopify/polaris';
-import type {
-  Progress,
-  Tone,
-} from '@shopify/polaris/build/ts/src/components/Badge';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { authenticate } from '~/shopify.server';
-type PageType = {
-  id: string;
-  css: string;
-  html: string;
-  themeId: string;
-  shop: string;
-  isPublished: boolean;
-  isInShopify: boolean;
-};
-
-type InitialLoaderResponse = {
-  pagesData: PageType[];
-};
+import type { PageType } from '~/global_types';
+import { definePageBadgesStatus } from '~/helpers/definePageBadge';
+import { getPages } from '~/models/page.server';
 
 export const loader: LoaderFunction = async ({ request }) => {
   try {
-    const { admin } = await authenticate.admin(request);
+    const pages = await getPages();
 
-    const pages = await axios
-      .get(`http://localhost:4000/v1/page/created/test2r3`)
-      .catch((error) => {
-        console.error('Помилка відправлення POST-запиту:', error);
-      });
-    const pagesData = pages ? pages.data : null;
-
-    return json({ pagesData });
+    return json(pages);
   } catch (error) {
     console.error('Error fetching data:', error);
 
@@ -51,42 +28,36 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function Pages() {
-  const [pages, setPages] = useState<PageType[]>([]);
-  const response = useLoaderData<InitialLoaderResponse>();
-  console.log(pages);
-
-  useEffect(() => {
-    setPages(response.pagesData);
-  }, []);
+  const response = useLoaderData<PageType[]>();
 
   return (
     <Page>
       <ui-title-bar title="Pages"></ui-title-bar>
       <Card>
-        {pages.length ? (
+        {response.length ? (
           <ResourceList
             resourceName={{ singular: 'customer', plural: 'customers' }}
-            items={pages}
+            items={response}
             renderItem={(item) => {
-              const { id, shop, isPublished } = item;
-              const publishTone: Tone = isPublished ? 'success' : 'attention';
-              const publishProgress: Progress = isPublished
-                ? 'complete'
-                : 'incomplete';
-              const badgeText = isPublished ? 'Published' : 'Not published';
+              const { id, name, status } = item;
+
               return (
                 <ResourceItem
                   id={id}
-                  url={`/app/additional?pageId=${id}`}
+                  url={`/app/editor?pageId=${id}`}
                   accessibilityLabel={`View details for ${name}`}
                 >
-                  <Text variant="bodyMd" fontWeight="bold" as="h3">
-                    {id}
-                  </Text>
-                  <Badge tone={publishTone} progress={publishProgress}>
-                    {badgeText}
-                  </Badge>
-                  <div>{shop}</div>
+                  <InlineGrid columns={2}>
+                    <Text variant="bodyMd" fontWeight="bold" as="h3">
+                      {name}
+                    </Text>
+                    <Badge
+                      tone={definePageBadgesStatus(status).tone}
+                      progress={definePageBadgesStatus(status).progress}
+                    >
+                      {definePageBadgesStatus(status).text}
+                    </Badge>
+                  </InlineGrid>
                 </ResourceItem>
               );
             }}
@@ -101,7 +72,7 @@ export default function Pages() {
             }}
             image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
           >
-            <p>Track and receive your incoming inventory from suppliers.</p>
+            <p>Create new page to start developing!</p>
           </EmptyState>
         )}
       </Card>

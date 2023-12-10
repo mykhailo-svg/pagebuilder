@@ -2,9 +2,7 @@ import db from '../db.server';
 
 export async function getPages() {
   try {
-    const pages = await db.page.create({
-      data: { themeId: 'sfsf', id: generateUniqueID() },
-    });
+    const pages = await db.page.findMany();
     return pages;
   } catch (error) {
     return error;
@@ -20,14 +18,23 @@ export function generateUniqueID() {
 
 type CreatePageArgs = {
   themeId: string;
+  shop: string;
+  name: string;
 };
 
-export async function createNewPage({ themeId }: CreatePageArgs) {
+export async function createNewPage({ themeId, shop, name }: CreatePageArgs) {
   try {
-    const pages = await db.page.create({
-      data: { themeId, id: generateUniqueID() },
+    const page = await db.page.create({
+      data: {
+        themeId,
+        id: generateUniqueID(),
+        shop,
+        name,
+        template: 'sdsd',
+        html: '<body id="i7ys"><div id="i0sg"><p>My first page here!</p></div></body>',
+      },
     });
-    return pages;
+    return page;
   } catch (error) {
     return error;
   }
@@ -50,16 +57,12 @@ type UpdatePageArgs = {
 };
 
 export async function updatePage({ id, css, html }: UpdatePageArgs) {
-  try {
-    const page = await db.page.update({
-      where: { id },
-      data: {
-        css,
-        html,
-      },
-    });
-    return page;
-  } catch (error) {
-    return error;
-  }
+  const page = await db.page.update({
+    where: { id },
+    data: {
+      css,
+      html: html.replace(/\\/g, ''),
+    },
+  });
+  return page;
 }

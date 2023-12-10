@@ -7,8 +7,8 @@ const pageSchema = mongoose.Schema(
     html: { type: String, default: 'none' },
     css: { type: String, default: 'none' },
     shop: { type: String, required: true },
-    isInShopify: { type: Boolean, default: false },
-    isPublished: { type: Boolean, default: false },
+    shouldPublish: { type: Boolean, default: false },
+    name: { type: String, default: 'Untitled page' },
     status: {
       type: String,
       enum: ['neverPublished', 'published', 'notPublished'],
