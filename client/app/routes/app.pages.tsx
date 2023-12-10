@@ -2,8 +2,6 @@ import type { LoaderFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import {
-  ResourceList,
-  ResourceItem,
   IndexTable,
   Text,
   Badge,
@@ -11,10 +9,8 @@ import {
   Page,
   EmptyState,
   useIndexResourceState,
-  InlineGrid,
   ResourceListProps,
   Link,
-  Button,
 } from '@shopify/polaris';
 import { useState } from 'react';
 import type { PageType } from '~/global_types';
@@ -36,13 +32,9 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function Pages() {
   const response = useLoaderData<PageType[]>();
 
-  const [selectedItems, setSelectedItems] = useState<
-    ResourceListProps['selectedItems']
-  >([]);
-
   const resourceName = {
-    singular: 'customer',
-    plural: 'customers',
+    singular: 'page',
+    plural: 'pages',
   };
 
   const { selectedResources, allResourcesSelected, handleSelectionChange } =
