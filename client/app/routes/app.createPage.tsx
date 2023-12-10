@@ -25,13 +25,8 @@ type Theme = {
   role: string;
 };
 
-type Template = {
-  key: string;
-};
-
 type InitialResponse = {
   themes: Theme[];
-  templates: Template[];
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -144,17 +139,11 @@ export default function CreatePage() {
                 <Select
                   label="Pick templete as starter"
                   options={[
-                    { value: '', label: 'Empty page' },
-                    ...response.templates.map((template) => {
-                      return {
-                        value: template.key,
-                        label: template.key.slice(
-                          10,
-                          template.key.indexOf('.json')
-                        ),
-                      };
-                    }),
+                    { value: 'page', label: 'Page' },
+                    { value: 'product', label: 'Product' },
+                    { value: 'collection', label: 'Collection' },
                   ]}
+                  name="templatePicker"
                   onChange={handleSelectChange}
                   value={selectedTemplate}
                 />
