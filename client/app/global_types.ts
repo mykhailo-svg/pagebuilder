@@ -6,6 +6,8 @@ export type PageType = {
   themeId: string;
   shop: string;
   name: string;
+  template: string;
+  templateType: string;
   status: PagePublishStatus;
   shouldPublish: boolean;
 };

@@ -46,18 +46,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const jsonAsset = new admin.rest.resources.Asset({ session: session });
   jsonAsset.theme_id = themeId;
   jsonAsset.key = templateKey as string;
-  jsonAsset.value = `{
-    "sections": {
-      "${pageAssetName}": {
-        "type": "${pageAssetName}",
-        "settings": {
-        }
-      }
-    },
-    "order": [
-      "${pageAssetName}"
-    ]
-  }`;
+  jsonAsset.value = formData.get('pageTemplate') as string;
   await jsonAsset.save();
 
   const updatedPage = await updatePage({
@@ -126,6 +115,7 @@ export default function AdditionalPage() {
       `${editor?.getHtml().toString()} <style>${editor?.getCss()}</style>`
     );
     formData.append('themeId', pageResponse.themeId);
+    formData.append('pageTemplate', pageResponse.template);
 
     submit(formData, {
       method: 'post',
