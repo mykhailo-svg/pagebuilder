@@ -47,7 +47,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function Pages() {
-  const response = useLoaderData<PageType[]>();
+  const response = useLoaderData<{
+    pages: PageType[];
+    hasNext: boolean;
+    hasPrevious: boolean;
+  }>();
+  console.log(response);
 
   const resourceName = {
     singular: 'page',
@@ -58,7 +63,7 @@ export default function Pages() {
   const formRef = useRef<HTMLFormElement>(null);
 
   const { selectedResources, allResourcesSelected, handleSelectionChange } =
-    useIndexResourceState(response);
+    useIndexResourceState(response.pages);
 
   const handleSubmit = (event: any) => {
     const formData = new FormData(formRef.current as HTMLFormElement);
@@ -71,7 +76,7 @@ export default function Pages() {
 
   const [pageCount, setPageCount] = useState(0);
 
-  const rowMarkup = response.map(
+  const rowMarkup = response.pages.map(
     ({ id, name, status, templateType }, index) => (
       <IndexTable.Row
         id={id}
@@ -113,10 +118,10 @@ export default function Pages() {
       <ui-title-bar title="Pages"></ui-title-bar>
       <Form ref={formRef} method="post">
         <Card>
-          {response.length ? (
+          {response.pages.length ? (
             <IndexTable
               resourceName={resourceName}
-              itemCount={response.length}
+              itemCount={response.pages.length}
               selectedItemsCount={
                 allResourcesSelected ? 'All' : selectedResources.length
               }
@@ -128,7 +133,7 @@ export default function Pages() {
                 { title: 'Status' },
               ]}
               pagination={{
-                hasNext: true,
+                hasNext: response.hasNext,
                 nextURL: `/app/pages?page=${pageCount + 1}`,
                 onNext: () => {
                   setPageCount(pageCount + 1);

@@ -84,7 +84,11 @@ export async function getPages({ page }: { page: number }) {
       skip: page * itemsPerPage,
       take: itemsPerPage,
     });
-    return pages;
+    const nextStepPages = await db.page.findMany({
+      skip: (page + 1) * itemsPerPage,
+      take: itemsPerPage,
+    });
+    return { pages, hasNext: nextStepPages.length > 0, nextStepPages };
   } catch (error) {
     return error;
   }
