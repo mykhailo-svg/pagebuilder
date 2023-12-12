@@ -88,7 +88,23 @@ export async function getPages({ page }: { page: number }) {
       skip: (page + 1) * itemsPerPage,
       take: itemsPerPage,
     });
-    return { pages, hasNext: nextStepPages.length > 0, nextStepPages };
+    let hasPrevious = false;
+    if (page - 1 > -1) {
+      const previousStepPages = await db.page.findMany({
+        skip: (page - 1) * itemsPerPage,
+        take: itemsPerPage,
+      });
+      if (previousStepPages.length > 0) {
+        hasPrevious = true;
+      }
+    }
+
+    return {
+      pages,
+      hasNext: nextStepPages.length > 0,
+      hasPrevious,
+      nextStepPages,
+    };
   } catch (error) {
     return error;
   }

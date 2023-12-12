@@ -107,6 +107,7 @@ export default function Pages() {
     {
       content: 'Delete pages',
       onAction: () => {
+        setPageCount(0);
         handleSubmit(formRef.current);
       },
     },
@@ -138,8 +139,13 @@ export default function Pages() {
                 onNext: () => {
                   setPageCount(pageCount + 1);
                 },
-                hasPrevious: false,
-                onPrevious: () => {},
+                previousURL: `/app/pages?page=${pageCount - 1}`,
+                hasPrevious: response.hasPrevious,
+                onPrevious: () => {
+                  if (pageCount) {
+                    setPageCount(pageCount - 1);
+                  }
+                },
               }}
             >
               {rowMarkup}
