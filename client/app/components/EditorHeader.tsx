@@ -7,6 +7,7 @@ import {
   Text,
   InlineGrid,
   InlineStack,
+  Card,
 } from '@shopify/polaris';
 import type { PageType } from '~/global_types';
 import { definePageBadgesStatus } from '~/helpers/definePageBadge';
@@ -19,7 +20,7 @@ export function EditorHeader({ page }: { page: PageType }) {
   };
 
   return (
-    <FullscreenBar onAction={handleActionClick}>
+    <Card>
       <div
         style={{
           display: 'flex',
@@ -30,7 +31,8 @@ export function EditorHeader({ page }: { page: PageType }) {
           paddingRight: '1rem',
         }}
       >
-        <InlineStack gap="100">
+        <InlineStack gap="500">
+          <Button url="/app/pages">Back</Button>
           <Badge
             size="small"
             tone={definePageBadgesStatus(page.status).tone}
@@ -56,6 +58,6 @@ export function EditorHeader({ page }: { page: PageType }) {
           </Button>
         </ButtonGroup>
       </div>
-    </FullscreenBar>
+    </Card>
   );
 }
