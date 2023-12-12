@@ -117,7 +117,6 @@ export default function Pages() {
                 allResourcesSelected ? 'All' : selectedResources.length
               }
               onSelectionChange={handleSelectionChange}
-              hasMoreItems
               promotedBulkActions={promotedBulkActions}
               headings={[
                 { title: 'Name' },
