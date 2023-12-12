@@ -62,8 +62,12 @@ export default function Pages() {
   const submit = useSubmit();
   const formRef = useRef<HTMLFormElement>(null);
 
-  const { selectedResources, allResourcesSelected, handleSelectionChange } =
-    useIndexResourceState(response.pages);
+  const {
+    selectedResources,
+    clearSelection,
+    allResourcesSelected,
+    handleSelectionChange,
+  } = useIndexResourceState(response.pages);
 
   const handleSubmit = (event: any) => {
     const formData = new FormData(formRef.current as HTMLFormElement);
@@ -108,6 +112,7 @@ export default function Pages() {
       content: 'Delete pages',
       onAction: () => {
         setPageCount(0);
+        clearSelection();
         handleSubmit(formRef.current);
       },
     },
