@@ -16,7 +16,7 @@ import {
   useIndexResourceState,
   Link,
 } from '@shopify/polaris';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import type { PageType } from '~/global_types';
 import { definePageBadgesStatus } from '~/helpers/definePageBadge';
 import { deletePages, getPages } from '~/models/page.server';
@@ -66,6 +66,8 @@ export default function Pages() {
       action: `/app/pages`,
     });
   };
+
+  const [pageCount, setPageCount] = useState(0);
 
   const rowMarkup = response.map(
     ({ id, name, status, templateType }, index) => (
@@ -123,6 +125,15 @@ export default function Pages() {
                 { title: 'Template' },
                 { title: 'Status' },
               ]}
+              pagination={{
+                hasNext: true,
+                nextURL: `/app/pages?page=${pageCount + 1}`,
+                onNext: () => {
+                  setPageCount(pageCount + 1);
+                },
+                hasPrevious: false,
+                onPrevious: () => {},
+              }}
             >
               {rowMarkup}
             </IndexTable>
