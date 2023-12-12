@@ -51,7 +51,7 @@ export function EditorHeader({ page }: { page: PageType }) {
         </div>
         <ButtonGroup>
           <Button submit variant="primary" onClick={() => {}}>
-            Save
+            {page.shouldPublish ? 'Publish' : 'Save'}
           </Button>
           <Button variant="primary" tone="critical" onClick={() => {}}>
             Delete
