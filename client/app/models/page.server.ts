@@ -77,9 +77,13 @@ const templates = {
   },
 };
 
-export async function getPages() {
+export async function getPages({ page }: { page: number }) {
   try {
-    const pages = await db.page.findMany();
+    const itemsPerPage = 2;
+    const pages = await db.page.findMany({
+      skip: page * itemsPerPage,
+      take: itemsPerPage,
+    });
     return pages;
   } catch (error) {
     return error;

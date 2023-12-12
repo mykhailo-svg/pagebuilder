@@ -22,8 +22,10 @@ import { definePageBadgesStatus } from '~/helpers/definePageBadge';
 import { deletePages, getPages } from '~/models/page.server';
 
 export const loader: LoaderFunction = async ({ request }) => {
+  const url = new URL(request.url);
+  const page = parseInt(url.searchParams.get('page') || '0');
   try {
-    const pages = await getPages();
+    const pages = await getPages({ page });
 
     return json(pages);
   } catch (error) {
