@@ -25,7 +25,7 @@
 }
 
 .main-content {
-flex: 1 1 auto;
+    flex: 1 1 auto;
 }
 
 .main-content .navbar {
@@ -150,6 +150,16 @@ flex: 1 1 auto;
     font-size: 14px;
     font-weight: 700;
     min-width: 150px;
+}
+
+.Polaris-InlineStack {
+    flex: 1 1 auto;
+}
+
+.probl_dsd {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
 }
 
 /*# sourceMappingURL=main.css.map */
