@@ -25,27 +25,29 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const { admin, session } = await authenticate.admin(request);
 
-  const { themeId, id, name, templateType } = JSON.parse(
+  const { themeId, id, name, templateType, shouldPublish } = JSON.parse(
     formData.get('page') as string
   ) as PageType;
+  
+  if (shouldPublish) {
+    const sectionKey =
+      `sections/${name}-${id}.liquid` ?? 'templates/error.liquid';
+    const templateKey = `templates/${templateType}.${formData.get(
+      'liquidName'
+    )}.json`;
 
-  const sectionKey =
-    `sections/${name}-${id}.liquid` ?? 'templates/error.liquid';
-  const templateKey = `templates/${templateType}.${formData.get(
-    'liquidName'
-  )}.json`;
+    const asset = new admin.rest.resources.Asset({ session: session });
+    asset.theme_id = parseInt(themeId);
+    asset.key = sectionKey as string;
+    asset.value = formData.get('html')?.toString() || 'Failed to save';
+    await asset.save();
 
-  const asset = new admin.rest.resources.Asset({ session: session });
-  asset.theme_id = parseInt(themeId);
-  asset.key = sectionKey as string;
-  asset.value = formData.get('html')?.toString() || 'Failed to save';
-  await asset.save();
-
-  const jsonAsset = new admin.rest.resources.Asset({ session: session });
-  jsonAsset.theme_id = parseInt(themeId);
-  jsonAsset.key = templateKey as string;
-  jsonAsset.value = formData.get('pageTemplate') as string;
-  await jsonAsset.save();
+    const jsonAsset = new admin.rest.resources.Asset({ session: session });
+    jsonAsset.theme_id = parseInt(themeId);
+    jsonAsset.key = templateKey as string;
+    jsonAsset.value = formData.get('pageTemplate') as string;
+    await jsonAsset.save();
+  }
 
   const updatedPage = await updatePage({
     id,
@@ -56,8 +58,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   return json({
     formDataObject: formData.get('html'),
     updatedPage,
-    asset,
-    jsonAsset,
   });
 };
 
