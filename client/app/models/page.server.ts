@@ -1,4 +1,4 @@
-import { PagePublishStatus } from '~/global_types';
+import type { PagePublishStatus } from '~/global_types';
 import db from '../db.server';
 const templates = {
   page: (pageName: string) => {

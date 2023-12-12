@@ -1,4 +1,4 @@
-import { Button, Card, InlineGrid } from '@shopify/polaris';
+import { Card, InlineGrid } from '@shopify/polaris';
 import { useRef } from 'react';
 
 export const TopNav = () => {
