@@ -1,4 +1,81 @@
+import type { PagePublishStatus } from '~/global_types';
 import db from '../db.server';
+const templates = {
+  page: (pageName: string) => {
+    return `{
+      "sections": {
+        "${pageName}": {
+          "type": "${pageName}",
+          "settings": {
+          }
+        }
+      },
+      "order": [
+        "${pageName}"
+      ]
+    }`;
+  },
+  product: (pageName: string) => {
+    return `{
+      "sections": {
+        "${pageName}": {
+          "type": "${pageName}",
+          "settings": {
+          }
+        }
+      },
+      "order": [
+        "${pageName}"
+      ]
+    }`;
+  },
+  collection: (pageName: string) => {
+    return `{
+      "sections": {
+        "${pageName}": {
+          "type": "${pageName}",
+          "settings": {
+            "show_collection_description": true,
+            "show_collection_image": false,
+            "color_scheme": "background-1"
+          }
+        },
+        "banner": {
+          "type": "main-collection-banner",
+          "settings": {
+            "show_collection_description": true,
+            "show_collection_image": false,
+            "color_scheme": "background-1"
+          }
+        },
+        "product-grid": {
+          "type": "main-collection-product-grid",
+          "settings": {
+            "products_per_page": 16,
+            "columns_desktop": 4,
+            "color_scheme": "background-1",
+            "image_ratio": "adapt",
+            "image_shape": "default",
+            "show_secondary_image": false,
+            "show_vendor": false,
+            "show_rating": false,
+            "enable_quick_add": false,
+            "enable_filtering": true,
+            "filter_type": "horizontal",
+            "enable_sorting": true,
+            "columns_mobile": "2",
+            "padding_top": 36,
+            "padding_bottom": 36
+          }
+        }
+      },
+      "order": [
+        "banner",
+        "product-grid","${pageName}"
+      ]
+    }`;
+  },
+};
 
 export async function getPages() {
   try {
@@ -20,17 +97,25 @@ type CreatePageArgs = {
   themeId: string;
   shop: string;
   name: string;
+  templateType: string;
 };
 
-export async function createNewPage({ themeId, shop, name }: CreatePageArgs) {
+export async function createNewPage({
+  themeId,
+  shop,
+  name,
+  templateType,
+}: CreatePageArgs) {
+  const id = generateUniqueID();
   try {
     const page = await db.page.create({
       data: {
         themeId,
-        id: generateUniqueID(),
+        id,
         shop,
         name,
-        template: 'sdsd',
+        templateType,
+        template: templates[templateType as 'page'](`${name}-${id}`),
         html: '<body id="i7ys"><div id="i0sg"><p>My first page here!</p></div></body>',
       },
     });
@@ -57,11 +142,44 @@ type UpdatePageArgs = {
 };
 
 export async function updatePage({ id, css, html }: UpdatePageArgs) {
+  const existingPage = await db.page.findUnique({
+    where: { id },
+  });
+
+  if (!existingPage) {
+    throw new Error(`Page with ID ${id} not found`);
+  }
+  const currentStatus = existingPage.status as PagePublishStatus;
+  let nextStatus: PagePublishStatus = currentStatus;
+  if (currentStatus !== 'notPublished') {
+    nextStatus = 'notPublished';
+  } else {
+    nextStatus = 'published';
+  }
+
   const page = await db.page.update({
     where: { id },
     data: {
+      status: nextStatus,
       css,
+      shouldPublish: !existingPage.shouldPublish,
       html: html.replace(/\\/g, ''),
+    },
+  });
+
+  return page;
+}
+
+type DeletePagesArgs = {
+  ids: string[];
+};
+
+export async function deletePages({ ids }: DeletePagesArgs) {
+  const page = await db.page.deleteMany({
+    where: {
+      id: {
+        in: ids,
+      },
     },
   });
   return page;

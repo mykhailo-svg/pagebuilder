@@ -1,23 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
-import { Button, Card, Page } from '@shopify/polaris';
+import { Card, Page } from '@shopify/polaris';
 import type { Editor } from 'grapesjs';
 import bootstrapCss from 'bootstrap/dist/css/bootstrap.min.css';
 import mainCss from '../styles/main.css';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
-import {
-  Form,
-  useActionData,
-  useLoaderData,
-  useSubmit,
-} from '@remix-run/react';
-import { Sidebar } from '~/components/Sidebar/Sidebar';
+import { Form, useLoaderData, useSubmit } from '@remix-run/react';
+import { Sidebar } from '~/components/Sidebar';
 import { initEditorConfig } from '~/helpers/editorConfig';
-import { TopNav } from '~/components/TopNav/TopNav';
+import { TopNav } from '~/components/TopNav';
 import type { PageType } from '~/global_types';
 import type { ActionFunctionArgs, LoaderFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { getPageById, updatePage } from '~/models/page.server';
 import { authenticate } from '~/shopify.server';
+import { EditorHeader } from '~/components/EditorHeader';
 
 export const links = () => [
   { rel: 'stylesheet', href: grapesStyles },
@@ -31,12 +27,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const url = new URL(request.url);
   const pageId = url.searchParams.get('pageId') || '';
 
-  const pageAssetName = formData.get('liquidName');
   const themeId = parseInt(formData.get('themeId') as string);
 
   const sectionKey =
     `sections/${formData.get('liquidName')}.liquid` ?? 'templates/error.liquid';
-  const templateKey = `templates/page.${formData.get('liquidName')}.json`;
+  const templateKey = `templates/${formData.get(
+    'pageTemplateType'
+  )}.${formData.get('liquidName')}.json`;
+
   const asset = new admin.rest.resources.Asset({ session: session });
   asset.theme_id = themeId;
   asset.key = sectionKey as string;
@@ -46,18 +44,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const jsonAsset = new admin.rest.resources.Asset({ session: session });
   jsonAsset.theme_id = themeId;
   jsonAsset.key = templateKey as string;
-  jsonAsset.value = `{
-    "sections": {
-      "${pageAssetName}": {
-        "type": "${pageAssetName}",
-        "settings": {
-        }
-      }
-    },
-    "order": [
-      "${pageAssetName}"
-    ]
-  }`;
+  jsonAsset.value = formData.get('pageTemplate') as string;
   await jsonAsset.save();
 
   const updatedPage = await updatePage({
@@ -90,8 +77,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function AdditionalPage() {
   const [editor, setEditor] = useState<Editor>();
-
-  console.log(useActionData());
 
   const pageResponse = useLoaderData<PageType>();
   console.log(pageResponse);
@@ -126,6 +111,8 @@ export default function AdditionalPage() {
       `${editor?.getHtml().toString()} <style>${editor?.getCss()}</style>`
     );
     formData.append('themeId', pageResponse.themeId);
+    formData.append('pageTemplate', pageResponse.template);
+    formData.append('pageTemplateType', pageResponse.templateType);
 
     submit(formData, {
       method: 'post',
@@ -135,26 +122,23 @@ export default function AdditionalPage() {
 
   return (
     <Page fullWidth>
-      <Button url="/app/pages">{'< Back '}</Button>
       <Form ref={formRef} onSubmit={handleSubmit} method="post">
-        <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
-          <Sidebar
-            pageName={pageResponse.name}
-            pageStatus={pageResponse.status}
-          />
-
-          <div style={{ flex: '1 1 auto' }}>
-            <Card>
-              <nav className="navbar navbar-light">
-                <div className="container-fluid">
-                  <TopNav shouldPublish={pageResponse.shouldPublish} />
-                </div>
-              </nav>
-              <div id="editor"></div>
-            </Card>
-          </div>
-        </div>
+        <EditorHeader page={pageResponse} />
       </Form>
+      <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
+        <Sidebar />
+
+        <div style={{ flex: '1 1 auto' }}>
+          <Card>
+            <nav className="navbar navbar-light">
+              <div className="container-fluid">
+                <TopNav />
+              </div>
+            </nav>
+            <div id="editor"></div>
+          </Card>
+        </div>
+      </div>
     </Page>
   );
 }

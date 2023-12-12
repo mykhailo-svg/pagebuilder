@@ -1,11 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
+  Badge,
   BlockStack,
   Button,
   Card,
   Divider,
   OptionList,
   Page,
+  Select,
   TextField,
 } from '@shopify/polaris';
 import { authenticate } from '~/shopify.server';
@@ -32,6 +34,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     themeId: (formData.get('themePicker') as string) || 's',
     shop: session.shop,
     name: formData.get('nameField') as string,
+    templateType: formData.get('templatePicker') as string,
   });
   if (page) {
     return redirect(`/app/editor?pageId=${page.id}`);
@@ -59,7 +62,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function CreatePage() {
   const response = useLoaderData<InitialResponse>();
-
+  console.log(response);
+  const [selectedTemplate, setSelectedTemplate] = useState('today');
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState<string>('');
   const [themes, setThemes] = useState<Theme[]>(response.themes);
@@ -84,10 +88,16 @@ export default function CreatePage() {
     } else {
       const formData = new FormData(formRef.current as HTMLFormElement);
       formData.append('themePicker', selected[0]);
+      formData.append('templatePicker', selectedTemplate);
 
       submit(formData, { method: 'post', action: '/app/createPage' });
     }
   };
+
+  const handleSelectChange = useCallback(
+    (value: string) => setSelectedTemplate(value),
+    []
+  );
 
   return (
     <Page fullWidth>
@@ -106,14 +116,42 @@ export default function CreatePage() {
                   error={nameError}
                 />
                 <Divider />
-
+                <Select
+                  label="Pick templete as starter"
+                  options={[
+                    { value: 'page', label: 'Page' },
+                    { value: 'product', label: 'Product' },
+                    { value: 'collection', label: 'Collection' },
+                  ]}
+                  name="templatePicker"
+                  onChange={handleSelectChange}
+                  value={selectedTemplate}
+                />
                 <OptionList
                   title="Pick theme"
                   onChange={setSelected}
                   options={themes.map((theme) => {
                     return {
                       value: theme.id.toString(),
-                      label: theme.name,
+                      label: (
+                        <div
+                          style={{
+                            minWidth: '300px',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                          }}
+                        >
+                          {theme.name}
+                          <Badge
+                            size="large"
+                            tone={
+                              theme.role === 'main' ? 'success' : 'critical'
+                            }
+                          >
+                            {theme.role}
+                          </Badge>
+                        </div>
+                      ),
                     };
                   })}
                   selected={selected}
