@@ -140,7 +140,7 @@ export default function CreatePage() {
                     return {
                       value: theme.id.toString(),
                       label: (
-                        <div className="probl_dsd">
+                        <div className="themesOptionListItem">
                           {theme.name}
                           <Badge
                             size="large"
