@@ -24,31 +24,31 @@ export const links = () => [
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const { admin, session } = await authenticate.admin(request);
-  const url = new URL(request.url);
-  const pageId = url.searchParams.get('pageId') || '';
 
-  const themeId = parseInt(formData.get('themeId') as string);
+  const { themeId, id, name, templateType } = JSON.parse(
+    formData.get('page') as string
+  ) as PageType;
 
   const sectionKey =
-    `sections/${formData.get('liquidName')}.liquid` ?? 'templates/error.liquid';
-  const templateKey = `templates/${formData.get(
-    'pageTemplateType'
-  )}.${formData.get('liquidName')}.json`;
+    `sections/${name}-${id}.liquid` ?? 'templates/error.liquid';
+  const templateKey = `templates/${templateType}.${formData.get(
+    'liquidName'
+  )}.json`;
 
   const asset = new admin.rest.resources.Asset({ session: session });
-  asset.theme_id = themeId;
+  asset.theme_id = parseInt(themeId);
   asset.key = sectionKey as string;
   asset.value = formData.get('html')?.toString() || 'Failed to save';
   await asset.save();
 
   const jsonAsset = new admin.rest.resources.Asset({ session: session });
-  jsonAsset.theme_id = themeId;
+  jsonAsset.theme_id = parseInt(themeId);
   jsonAsset.key = templateKey as string;
   jsonAsset.value = formData.get('pageTemplate') as string;
   await jsonAsset.save();
 
   const updatedPage = await updatePage({
-    id: pageId,
+    id,
     css: 'sd',
     html: formData.get('html')?.toString() || 'Failed to save',
   });
@@ -113,6 +113,7 @@ export default function AdditionalPage() {
     formData.append('themeId', pageResponse.themeId);
     formData.append('pageTemplate', pageResponse.template);
     formData.append('pageTemplateType', pageResponse.templateType);
+    formData.append('page', JSON.stringify(pageResponse));
 
     submit(formData, {
       method: 'post',
