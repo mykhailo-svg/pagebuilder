@@ -1,3 +1,4 @@
+import { PagePublishStatus } from '~/global_types';
 import db from '../db.server';
 const templates = {
   page: (pageName: string) => {
@@ -141,13 +142,31 @@ type UpdatePageArgs = {
 };
 
 export async function updatePage({ id, css, html }: UpdatePageArgs) {
+  const existingPage = await db.page.findUnique({
+    where: { id },
+  });
+
+  if (!existingPage) {
+    throw new Error(`Page with ID ${id} not found`);
+  }
+  const currentStatus = existingPage.status as PagePublishStatus;
+  let nextStatus: PagePublishStatus = currentStatus;
+  if (currentStatus !== 'notPublished') {
+    nextStatus = 'notPublished';
+  } else {
+    nextStatus = 'published';
+  }
+
   const page = await db.page.update({
     where: { id },
     data: {
+      status: nextStatus,
       css,
+      shouldPublish: !existingPage.shouldPublish,
       html: html.replace(/\\/g, ''),
     },
   });
+
   return page;
 }
 
