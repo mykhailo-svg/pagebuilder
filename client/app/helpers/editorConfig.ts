@@ -42,8 +42,15 @@ export const initEditorConfig = (html: string) => {
               type: 'number',
               label: 'Font size',
               property: 'font-size',
+              defaults: 'auto',
               units: ['px', '%', 'em', 'rem', 'vh', 'vw'],
               min: 0,
+            },
+            {
+              type: 'color',
+              label: 'Color',
+              property: 'color',
+              defaults: 'auto',
             },
           ],
         },
@@ -116,5 +123,3 @@ export const initEditorConfig = (html: string) => {
     },
   });
 };
-
-
