@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Card, Page } from '@shopify/polaris';
+import { Card, Frame, Page, Toast } from '@shopify/polaris';
 import type { Editor } from 'grapesjs';
 import mainCss from '../styles/main.css';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
@@ -83,6 +83,7 @@ export default function AdditionalPage() {
   const pageResponse = useLoaderData<PageType>();
   const pageUpdateResponse = useActionData<{ page: PageType }>();
   const [canSave, setCanSave] = useState<boolean>(!pageResponse.shouldPublish);
+  const [activeToast, setActiveToast] = useState(false);
 
   console.log(pageResponse);
 
@@ -108,6 +109,7 @@ export default function AdditionalPage() {
 
   useEffect(() => {
     if (pageUpdateResponse) {
+      setActiveToast(true);
       setCanSave(!pageUpdateResponse.page.shouldPublish);
     }
   }, [pageUpdateResponse]);
@@ -137,23 +139,37 @@ export default function AdditionalPage() {
 
   return (
     <Page fullWidth>
-      <Form ref={formRef} onSubmit={handleSubmit} method="post">
-        <EditorHeader canSave={canSave} page={pageResponse} />
-      </Form>
-      <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
-        <Sidebar />
+      <Frame>
+        {activeToast ? (
+          <Toast
+            content={`Page succesfully ${
+              pageResponse.shouldPublish ? 'saved' : 'published'
+            }`}
+            duration={5000}
+            onDismiss={() => setActiveToast(false)}
+          />
+        ) : (
+          ''
+        )}
 
-        <div style={{ flex: '1 1 auto' }}>
-          <Card>
-            <nav className="navbar navbar-light">
-              <div className="container-fluid">
-                <TopNav />
-              </div>
-            </nav>
-            <div id="editor"></div>
-          </Card>
+        <Form ref={formRef} onSubmit={handleSubmit} method="post">
+          <EditorHeader canSave={canSave} page={pageResponse} />
+        </Form>
+        <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
+          <Sidebar />
+
+          <div style={{ flex: '1 1 auto' }}>
+            <Card>
+              <nav className="navbar navbar-light">
+                <div className="container-fluid">
+                  <TopNav />
+                </div>
+              </nav>
+              <div id="editor"></div>
+            </Card>
+          </div>
         </div>
-      </div>
+      </Frame>
     </Page>
   );
 }
