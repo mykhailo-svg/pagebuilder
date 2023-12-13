@@ -52,7 +52,6 @@ export default function Pages() {
     hasNext: boolean;
     hasPrevious: boolean;
   }>();
-  console.log(response);
 
   const resourceName = {
     singular: 'page',
@@ -117,7 +116,6 @@ export default function Pages() {
       },
     },
   ];
-  console.log(useActionData());
 
   return (
     <Page>

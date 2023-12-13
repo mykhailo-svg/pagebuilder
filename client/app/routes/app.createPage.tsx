@@ -68,7 +68,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function CreatePage() {
   const response = useLoaderData<InitialResponse>();
-  console.log(response);
   const [selectedTemplate, setSelectedTemplate] = useState('today');
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState<string>('');

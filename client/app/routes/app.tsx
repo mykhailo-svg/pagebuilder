@@ -4,11 +4,11 @@ import { Outlet, useLoaderData, useRouteError } from '@remix-run/react';
 import polarisStyles from '@shopify/polaris/build/esm/styles.css';
 import { boundary } from '@shopify/shopify-app-remix/server';
 import { AppProvider } from '@shopify/shopify-app-remix/react';
-import { authenticate } from '../shopify.server';
+import { authenticate , sessionStorage } from '../shopify.server';
 import { Provider, useAppBridge } from '@shopify/app-bridge-react';
-export const links = () => [{ rel: 'stylesheet', href: polarisStyles }];
-import { sessionStorage } from '../shopify.server';
+
 import { useEffect, useState } from 'react';
+export const links = () => [{ rel: 'stylesheet', href: polarisStyles }];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   await authenticate.admin(request);

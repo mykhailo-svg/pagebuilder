@@ -3,7 +3,7 @@ import { Card, Frame, Page, Toast } from '@shopify/polaris';
 import type { Editor } from 'grapesjs';
 import mainCss from '../styles/main.css';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
-import { Redirect, Fullscreen } from '@shopify/app-bridge/actions';
+import { Fullscreen } from '@shopify/app-bridge/actions';
 import {
   Form,
   useActionData,
@@ -82,7 +82,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function AdditionalPage() {
   const app = useAppBridge();
-  const redirect = Redirect.create(app);
   const [isFullScreen, setIsFullscreen] = useState(true);
   useEffect(() => {
     if (isFullScreen) {
