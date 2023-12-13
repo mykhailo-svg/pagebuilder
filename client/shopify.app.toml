@@ -2,7 +2,7 @@
 
 name = "pages-builder"
 client_id = "b559767290b67b4db00a3d213d55c281"
-application_url = "https://epson-parker-automated-efficiency.trycloudflare.com"
+application_url = "https://respect-hold-simon-susan.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products,read_themes,write_themes"
 
 [auth]
 redirect_urls = [
-  "https://epson-parker-automated-efficiency.trycloudflare.com/auth/callback",
-  "https://epson-parker-automated-efficiency.trycloudflare.com/auth/shopify/callback",
-  "https://epson-parker-automated-efficiency.trycloudflare.com/api/auth/callback",
-  "https://epson-parker-automated-efficiency.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://respect-hold-simon-susan.trycloudflare.com/auth/callback",
+  "https://respect-hold-simon-susan.trycloudflare.com/auth/shopify/callback",
+  "https://respect-hold-simon-susan.trycloudflare.com/api/auth/callback",
+  "https://respect-hold-simon-susan.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]
