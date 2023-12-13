@@ -19,17 +19,17 @@ export function Sidebar() {
 
   return (
     <>
-      <div style={{ width: '300px' }}>
+      <div style={{ width: '300px', height: '80vh', overflow: 'auto' }}>
         <Card>
           <BlockStack gap="1000">
             <BlockStack gap="500">
               <Text as="h5">Blocks</Text>
               <div id="blocks" ref={blocksRef}></div>
             </BlockStack>
-            {/* <BlockStack gap="500">
+            <BlockStack gap="500">
               <Text as="h5">Layers</Text>
               <div id="layers-container"></div>
-            </BlockStack> */}
+            </BlockStack>
             <BlockStack gap="500">
               <Text as="h5">Styles</Text>
               <div ref={stylesRef} id="styles-container"></div>
