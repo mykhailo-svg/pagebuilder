@@ -9,15 +9,20 @@ import {
   InlineStack,
   Card,
 } from '@shopify/polaris';
+import { MaximizeMajor } from '@shopify/polaris-icons';
 import type { PageType } from '~/global_types';
 import { definePageBadgesStatus } from '~/helpers/definePageBadge';
 
-export function EditorHeader({ page }: { page: PageType }) {
+export function EditorHeader({
+  page,
+  canSave,
+  handleFullscreenToggle,
+}: {
+  page: PageType;
+  canSave: boolean;
+  handleFullscreenToggle: () => void;
+}) {
   const navigate = useNavigate();
-
-  const handleActionClick = () => {
-    navigate('/app/pages');
-  };
 
   return (
     <Card>
@@ -29,10 +34,11 @@ export function EditorHeader({ page }: { page: PageType }) {
           alignItems: 'center',
           paddingLeft: '1rem',
           paddingRight: '1rem',
+          gap: '20px',
         }}
       >
+        <Button onClick={handleFullscreenToggle} icon={MaximizeMajor} />
         <InlineStack gap="500">
-          <Button url="/app/pages">Back</Button>
           <Badge
             size="small"
             tone={definePageBadgesStatus(page.status).tone}
@@ -50,7 +56,12 @@ export function EditorHeader({ page }: { page: PageType }) {
           </InlineGrid>
         </div>
         <ButtonGroup>
-          <Button submit variant="primary" onClick={() => {}}>
+          <Button
+            disabled={canSave}
+            submit
+            variant="primary"
+            onClick={() => {}}
+          >
             {page.shouldPublish ? 'Publish' : 'Save'}
           </Button>
           <Button variant="primary" tone="critical" onClick={() => {}}>

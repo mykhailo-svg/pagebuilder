@@ -12,10 +12,6 @@ if (
 
 /** @type {import('@remix-run/dev').AppConfig} */
 module.exports = {
-  stylesheets: {
-    // Додаємо Bootstrap
-    'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css': true,
-  },
   ignoredRouteFiles: ['**/.*'],
   appDirectory: 'app',
   serverModuleFormat: 'cjs',

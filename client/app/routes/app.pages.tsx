@@ -16,14 +16,16 @@ import {
   useIndexResourceState,
   Link,
 } from '@shopify/polaris';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import type { PageType } from '~/global_types';
 import { definePageBadgesStatus } from '~/helpers/definePageBadge';
 import { deletePages, getPages } from '~/models/page.server';
 
 export const loader: LoaderFunction = async ({ request }) => {
+  const url = new URL(request.url);
+  const page = parseInt(url.searchParams.get('page') || '0');
   try {
-    const pages = await getPages();
+    const pages = await getPages({ page });
 
     return json(pages);
   } catch (error) {
@@ -45,7 +47,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function Pages() {
-  const response = useLoaderData<PageType[]>();
+  const response = useLoaderData<{
+    pages: PageType[];
+    hasNext: boolean;
+    hasPrevious: boolean;
+  }>();
+  console.log(response);
 
   const resourceName = {
     singular: 'page',
@@ -55,8 +62,12 @@ export default function Pages() {
   const submit = useSubmit();
   const formRef = useRef<HTMLFormElement>(null);
 
-  const { selectedResources, allResourcesSelected, handleSelectionChange } =
-    useIndexResourceState(response);
+  const {
+    selectedResources,
+    clearSelection,
+    allResourcesSelected,
+    handleSelectionChange,
+  } = useIndexResourceState(response.pages);
 
   const handleSubmit = (event: any) => {
     const formData = new FormData(formRef.current as HTMLFormElement);
@@ -67,7 +78,9 @@ export default function Pages() {
     });
   };
 
-  const rowMarkup = response.map(
+  const [pageCount, setPageCount] = useState(0);
+
+  const rowMarkup = response.pages.map(
     ({ id, name, status, templateType }, index) => (
       <IndexTable.Row
         id={id}
@@ -98,6 +111,8 @@ export default function Pages() {
     {
       content: 'Delete pages',
       onAction: () => {
+        setPageCount(0);
+        clearSelection();
         handleSubmit(formRef.current);
       },
     },
@@ -109,10 +124,10 @@ export default function Pages() {
       <ui-title-bar title="Pages"></ui-title-bar>
       <Form ref={formRef} method="post">
         <Card>
-          {response.length ? (
+          {response.pages.length ? (
             <IndexTable
               resourceName={resourceName}
-              itemCount={response.length}
+              itemCount={response.pages.length}
               selectedItemsCount={
                 allResourcesSelected ? 'All' : selectedResources.length
               }
@@ -123,6 +138,20 @@ export default function Pages() {
                 { title: 'Template' },
                 { title: 'Status' },
               ]}
+              pagination={{
+                hasNext: response.hasNext,
+                nextURL: `/app/pages?page=${pageCount + 1}`,
+                onNext: () => {
+                  setPageCount(pageCount + 1);
+                },
+                previousURL: `/app/pages?page=${pageCount - 1}`,
+                hasPrevious: response.hasPrevious,
+                onPrevious: () => {
+                  if (pageCount) {
+                    setPageCount(pageCount - 1);
+                  }
+                },
+              }}
             >
               {rowMarkup}
             </IndexTable>

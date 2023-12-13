@@ -2,7 +2,10 @@ import type { ActionFunctionArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { Form, useActionData } from '@remix-run/react';
 import { Page, Layout, Button } from '@shopify/polaris';
+import { Redirect, Fullscreen } from '@shopify/app-bridge/actions';
 import { authenticate } from '~/shopify.server';
+import { useAppBridge } from '@shopify/app-bridge-react';
+import { useEffect } from 'react';
 export const action = async ({ request }: ActionFunctionArgs) => {
   const { admin, session } = await authenticate.admin(request);
   const asset = new admin.rest.resources.Asset({ session: session });
@@ -19,13 +22,27 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export default function Index() {
   const response = useActionData();
   console.log(response);
-
+  const app = useAppBridge();
+  const redirect = Redirect.create(app);
+  useEffect(() => {
+    if (app) {
+      const fullscreen = Fullscreen.create(app);
+      fullscreen.dispatch(Fullscreen.Action.ENTER);
+    }
+  }, [app]);
   return (
     <Page>
       <ui-title-bar title="Main page"></ui-title-bar>
       <Layout>
         <Form method="put">
-          <Button submit>Submit</Button>
+          <Button
+            onClick={() => {
+              const fullscreen = Fullscreen.create(app);
+              fullscreen.dispatch(Fullscreen.Action.EXIT);
+            }}
+          >
+            Submit
+          </Button>
         </Form>
       </Layout>
     </Page>

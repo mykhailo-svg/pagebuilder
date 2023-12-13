@@ -77,10 +77,34 @@ const templates = {
   },
 };
 
-export async function getPages() {
+export async function getPages({ page }: { page: number }) {
   try {
-    const pages = await db.page.findMany();
-    return pages;
+    const itemsPerPage = 2;
+    const pages = await db.page.findMany({
+      skip: page * itemsPerPage,
+      take: itemsPerPage,
+    });
+    const nextStepPages = await db.page.findMany({
+      skip: (page + 1) * itemsPerPage,
+      take: itemsPerPage,
+    });
+    let hasPrevious = false;
+    if (page - 1 > -1) {
+      const previousStepPages = await db.page.findMany({
+        skip: (page - 1) * itemsPerPage,
+        take: itemsPerPage,
+      });
+      if (previousStepPages.length > 0) {
+        hasPrevious = true;
+      }
+    }
+
+    return {
+      pages,
+      hasNext: nextStepPages.length > 0,
+      hasPrevious,
+      nextStepPages,
+    };
   } catch (error) {
     return error;
   }

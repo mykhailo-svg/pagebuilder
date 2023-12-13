@@ -25,8 +25,10 @@
 }
 
 .main-content {
-flex: 1 1 auto;
+    flex: 1 1 auto;
 }
+
+
 
 .main-content .navbar {
     padding: 0;
@@ -89,7 +91,7 @@ flex: 1 1 auto;
 
 /* Theming */
 .gjs-one-bg {
-    background-color: #fcf6f5ff;
+    background-color: rgb(255, 255, 255);
 }
 
 .gjs-two-color {
@@ -140,6 +142,10 @@ flex: 1 1 auto;
     justify-content: center;
 }
 
+.gjs-radio-item-label {
+    font-size: 16px;
+}
+
 .error .bg-body .title {
     font-weight: 600;
 }
@@ -152,4 +158,14 @@ flex: 1 1 auto;
     min-width: 150px;
 }
 
-/*# sourceMappingURL=main.css.map */
+
+
+.optionList .Polaris-InlineStack {
+    width: 100%;
+}
+
+.themesOptionListItem {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+}

@@ -5,11 +5,15 @@ import {
   Button,
   Card,
   Divider,
+  Icon,
+  InlineStack,
   OptionList,
   Page,
   Select,
   TextField,
 } from '@shopify/polaris';
+import mainStyles from '../styles/main.css';
+import { IdentityCardFilledMajor } from '@shopify/polaris-icons';
 import { authenticate } from '~/shopify.server';
 import type { ActionFunctionArgs, LoaderFunction } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
@@ -25,6 +29,8 @@ type Theme = {
 type InitialResponse = {
   themes: Theme[];
 };
+
+export const links = () => [{ rel: 'stylesheet', href: mainStyles }];
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
@@ -127,35 +133,31 @@ export default function CreatePage() {
                   onChange={handleSelectChange}
                   value={selectedTemplate}
                 />
-                <OptionList
-                  title="Pick theme"
-                  onChange={setSelected}
-                  options={themes.map((theme) => {
-                    return {
-                      value: theme.id.toString(),
-                      label: (
-                        <div
-                          style={{
-                            minWidth: '300px',
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                          }}
-                        >
-                          {theme.name}
-                          <Badge
-                            size="large"
-                            tone={
-                              theme.role === 'main' ? 'success' : 'critical'
-                            }
-                          >
-                            {theme.role}
-                          </Badge>
-                        </div>
-                      ),
-                    };
-                  })}
-                  selected={selected}
-                />
+                <div className="optionList">
+                  <OptionList
+                    title="Pick theme"
+                    onChange={setSelected}
+                    options={themes.map((theme) => {
+                      return {
+                        value: theme.id.toString(),
+                        label: (
+                          <div className="themesOptionListItem">
+                            {theme.name}
+                            <Badge
+                              size="large"
+                              tone={
+                                theme.role === 'main' ? 'success' : 'critical'
+                              }
+                            >
+                              {theme.role}
+                            </Badge>
+                          </div>
+                        ),
+                      };
+                    })}
+                    selected={selected}
+                  />
+                </div>
 
                 <Button variant="primary" submit>
                   Create page

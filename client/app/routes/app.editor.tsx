@@ -1,10 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
-import { Card, Page } from '@shopify/polaris';
+import { Card, Frame, Page, Toast } from '@shopify/polaris';
 import type { Editor } from 'grapesjs';
-import bootstrapCss from 'bootstrap/dist/css/bootstrap.min.css';
 import mainCss from '../styles/main.css';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
-import { Form, useLoaderData, useSubmit } from '@remix-run/react';
+import { Redirect, Fullscreen } from '@shopify/app-bridge/actions';
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useSubmit,
+} from '@remix-run/react';
 import { Sidebar } from '~/components/Sidebar';
 import { initEditorConfig } from '~/helpers/editorConfig';
 import { TopNav } from '~/components/TopNav';
@@ -14,10 +19,10 @@ import { json } from '@remix-run/node';
 import { getPageById, updatePage } from '~/models/page.server';
 import { authenticate } from '~/shopify.server';
 import { EditorHeader } from '~/components/EditorHeader';
+import { useAppBridge } from '@shopify/app-bridge-react';
 
 export const links = () => [
   { rel: 'stylesheet', href: grapesStyles },
-  { rel: 'stylesheet', href: bootstrapCss },
   { rel: 'stylesheet', href: mainCss },
 ];
 
@@ -28,7 +33,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const { themeId, id, name, templateType, shouldPublish } = JSON.parse(
     formData.get('page') as string
   ) as PageType;
-  
+
   if (shouldPublish) {
     const sectionKey =
       `sections/${name}-${id}.liquid` ?? 'templates/error.liquid';
@@ -57,7 +62,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   return json({
     formDataObject: formData.get('html'),
-    updatedPage,
+    page: updatedPage,
   });
 };
 
@@ -76,10 +81,28 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function AdditionalPage() {
-  const [editor, setEditor] = useState<Editor>();
+  const app = useAppBridge();
+  const redirect = Redirect.create(app);
+  const [isFullScreen, setIsFullscreen] = useState(true);
+  useEffect(() => {
+    if (isFullScreen) {
+      const fullscreen = Fullscreen.create(app);
+      fullscreen.dispatch(Fullscreen.Action.ENTER);
+    } else {
+      const fullscreen = Fullscreen.create(app);
+      fullscreen.dispatch(Fullscreen.Action.EXIT);
+    }
+  }, [isFullScreen]);
 
+  const [editor, setEditor] = useState<Editor>();
   const pageResponse = useLoaderData<PageType>();
-  console.log(pageResponse);
+  const pageUpdateResponse = useActionData<{ page: PageType }>();
+  const [canSave, setCanSave] = useState<boolean>(!pageResponse.shouldPublish);
+  const [activeToast, setActiveToast] = useState(false);
+
+  const handleFullscreenToggle = () => {
+    setIsFullscreen(!isFullScreen);
+  };
 
   useEffect(() => {
     try {
@@ -92,12 +115,22 @@ export default function AdditionalPage() {
         run: (editor) => editor.setDevice('Mobile'),
       });
       editor.Panels.removeButton('devices-c', 'block-editor');
-
+      editor.on('update', () => {
+        setCanSave(false);
+      });
       setEditor(editor);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   }, []);
+
+  useEffect(() => {
+    if (pageUpdateResponse) {
+      setActiveToast(true);
+      setCanSave(!pageUpdateResponse.page.shouldPublish);
+    }
+  }, [pageUpdateResponse]);
+
   const submit = useSubmit();
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -123,23 +156,41 @@ export default function AdditionalPage() {
 
   return (
     <Page fullWidth>
-      <Form ref={formRef} onSubmit={handleSubmit} method="post">
-        <EditorHeader page={pageResponse} />
-      </Form>
-      <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
-        <Sidebar />
+      <Frame>
+        {activeToast ? (
+          <Toast
+            content={`Page succesfully ${
+              pageResponse.shouldPublish ? 'saved' : 'published'
+            }`}
+            duration={5000}
+            onDismiss={() => setActiveToast(false)}
+          />
+        ) : (
+          ''
+        )}
 
-        <div style={{ flex: '1 1 auto' }}>
-          <Card>
-            <nav className="navbar navbar-light">
-              <div className="container-fluid">
-                <TopNav />
-              </div>
-            </nav>
-            <div id="editor"></div>
-          </Card>
+        <Form ref={formRef} onSubmit={handleSubmit} method="post">
+          <EditorHeader
+            handleFullscreenToggle={handleFullscreenToggle}
+            canSave={canSave}
+            page={pageResponse}
+          />
+        </Form>
+        <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
+          <Sidebar />
+
+          <div style={{ flex: '1 1 auto' }}>
+            <Card>
+              <nav className="navbar navbar-light">
+                <div className="container-fluid">
+                  <TopNav />
+                </div>
+              </nav>
+              <div id="editor"></div>
+            </Card>
+          </div>
         </div>
-      </div>
+      </Frame>
     </Page>
   );
 }
