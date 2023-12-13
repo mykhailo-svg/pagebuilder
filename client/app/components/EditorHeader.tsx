@@ -16,9 +16,11 @@ import { definePageBadgesStatus } from '~/helpers/definePageBadge';
 export function EditorHeader({
   page,
   canSave,
+  handleFullscreenToggle,
 }: {
   page: PageType;
   canSave: boolean;
+  handleFullscreenToggle: () => void;
 }) {
   const navigate = useNavigate();
 
@@ -35,7 +37,7 @@ export function EditorHeader({
           gap: '20px',
         }}
       >
-        <Button icon={MaximizeMajor} />
+        <Button onClick={handleFullscreenToggle} icon={MaximizeMajor} />
         <InlineStack gap="500">
           <Badge
             size="small"

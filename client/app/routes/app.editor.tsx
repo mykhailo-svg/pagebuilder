@@ -83,18 +83,26 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function AdditionalPage() {
   const app = useAppBridge();
   const redirect = Redirect.create(app);
-  let fullscreen = null;
+  const [isFullScreen, setIsFullscreen] = useState(true);
   useEffect(() => {
-    fullscreen = Fullscreen.create(app);
-    fullscreen.dispatch(Fullscreen.Action.ENTER);
-  }, []);
+    if (isFullScreen) {
+      const fullscreen = Fullscreen.create(app);
+      fullscreen.dispatch(Fullscreen.Action.ENTER);
+    } else {
+      const fullscreen = Fullscreen.create(app);
+      fullscreen.dispatch(Fullscreen.Action.EXIT);
+    }
+  }, [isFullScreen]);
+
   const [editor, setEditor] = useState<Editor>();
   const pageResponse = useLoaderData<PageType>();
   const pageUpdateResponse = useActionData<{ page: PageType }>();
   const [canSave, setCanSave] = useState<boolean>(!pageResponse.shouldPublish);
   const [activeToast, setActiveToast] = useState(false);
 
-  console.log(pageResponse);
+  const handleFullscreenToggle = () => {
+    setIsFullscreen(!isFullScreen);
+  };
 
   useEffect(() => {
     try {
@@ -162,7 +170,11 @@ export default function AdditionalPage() {
         )}
 
         <Form ref={formRef} onSubmit={handleSubmit} method="post">
-          <EditorHeader canSave={canSave} page={pageResponse} />
+          <EditorHeader
+            handleFullscreenToggle={handleFullscreenToggle}
+            canSave={canSave}
+            page={pageResponse}
+          />
         </Form>
         <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
           <Sidebar />
