@@ -133,29 +133,31 @@ export default function CreatePage() {
                   onChange={handleSelectChange}
                   value={selectedTemplate}
                 />
-                <OptionList
-                  title="Pick theme"
-                  onChange={setSelected}
-                  options={themes.map((theme) => {
-                    return {
-                      value: theme.id.toString(),
-                      label: (
-                        <div className="themesOptionListItem">
-                          {theme.name}
-                          <Badge
-                            size="large"
-                            tone={
-                              theme.role === 'main' ? 'success' : 'critical'
-                            }
-                          >
-                            {theme.role}
-                          </Badge>
-                        </div>
-                      ),
-                    };
-                  })}
-                  selected={selected}
-                />
+                <div className="optionList">
+                  <OptionList
+                    title="Pick theme"
+                    onChange={setSelected}
+                    options={themes.map((theme) => {
+                      return {
+                        value: theme.id.toString(),
+                        label: (
+                          <div className="themesOptionListItem">
+                            {theme.name}
+                            <Badge
+                              size="large"
+                              tone={
+                                theme.role === 'main' ? 'success' : 'critical'
+                              }
+                            >
+                              {theme.role}
+                            </Badge>
+                          </div>
+                        ),
+                      };
+                    })}
+                    selected={selected}
+                  />
+                </div>
 
                 <Button variant="primary" submit>
                   Create page
