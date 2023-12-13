@@ -5,15 +5,12 @@ import {
   Button,
   Card,
   Divider,
-  Icon,
-  InlineStack,
   OptionList,
   Page,
   Select,
   TextField,
 } from '@shopify/polaris';
 import mainStyles from '../styles/main.css';
-import { IdentityCardFilledMajor } from '@shopify/polaris-icons';
 import { authenticate } from '~/shopify.server';
 import type { ActionFunctionArgs, LoaderFunction } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
