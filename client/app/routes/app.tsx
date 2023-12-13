@@ -5,6 +5,7 @@ import polarisStyles from '@shopify/polaris/build/esm/styles.css';
 import { boundary } from '@shopify/shopify-app-remix/server';
 import { AppProvider } from '@shopify/shopify-app-remix/react';
 import { authenticate } from '../shopify.server';
+import { Provider, useAppBridge } from '@shopify/app-bridge-react';
 export const links = () => [{ rel: 'stylesheet', href: polarisStyles }];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -15,7 +16,13 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function App() {
   const { apiKey } = useLoaderData<typeof loader>();
-
+  // const config = {
+  //   // The client ID provided for your application in the Partner Dashboard.
+  //   apiKey: apiKey,
+  //   // The host of the specific shop that's embedding your app. This value is provided by Shopify as a URL query parameter that's appended to your application URL when your app is loaded inside the Shopify admin.
+  //   host: new URLSearchParams(location.search).get('host') as string,
+  //   forceRedirect: true,
+  // };
   return (
     <AppProvider isEmbeddedApp apiKey={apiKey}>
       <ui-nav-menu>
