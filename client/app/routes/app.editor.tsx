@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Card, Page } from '@shopify/polaris';
 import type { Editor } from 'grapesjs';
-import bootstrapCss from 'bootstrap/dist/css/bootstrap.min.css';
 import mainCss from '../styles/main.css';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
 import {
@@ -22,7 +21,6 @@ import { EditorHeader } from '~/components/EditorHeader';
 
 export const links = () => [
   { rel: 'stylesheet', href: grapesStyles },
-  { rel: 'stylesheet', href: bootstrapCss },
   { rel: 'stylesheet', href: mainCss },
 ];
 
