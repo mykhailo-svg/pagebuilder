@@ -69,8 +69,9 @@ export default function CreatePage() {
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState<string>('');
   const [themes, setThemes] = useState<Theme[]>(response.themes);
+  const nameRegex = /^[A-Za-z][^ \-]*$/;
   useEffect(() => {
-    if (name.length >= 5) {
+    if (name.length >= 5 && nameRegex.test(name)) {
       setNameError('');
     }
   }, [name]);
@@ -85,8 +86,10 @@ export default function CreatePage() {
   const handleSubmit = (event: any) => {
     event.preventDefault();
 
-    if (name.length < 5) {
-      setNameError('Enter 5 digit page name');
+    if (name.length < 5 || !nameRegex.test(name)) {
+      setNameError(
+        'Name must start with a letter and cannot contain spaces or hyphens'
+      );
     } else {
       const formData = new FormData(formRef.current as HTMLFormElement);
       formData.append('themePicker', selected[0]);
