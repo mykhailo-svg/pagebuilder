@@ -9,6 +9,7 @@ import {
   InlineStack,
   Card,
 } from '@shopify/polaris';
+import { MaximizeMajor } from '@shopify/polaris-icons';
 import type { PageType } from '~/global_types';
 import { definePageBadgesStatus } from '~/helpers/definePageBadge';
 
@@ -31,8 +32,10 @@ export function EditorHeader({
           alignItems: 'center',
           paddingLeft: '1rem',
           paddingRight: '1rem',
+          gap: '20px',
         }}
       >
+        <Button icon={MaximizeMajor} />
         <InlineStack gap="500">
           <Badge
             size="small"
