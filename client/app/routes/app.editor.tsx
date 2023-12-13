@@ -4,7 +4,12 @@ import type { Editor } from 'grapesjs';
 import bootstrapCss from 'bootstrap/dist/css/bootstrap.min.css';
 import mainCss from '../styles/main.css';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
-import { Form, useLoaderData, useSubmit } from '@remix-run/react';
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useSubmit,
+} from '@remix-run/react';
 import { Sidebar } from '~/components/Sidebar';
 import { initEditorConfig } from '~/helpers/editorConfig';
 import { TopNav } from '~/components/TopNav';
@@ -57,7 +62,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   return json({
     formDataObject: formData.get('html'),
-    updatedPage,
+    page: updatedPage,
   });
 };
 
@@ -77,8 +82,10 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function AdditionalPage() {
   const [editor, setEditor] = useState<Editor>();
-  const [canSave, setCanSave] = useState<boolean>(true);
   const pageResponse = useLoaderData<PageType>();
+  const pageUpdateResponse = useActionData<{ page: PageType }>();
+  const [canSave, setCanSave] = useState<boolean>(!pageResponse.shouldPublish);
+
   console.log(pageResponse);
 
   useEffect(() => {
@@ -92,12 +99,21 @@ export default function AdditionalPage() {
         run: (editor) => editor.setDevice('Mobile'),
       });
       editor.Panels.removeButton('devices-c', 'block-editor');
-
+      editor.on('update', () => {
+        setCanSave(false);
+      });
       setEditor(editor);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   }, []);
+
+  useEffect(() => {
+    if (pageUpdateResponse) {
+      setCanSave(!pageUpdateResponse.page.shouldPublish);
+    }
+  }, [pageUpdateResponse]);
+
   const submit = useSubmit();
   const formRef = useRef<HTMLFormElement>(null);
 

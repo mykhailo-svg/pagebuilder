@@ -34,7 +34,6 @@ export function EditorHeader({
         }}
       >
         <InlineStack gap="500">
-          <Button url="/app/pages">Back</Button>
           <Badge
             size="small"
             tone={definePageBadgesStatus(page.status).tone}
