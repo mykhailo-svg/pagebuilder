@@ -12,12 +12,14 @@ import {
 import type { PageType } from '~/global_types';
 import { definePageBadgesStatus } from '~/helpers/definePageBadge';
 
-export function EditorHeader({ page }: { page: PageType }) {
+export function EditorHeader({
+  page,
+  canSave,
+}: {
+  page: PageType;
+  canSave: boolean;
+}) {
   const navigate = useNavigate();
-
-  const handleActionClick = () => {
-    navigate('/app/pages');
-  };
 
   return (
     <Card>
@@ -50,7 +52,12 @@ export function EditorHeader({ page }: { page: PageType }) {
           </InlineGrid>
         </div>
         <ButtonGroup>
-          <Button submit variant="primary" onClick={() => {}}>
+          <Button
+            disabled={canSave}
+            submit
+            variant="primary"
+            onClick={() => {}}
+          >
             {page.shouldPublish ? 'Publish' : 'Save'}
           </Button>
           <Button variant="primary" tone="critical" onClick={() => {}}>

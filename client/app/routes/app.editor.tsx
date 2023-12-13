@@ -28,7 +28,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const { themeId, id, name, templateType, shouldPublish } = JSON.parse(
     formData.get('page') as string
   ) as PageType;
-  
+
   if (shouldPublish) {
     const sectionKey =
       `sections/${name}-${id}.liquid` ?? 'templates/error.liquid';
@@ -77,7 +77,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function AdditionalPage() {
   const [editor, setEditor] = useState<Editor>();
-
+  const [canSave, setCanSave] = useState<boolean>(true);
   const pageResponse = useLoaderData<PageType>();
   console.log(pageResponse);
 
@@ -124,7 +124,7 @@ export default function AdditionalPage() {
   return (
     <Page fullWidth>
       <Form ref={formRef} onSubmit={handleSubmit} method="post">
-        <EditorHeader page={pageResponse} />
+        <EditorHeader canSave={canSave} page={pageResponse} />
       </Form>
       <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
         <Sidebar />
