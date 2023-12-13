@@ -3,6 +3,7 @@ import { Card, Frame, Page, Toast } from '@shopify/polaris';
 import type { Editor } from 'grapesjs';
 import mainCss from '../styles/main.css';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
+import { Redirect, Fullscreen } from '@shopify/app-bridge/actions';
 import {
   Form,
   useActionData,
@@ -18,6 +19,7 @@ import { json } from '@remix-run/node';
 import { getPageById, updatePage } from '~/models/page.server';
 import { authenticate } from '~/shopify.server';
 import { EditorHeader } from '~/components/EditorHeader';
+import { useAppBridge } from '@shopify/app-bridge-react';
 
 export const links = () => [
   { rel: 'stylesheet', href: grapesStyles },
@@ -79,6 +81,13 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function AdditionalPage() {
+  const app = useAppBridge();
+  const redirect = Redirect.create(app);
+  let fullscreen = null;
+  useEffect(() => {
+    fullscreen = Fullscreen.create(app);
+    fullscreen.dispatch(Fullscreen.Action.ENTER);
+  }, []);
   const [editor, setEditor] = useState<Editor>();
   const pageResponse = useLoaderData<PageType>();
   const pageUpdateResponse = useActionData<{ page: PageType }>();
