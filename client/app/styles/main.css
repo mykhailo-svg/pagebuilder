@@ -28,6 +28,8 @@
     flex: 1 1 auto;
 }
 
+
+
 .main-content .navbar {
     padding: 0;
 }
@@ -138,6 +140,10 @@
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
+}
+
+.gjs-radio-item-label {
+    font-size: 16px;
 }
 
 .error .bg-body .title {

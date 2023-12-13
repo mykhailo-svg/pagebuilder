@@ -19,7 +19,15 @@ export function Sidebar() {
 
   return (
     <>
-      <div style={{ width: '300px', height: '80vh', overflow: 'auto' }}>
+      <div
+        style={{
+          width: '300px',
+          height: '80vh',
+          overflow: 'auto',
+          fontFamily: 'var(--p-font-family-sans)',
+          fontSize: '20px',
+        }}
+      >
         <Card>
           <BlockStack gap="1000">
             <BlockStack gap="500">
