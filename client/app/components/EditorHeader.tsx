@@ -1,8 +1,6 @@
-import { useNavigate } from '@remix-run/react';
 import {
   Badge,
   ButtonGroup,
-  FullscreenBar,
   Button,
   Text,
   InlineGrid,
@@ -22,8 +20,6 @@ export function EditorHeader({
   canSave: boolean;
   handleFullscreenToggle: () => void;
 }) {
-  const navigate = useNavigate();
-
   return (
     <Card>
       <div
@@ -63,9 +59,6 @@ export function EditorHeader({
             onClick={() => {}}
           >
             {page.shouldPublish ? 'Publish' : 'Save'}
-          </Button>
-          <Button variant="primary" tone="critical" onClick={() => {}}>
-            Delete
           </Button>
         </ButtonGroup>
       </div>
