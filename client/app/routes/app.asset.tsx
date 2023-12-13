@@ -2,7 +2,7 @@ import type { ActionFunctionArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { Form, useActionData } from '@remix-run/react';
 import { Page, Layout, Button } from '@shopify/polaris';
-import { Redirect, Fullscreen } from '@shopify/app-bridge/actions';
+import { Fullscreen } from '@shopify/app-bridge/actions';
 import { authenticate } from '~/shopify.server';
 import { useAppBridge } from '@shopify/app-bridge-react';
 import { useEffect } from 'react';
@@ -23,7 +23,6 @@ export default function Index() {
   const response = useActionData();
   console.log(response);
   const app = useAppBridge();
-  const redirect = Redirect.create(app);
   useEffect(() => {
     if (app) {
       const fullscreen = Fullscreen.create(app);

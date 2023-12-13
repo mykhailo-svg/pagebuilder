@@ -30,27 +30,24 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const { admin, session } = await authenticate.admin(request);
 
-  const { themeId, id, name, templateType, shouldPublish } = JSON.parse(
-    formData.get('page') as string
-  ) as PageType;
+  const { themeId, id, name, templateType, template, shouldPublish } =
+    JSON.parse(formData.get('page') as string) as PageType;
 
   if (shouldPublish) {
-    const sectionKey =
-      `sections/${name}-${id}.liquid` ?? 'templates/error.liquid';
-    const templateKey = `templates/${templateType}.${formData.get(
-      'liquidName'
-    )}.json`;
+    const fileName = `${name}-${id}`;
+    const sectionKey = `sections/${fileName}.liquid`;
+    const templateKey = `templates/${templateType}.${fileName}.json`;
 
     const asset = new admin.rest.resources.Asset({ session: session });
     asset.theme_id = parseInt(themeId);
     asset.key = sectionKey as string;
-    asset.value = formData.get('html')?.toString() || 'Failed to save';
+    asset.value = formData.get('html')?.toString() as string;
     await asset.save();
 
     const jsonAsset = new admin.rest.resources.Asset({ session: session });
     jsonAsset.theme_id = parseInt(themeId);
     jsonAsset.key = templateKey as string;
-    jsonAsset.value = formData.get('pageTemplate') as string;
+    jsonAsset.value = template;
     await jsonAsset.save();
   }
 
@@ -137,14 +134,10 @@ export default function AdditionalPage() {
     event.preventDefault();
 
     const formData = new FormData(formRef.current as HTMLFormElement);
-    formData.append('liquidName', `${pageResponse.name}-${pageResponse.id}`);
     formData.append(
       'html',
       `${editor?.getHtml().toString()} <style>${editor?.getCss()}</style>`
     );
-    formData.append('themeId', pageResponse.themeId);
-    formData.append('pageTemplate', pageResponse.template);
-    formData.append('pageTemplateType', pageResponse.templateType);
     formData.append('page', JSON.stringify(pageResponse));
 
     submit(formData, {
