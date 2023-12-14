@@ -16,6 +16,8 @@ import type { ActionFunctionArgs, LoaderFunction } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
 import { Form, useLoaderData, useSubmit } from '@remix-run/react';
 import { createNewPage } from '~/models/page.server';
+import { useAppBridge } from '@shopify/app-bridge-react';
+import { Fullscreen } from '@shopify/app-bridge/actions';
 
 type Theme = {
   id: number;
@@ -64,6 +66,11 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function CreatePage() {
+  const app = useAppBridge();
+  useEffect(() => {
+    const fullscreen = Fullscreen.create(app);
+    fullscreen.dispatch(Fullscreen.Action.EXIT);
+  }, []);
   const response = useLoaderData<InitialResponse>();
   const [selectedTemplate, setSelectedTemplate] = useState('today');
   const [name, setName] = useState('');
