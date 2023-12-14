@@ -2,7 +2,7 @@
 
 name = "pages-builder"
 client_id = "b559767290b67b4db00a3d213d55c281"
-application_url = "https://apt-strategic-bare-incidents.trycloudflare.com"
+application_url = "https://delaware-indexed-season-basket.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products,read_themes,write_themes"
 
 [auth]
 redirect_urls = [
-  "https://apt-strategic-bare-incidents.trycloudflare.com/auth/callback",
-  "https://apt-strategic-bare-incidents.trycloudflare.com/auth/shopify/callback",
-  "https://apt-strategic-bare-incidents.trycloudflare.com/api/auth/callback",
-  "https://apt-strategic-bare-incidents.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://delaware-indexed-season-basket.trycloudflare.com/auth/callback",
+  "https://delaware-indexed-season-basket.trycloudflare.com/auth/shopify/callback",
+  "https://delaware-indexed-season-basket.trycloudflare.com/api/auth/callback",
+  "https://delaware-indexed-season-basket.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]

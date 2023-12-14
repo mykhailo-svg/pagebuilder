@@ -185,7 +185,6 @@ export async function updatePage({ id, css, html }: UpdatePageArgs) {
     where: { id },
     data: {
       status: nextStatus,
-      css,
       shouldPublish: !existingPage.shouldPublish,
       html: html.replace(/\\/g, ''),
     },

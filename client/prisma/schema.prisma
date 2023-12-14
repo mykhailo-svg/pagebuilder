@@ -23,7 +23,6 @@ model Session {
 
 model Page {
   id            String  @id
-  css           String  @default("none")
   html          String  @default("none")
   template      String
   templateType  String  @default("page")
