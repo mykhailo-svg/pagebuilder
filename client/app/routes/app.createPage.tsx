@@ -95,7 +95,7 @@ export default function CreatePage() {
 
     if (name.length < 5 || !nameRegex.test(name)) {
       setNameError(
-        'Name must start with a letter and cannot contain spaces or hyphens'
+        '5 digit name must start with a letter and cannot contain spaces or hyphens'
       );
     } else {
       const formData = new FormData(formRef.current as HTMLFormElement);
