@@ -171,7 +171,7 @@ export default function AdditionalPage() {
         <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
           <Sidebar />
 
-          <div style={{ flex: '1 1 auto' }}>
+          <div style={{ flex: '1 1 auto', height: '85vh', overflow: 'auto' }}>
             <Card>
               <nav className="navbar navbar-light">
                 <div className="container-fluid">
