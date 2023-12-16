@@ -45,6 +45,7 @@ export default function App() {
         // Dynamically import GrapesJS and its related modules
         const [
           Editor,
+          GjsEditor,
           GjsEditorModule,
 
           // Other modules...
@@ -68,7 +69,7 @@ export default function App() {
 
         // Set the GjsEditor component with the dynamically imported module
         setGjsEditor(() => (
-          <GjsEditorModule.default
+          <GjsEditor.default
             className="gjs-custom-editor text-white bg-slate-900"
             grapesjs="https://unpkg.com/grapesjs"
             grapesjsCss="https://unpkg.com/grapesjs/dist/css/grapes.min.css"
@@ -82,7 +83,7 @@ export default function App() {
             onEditor={onEditor}
           >
             {/* Your JSX structure... */}
-          </GjsEditorModule.default>
+          </GjsEditor.default>
         ));
       } catch (error) {
         console.error('Error loading GrapesJS:', error);
