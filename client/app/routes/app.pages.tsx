@@ -1,11 +1,8 @@
 import type { LoaderFunction, ActionFunctionArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import {
-  Form,
-  useActionData,
-  useLoaderData,
-  useSubmit,
-} from '@remix-run/react';
+import { Form, useLoaderData, useSubmit } from '@remix-run/react';
+import { useAppBridge } from '@shopify/app-bridge-react';
+import { Fullscreen } from '@shopify/app-bridge/actions';
 import {
   IndexTable,
   Text,
@@ -16,7 +13,7 @@ import {
   useIndexResourceState,
   Link,
 } from '@shopify/polaris';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { PageType } from '~/global_types';
 import { definePageBadgesStatus } from '~/helpers/definePageBadge';
 import { deletePages, getPages } from '~/models/page.server';
@@ -47,12 +44,16 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function Pages() {
+  const app = useAppBridge();
+  useEffect(() => {
+    const fullscreen = Fullscreen.create(app);
+    fullscreen.dispatch(Fullscreen.Action.EXIT);
+  }, []);
   const response = useLoaderData<{
     pages: PageType[];
     hasNext: boolean;
     hasPrevious: boolean;
   }>();
-  console.log(response);
 
   const resourceName = {
     singular: 'page',
@@ -117,7 +118,6 @@ export default function Pages() {
       },
     },
   ];
-  console.log(useActionData());
 
   return (
     <Page>

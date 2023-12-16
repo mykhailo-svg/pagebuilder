@@ -3,7 +3,7 @@ import { Card, Frame, Page, Toast } from '@shopify/polaris';
 import type { Editor } from 'grapesjs';
 import mainCss from '../styles/main.css';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
-import { Redirect, Fullscreen } from '@shopify/app-bridge/actions';
+import { Fullscreen } from '@shopify/app-bridge/actions';
 import {
   Form,
   useActionData,
@@ -30,27 +30,24 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const { admin, session } = await authenticate.admin(request);
 
-  const { themeId, id, name, templateType, shouldPublish } = JSON.parse(
-    formData.get('page') as string
-  ) as PageType;
+  const { themeId, id, name, templateType, template, shouldPublish } =
+    JSON.parse(formData.get('page') as string) as PageType;
 
   if (shouldPublish) {
-    const sectionKey =
-      `sections/${name}-${id}.liquid` ?? 'templates/error.liquid';
-    const templateKey = `templates/${templateType}.${formData.get(
-      'liquidName'
-    )}.json`;
+    const fileName = `${name}-${id}`;
+    const sectionKey = `sections/${fileName}.liquid`;
+    const templateKey = `templates/${templateType}.${fileName}.json`;
 
     const asset = new admin.rest.resources.Asset({ session: session });
     asset.theme_id = parseInt(themeId);
     asset.key = sectionKey as string;
-    asset.value = formData.get('html')?.toString() || 'Failed to save';
+    asset.value = formData.get('html')?.toString() as string;
     await asset.save();
 
     const jsonAsset = new admin.rest.resources.Asset({ session: session });
     jsonAsset.theme_id = parseInt(themeId);
     jsonAsset.key = templateKey as string;
-    jsonAsset.value = formData.get('pageTemplate') as string;
+    jsonAsset.value = template;
     await jsonAsset.save();
   }
 
@@ -82,7 +79,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function AdditionalPage() {
   const app = useAppBridge();
-  const redirect = Redirect.create(app);
   const [isFullScreen, setIsFullscreen] = useState(true);
   useEffect(() => {
     if (isFullScreen) {
@@ -111,6 +107,23 @@ export default function AdditionalPage() {
       editor.Commands.add('set-device-desktop', {
         run: (editor) => editor.setDevice('Desktop'),
       });
+      editor.Panels.addPanel({
+        id: 'gjs-settings',
+        visible: true,
+        buttons: [
+          {
+            id: 'btn-settings',
+            className: 'fa fa-cog',
+            command: function () {
+              // Handle click event or open your settings panel
+              alert('Settings clicked!');
+            },
+            attributes: {
+              title: 'Settings',
+            },
+          },
+        ],
+      });
       editor.Commands.add('set-device-mobile', {
         run: (editor) => editor.setDevice('Mobile'),
       });
@@ -138,14 +151,10 @@ export default function AdditionalPage() {
     event.preventDefault();
 
     const formData = new FormData(formRef.current as HTMLFormElement);
-    formData.append('liquidName', `${pageResponse.name}-${pageResponse.id}`);
     formData.append(
       'html',
       `${editor?.getHtml().toString()} <style>${editor?.getCss()}</style>`
     );
-    formData.append('themeId', pageResponse.themeId);
-    formData.append('pageTemplate', pageResponse.template);
-    formData.append('pageTemplateType', pageResponse.templateType);
     formData.append('page', JSON.stringify(pageResponse));
 
     submit(formData, {
@@ -179,7 +188,7 @@ export default function AdditionalPage() {
         <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
           <Sidebar />
 
-          <div style={{ flex: '1 1 auto' }}>
+          <div style={{ flex: '1 1 auto', height: '85vh', overflow: 'auto' }}>
             <Card>
               <nav className="navbar navbar-light">
                 <div className="container-fluid">

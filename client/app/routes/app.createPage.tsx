@@ -5,20 +5,19 @@ import {
   Button,
   Card,
   Divider,
-  Icon,
-  InlineStack,
   OptionList,
   Page,
   Select,
   TextField,
 } from '@shopify/polaris';
 import mainStyles from '../styles/main.css';
-import { IdentityCardFilledMajor } from '@shopify/polaris-icons';
 import { authenticate } from '~/shopify.server';
 import type { ActionFunctionArgs, LoaderFunction } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
 import { Form, useLoaderData, useSubmit } from '@remix-run/react';
 import { createNewPage } from '~/models/page.server';
+import { useAppBridge } from '@shopify/app-bridge-react';
+import { Fullscreen } from '@shopify/app-bridge/actions';
 
 type Theme = {
   id: number;
@@ -67,14 +66,19 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function CreatePage() {
+  const app = useAppBridge();
+  useEffect(() => {
+    const fullscreen = Fullscreen.create(app);
+    fullscreen.dispatch(Fullscreen.Action.EXIT);
+  }, []);
   const response = useLoaderData<InitialResponse>();
-  console.log(response);
   const [selectedTemplate, setSelectedTemplate] = useState('today');
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState<string>('');
   const [themes, setThemes] = useState<Theme[]>(response.themes);
+  const nameRegex = /^[A-Za-z][^ \-]*$/;
   useEffect(() => {
-    if (name.length >= 5) {
+    if (name.length >= 5 && nameRegex.test(name)) {
       setNameError('');
     }
   }, [name]);
@@ -89,8 +93,10 @@ export default function CreatePage() {
   const handleSubmit = (event: any) => {
     event.preventDefault();
 
-    if (name.length < 5) {
-      setNameError('Enter 5 digit page name');
+    if (name.length < 5 || !nameRegex.test(name)) {
+      setNameError(
+        '5 digit name must start with a letter and cannot contain spaces or hyphens'
+      );
     } else {
       const formData = new FormData(formRef.current as HTMLFormElement);
       formData.append('themePicker', selected[0]);

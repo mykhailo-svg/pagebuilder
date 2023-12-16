@@ -3,7 +3,7 @@ import { Page, Layout, CalloutCard } from '@shopify/polaris';
 export default function Index() {
   return (
     <Page fullWidth>
-      <ui-title-bar title="Main page"></ui-title-bar>
+      <ui-title-bar title="Dashboard"></ui-title-bar>
       <Layout>
         <CalloutCard
           title="Build drag-n-drop pages with no code!"

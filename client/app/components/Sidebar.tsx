@@ -1,18 +1,13 @@
 import { BlockStack, Card, Text } from '@shopify/polaris';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 export function Sidebar() {
-  useEffect(() => {
-    console.log('sd');
-  }, []);
   const blocksRef = useRef<null | HTMLDivElement>(null);
   const stylesRef = useRef<null | HTMLDivElement>(null);
   if (blocksRef.current && blocksRef.current.children.length === 2) {
     blocksRef.current.children[0].outerHTML = '';
   }
   if (stylesRef.current?.children.length === 4) {
-    console.log(stylesRef.current.children);
-
     stylesRef.current.children[0].outerHTML = '';
     stylesRef.current.children[0].outerHTML = '';
   }
@@ -37,6 +32,10 @@ export function Sidebar() {
             <BlockStack gap="500">
               <Text as="h5">Layers</Text>
               <div id="layers-container"></div>
+            </BlockStack>
+            <BlockStack gap="500">
+              <Text as="h5">Settings</Text>
+              <div id="trait-container"></div>
             </BlockStack>
             <BlockStack gap="500">
               <Text as="h5">Styles</Text>
