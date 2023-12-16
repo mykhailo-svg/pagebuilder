@@ -107,6 +107,23 @@ export default function AdditionalPage() {
       editor.Commands.add('set-device-desktop', {
         run: (editor) => editor.setDevice('Desktop'),
       });
+      editor.Panels.addPanel({
+        id: 'gjs-settings',
+        visible: true,
+        buttons: [
+          {
+            id: 'btn-settings',
+            className: 'fa fa-cog',
+            command: function () {
+              // Handle click event or open your settings panel
+              alert('Settings clicked!');
+            },
+            attributes: {
+              title: 'Settings',
+            },
+          },
+        ],
+      });
       editor.Commands.add('set-device-mobile', {
         run: (editor) => editor.setDevice('Mobile'),
       });

@@ -34,6 +34,10 @@ export function Sidebar() {
               <div id="layers-container"></div>
             </BlockStack>
             <BlockStack gap="500">
+              <Text as="h5">Settings</Text>
+              <div id="trait-container"></div>
+            </BlockStack>
+            <BlockStack gap="500">
               <Text as="h5">Styles</Text>
               <div ref={stylesRef} id="styles-container"></div>
             </BlockStack>
