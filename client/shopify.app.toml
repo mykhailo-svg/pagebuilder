@@ -2,7 +2,7 @@
 
 name = "pages-builder"
 client_id = "b559767290b67b4db00a3d213d55c281"
-application_url = "https://palmer-midnight-negotiation-excellence.trycloudflare.com"
+application_url = "https://infection-producing-permanent-weights.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products,read_themes,write_themes"
 
 [auth]
 redirect_urls = [
-  "https://palmer-midnight-negotiation-excellence.trycloudflare.com/auth/callback",
-  "https://palmer-midnight-negotiation-excellence.trycloudflare.com/auth/shopify/callback",
-  "https://palmer-midnight-negotiation-excellence.trycloudflare.com/api/auth/callback",
-  "https://palmer-midnight-negotiation-excellence.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://infection-producing-permanent-weights.trycloudflare.com/auth/callback",
+  "https://infection-producing-permanent-weights.trycloudflare.com/auth/shopify/callback",
+  "https://infection-producing-permanent-weights.trycloudflare.com/api/auth/callback",
+  "https://infection-producing-permanent-weights.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]
