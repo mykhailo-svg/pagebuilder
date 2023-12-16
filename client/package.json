@@ -20,6 +20,7 @@
     "prettify": "prettier --write \"**/*.{js,jsx,ts,tsx}\" --config .prettierrc"
   },
   "dependencies": {
+    "@grapesjs/react": "^1.0.0",
     "@prisma/client": "^4.13.0",
     "@remix-run/dev": "^2.0.0",
     "@remix-run/node": "^2.0.0",
