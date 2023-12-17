@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Card, Frame, Page, Toast } from '@shopify/polaris';
-import type { Editor } from 'grapesjs';
+import type { Editor, EditorConfig } from 'grapesjs';
 import mainCss from '../styles/main.css';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
 import { Fullscreen } from '@shopify/app-bridge/actions';
@@ -20,6 +20,13 @@ import { getPageById, updatePage } from '~/models/page.server';
 import { authenticate } from '~/shopify.server';
 import { EditorHeader } from '~/components/EditorHeader';
 import { useAppBridge } from '@shopify/app-bridge-react';
+import Topbar from '~/components/Topbar';
+import GjsEditor, {
+  AssetsProvider,
+  Canvas,
+  ModalProvider,
+} from '@grapesjs/react';
+import RightSidebar from '~/components/RightSidebar';
 
 export const links = () => [
   { rel: 'stylesheet', href: grapesStyles },
@@ -101,43 +108,6 @@ export default function AdditionalPage() {
   };
 
   useEffect(() => {
-    try {
-      const editor = initEditorConfig(pageResponse.html);
-
-      editor.Commands.add('set-device-desktop', {
-        run: (editor) => editor.setDevice('Desktop'),
-      });
-      editor.Panels.addPanel({
-        id: 'gjs-settings',
-        visible: true,
-        buttons: [
-          {
-            id: 'btn-settings',
-            className: 'fa fa-cog',
-            command: function () {
-              // Handle click event or open your settings panel
-              alert('Settings clicked!');
-            },
-            attributes: {
-              title: 'Settings',
-            },
-          },
-        ],
-      });
-      editor.Commands.add('set-device-mobile', {
-        run: (editor) => editor.setDevice('Mobile'),
-      });
-      editor.Panels.removeButton('devices-c', 'block-editor');
-      editor.on('update', () => {
-        setCanSave(false);
-      });
-      setEditor(editor);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  }, []);
-
-  useEffect(() => {
     if (pageUpdateResponse) {
       setActiveToast(true);
       setCanSave(!pageUpdateResponse.page.shouldPublish);
@@ -163,43 +133,73 @@ export default function AdditionalPage() {
     });
   };
 
+  const gjsOptions: EditorConfig = {
+    height: '100vh',
+    storageManager: false,
+    undoManager: { trackSelection: false },
+    selectorManager: { componentFirst: true },
+    projectData: {
+      assets: [
+        'https://via.placeholder.com/350x250/78c5d6/fff',
+        'https://via.placeholder.com/350x250/459ba8/fff',
+        'https://via.placeholder.com/350x250/79c267/fff',
+        'https://via.placeholder.com/350x250/c5d647/fff',
+        'https://via.placeholder.com/350x250/f28c33/fff',
+      ],
+      pages: [
+        {
+          name: 'Home page',
+          component: pageResponse.html,
+        },
+      ],
+    },
+  };
+  const onEditor = (editor: Editor) => {
+    console.log('Editor loaded');
+    editor.on('update', () => {
+      setCanSave(false);
+    });
+    (window as any).editor = editor;
+    setEditor(editor);
+  };
+
   return (
-    <Page fullWidth>
-      <Frame>
-        {activeToast ? (
-          <Toast
-            content={`Page succesfully ${
-              pageResponse.shouldPublish ? 'saved' : 'published'
-            }`}
-            duration={5000}
-            onDismiss={() => setActiveToast(false)}
-          />
-        ) : (
-          ''
-        )}
-
-        <Form ref={formRef} onSubmit={handleSubmit} method="post">
-          <EditorHeader
-            handleFullscreenToggle={handleFullscreenToggle}
-            canSave={canSave}
-            page={pageResponse}
-          />
-        </Form>
-        <div style={{ display: 'flex', gap: '30px', paddingTop: '10px' }}>
-          <Sidebar />
-
-          <div style={{ flex: '1 1 auto', height: '85vh', overflow: 'auto' }}>
-            <Card>
-              <nav className="navbar navbar-light">
-                <div className="container-fluid">
-                  <TopNav />
-                </div>
-              </nav>
-              <div id="editor"></div>
-            </Card>
+    <>
+      <Form ref={formRef} onSubmit={handleSubmit} method="post">
+        <EditorHeader
+          handleFullscreenToggle={handleFullscreenToggle}
+          canSave={canSave}
+          page={pageResponse}
+        />
+      </Form>
+      <GjsEditor
+        className="gjs-custom-editor text-white bg-slate-900"
+        grapesjs="https://unpkg.com/grapesjs"
+        grapesjsCss="https://unpkg.com/grapesjs/dist/css/grapes.min.css"
+        options={gjsOptions}
+        plugins={[
+          {
+            id: 'gjs-blocks-basic',
+            src: 'https://unpkg.com/grapesjs-blocks-basic',
+          },
+        ]}
+        onEditor={onEditor}
+      >
+        <div style={{ display: 'flex' }}>
+          <div
+            style={{ flex: '1 1 auto' }}
+            className="gjs-column-m flex flex-col flex-grow"
+          >
+            <Topbar />
+            <div style={{ flex: '1 1 auto' }}>
+              <Card>
+                <Canvas />
+              </Card>
+            </div>
           </div>
+          <RightSidebar className={`gjs-column-r w-[300px] border-l`} />
         </div>
-      </Frame>
-    </Page>
+      </GjsEditor>
+    </>
   );
 }
