@@ -73,17 +73,7 @@ export default function App() {
             className={`gjs-column-r w-[300px] border-l ${MAIN_BORDER_COLOR}`}
           />
         </div>
-        <AssetsProvider>
-          {({ assets, select, close, Container }: any) => (
-            <Container>
-              <CustomAssetManager
-                assets={assets}
-                select={select}
-                close={close}
-              />
-            </Container>
-          )}
-        </AssetsProvider>
+
       </GjsEditor>
     </>
   );
