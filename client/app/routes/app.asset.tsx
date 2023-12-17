@@ -12,6 +12,7 @@ import CustomAssetManager from '../components/CustomAssetManager';
 import Topbar from '../components/Topbar';
 import RightSidebar from '../components/RightSidebar';
 import { useEffect, useState } from 'react';
+import { Card } from '@shopify/polaris';
 
 const gjsOptions: EditorConfig = {
   height: '100vh',
@@ -56,28 +57,22 @@ export default function App() {
         ]}
         onEditor={onEditor}
       >
-        <div
-          className={`flex h-full border-t ${MAIN_BORDER_COLOR}`}
-          style={{ display: 'flex' }}
-        >
-          <div className="gjs-column-m flex flex-col flex-grow">
+        <div style={{ display: 'flex' }}>
+          <div
+            style={{ flex: '1 1 auto' }}
+            className="gjs-column-m flex flex-col flex-grow"
+          >
             <Topbar className="min-h-[48px]" />
-            <Canvas className="flex-grow gjs-custom-editor-canvas" />
+            <div style={{ flex: '1 1 auto' }}>
+              <Card>
+                <Canvas />
+              </Card>
+            </div>
           </div>
           <RightSidebar
             className={`gjs-column-r w-[300px] border-l ${MAIN_BORDER_COLOR}`}
           />
         </div>
-        <ModalProvider>
-          {({ open, title, content, close }: any) => (
-            <CustomModal
-              open={open}
-              title={title}
-              children={content}
-              close={close}
-            />
-          )}
-        </ModalProvider>
         <AssetsProvider>
           {({ assets, select, close, Container }: any) => (
             <Container>
