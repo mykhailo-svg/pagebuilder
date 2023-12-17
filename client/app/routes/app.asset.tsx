@@ -64,7 +64,7 @@ export default function App() {
             style={{ flex: '1 1 auto' }}
             className="gjs-column-m flex flex-col flex-grow"
           >
-            <Topbar className="min-h-[48px]" />
+            <Topbar />
             <div style={{ flex: '1 1 auto' }}>
               <Card>
                 <Canvas />
