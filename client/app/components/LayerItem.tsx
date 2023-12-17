@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { useEditor } from '@grapesjs/react';
-import { mdiEyeOffOutline, mdiEyeOutline, mdiMenuDown } from '@mdi/js';
-import Icon from '@mdi/react';
 import { Icon as PolarisIcon } from '@shopify/polaris';
 import type { Component } from 'grapesjs';
 import { MouseEvent, useEffect, useMemo, useRef, useState } from 'react';
-import { MAIN_BORDER_COLOR, cx } from './common';
+import { cx } from './common';
 
 export declare interface LayerItemProps
   extends React.HTMLProps<HTMLDivElement> {
@@ -14,7 +12,12 @@ export declare interface LayerItemProps
   draggingCmp?: Component;
   dragParent?: Component;
 }
-import { ChevronUpMinor, ChevronDownMinor } from '@shopify/polaris-icons';
+import {
+  ChevronUpMinor,
+  ChevronDownMinor,
+  ViewMinor,
+  HideMinor,
+} from '@shopify/polaris-icons';
 
 const itemStyle = { maxWidth: `100%` };
 
@@ -99,14 +102,11 @@ export default function LayerItem({
       >
         <div style={{ display: 'flex' }}>
           <div style={{ marginLeft: `${level * 10}px` }} onClick={toggleOpen}>
-            <Icon path={mdiMenuDown} size={0.7} rotate={open ? 0 : -90} />
+            <PolarisIcon source={open ? ChevronUpMinor : ChevronDownMinor} />
           </div>
           <div style={{ flex: '1 1 auto' }}>{name}</div>
-          <div onClick={toggleVisibility}>
-            <Icon
-              path={visible ? mdiEyeOutline : mdiEyeOffOutline}
-              size={0.7}
-            />
+          <div style={{ cursor: 'pointer' }} onClick={toggleVisibility}>
+            <PolarisIcon source={visible ? ViewMinor : HideMinor} />
           </div>
         </div>
       </div>
