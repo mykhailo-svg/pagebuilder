@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEditor } from '@grapesjs/react';
 import { Icon as PolarisIcon } from '@shopify/polaris';
-import type { Component } from 'grapesjs';
+import type { Component, LayerData } from 'grapesjs';
 import { MouseEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { cx } from './common';
 
@@ -30,7 +30,10 @@ export default function LayerItem({
   const editor = useEditor();
   const { Layers } = editor;
   const layerRef = useRef<HTMLDivElement>(null);
-  const [layerData, setLayerData] = useState(Layers.getLayerData(component));
+  const [layerData, setLayerData] = useState<LayerData>(
+    Layers.getLayerData(component)
+  );
+
   const { open, selected, hovered, components, visible, name } = layerData;
   const componentsIds = components.map((cmp) => cmp.getId());
   const isDragging = draggingCmp === component;
@@ -100,7 +103,14 @@ export default function LayerItem({
         data-layer-item
         ref={layerRef}
       >
-        <div style={{ display: 'flex' }}>
+        <div
+          style={{
+            display: 'flex',
+            background: `${
+              layerData.selected ? 'rgba(188, 194, 193,0.7)' : ''
+            }`,
+          }}
+        >
           <div style={{ marginLeft: `${level * 20}px` }} onClick={toggleOpen}>
             {components.length ? (
               <PolarisIcon source={open ? ChevronUpMinor : ChevronDownMinor} />
@@ -108,7 +118,6 @@ export default function LayerItem({
               ''
             )}
           </div>
-
           <div style={{ flex: '1 1 auto' }}>{name}</div>
           <div style={{ cursor: 'pointer' }} onClick={toggleVisibility}>
             <PolarisIcon source={visible ? ViewMinor : HideMinor} />
