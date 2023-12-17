@@ -2,34 +2,16 @@ import * as React from 'react';
 import {
   BlocksProvider,
   LayersProvider,
-  PagesProvider,
   SelectorsProvider,
   StylesProvider,
   TraitsProvider,
 } from '@grapesjs/react';
-import {
-  mdiBrush,
-  mdiLayers,
-  mdiViewGridPlus,
-  mdiTextBoxMultiple,
-  mdiCog,
-} from '@mdi/js';
-import {
-  LegacyCard,
-  Tabs as PolarisTabs,
-  Icon as PolarisIcon,
-} from '@shopify/polaris';
-import Icon from '@mdi/react';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
+import { Tabs, Card } from '@shopify/polaris';
 import { useCallback, useState } from 'react';
 import CustomBlockManager from './CustomBlockManager';
-import { MAIN_BORDER_COLOR, cx } from './common';
-import CustomPageManager from './CustomPageManager';
 import CustomLayerManager from './CustomLayerManager';
 import CustomSelectorManager from './CustomSelectorManager';
 import CustomStyleManager from './CustomStyleManager';
-import { PaintBrushMajor } from '@shopify/polaris-icons';
 import CustomTraitManager from './CustomTraitManager';
 
 const defaultTabProps = {
@@ -98,15 +80,10 @@ export default function RightSidebar({
     },
   ];
   return (
-    <div className={cx('gjs-right-sidebar flex flex-col', className)}>
-      <PolarisTabs
-        tabs={tabs}
-        selected={selected}
-        onSelect={handleTabChange}
-        fitted
-      >
+    <Card>
+      <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange} fitted>
         {panels[selected]}
-      </PolarisTabs>
-    </div>
+      </Tabs>
+    </Card>
   );
 }
