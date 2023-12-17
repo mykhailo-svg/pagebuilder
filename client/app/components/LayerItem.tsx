@@ -1,10 +1,11 @@
-import * as React from "react";
-import { useEditor } from "@grapesjs/react";
-import { mdiEyeOffOutline, mdiEyeOutline, mdiMenuDown } from "@mdi/js";
-import Icon from "@mdi/react";
-import type { Component } from "grapesjs";
-import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
-import { MAIN_BORDER_COLOR, cx } from "./common";
+import * as React from 'react';
+import { useEditor } from '@grapesjs/react';
+import { mdiEyeOffOutline, mdiEyeOutline, mdiMenuDown } from '@mdi/js';
+import Icon from '@mdi/react';
+import { Icon as PolarisIcon } from '@shopify/polaris';
+import type { Component } from 'grapesjs';
+import { MouseEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { MAIN_BORDER_COLOR, cx } from './common';
 
 export declare interface LayerItemProps
   extends React.HTMLProps<HTMLDivElement> {
@@ -13,6 +14,7 @@ export declare interface LayerItemProps
   draggingCmp?: Component;
   dragParent?: Component;
 }
+import { ChevronUpMinor, ChevronDownMinor } from '@shopify/polaris-icons';
 
 const itemStyle = { maxWidth: `100%` };
 
@@ -29,7 +31,7 @@ export default function LayerItem({
   const { open, selected, hovered, components, visible, name } = layerData;
   const componentsIds = components.map((cmp) => cmp.getId());
   const isDragging = draggingCmp === component;
-  const cmpHash = componentsIds.join("-");
+  const cmpHash = componentsIds.join('-');
   const level = props.level + 1;
   const isHovered = hovered || dragParent === component;
 
@@ -85,14 +87,8 @@ export default function LayerItem({
     }
   };
 
-  const wrapperCls = cx(
-    "layer-item flex flex-col",
-    selected && "bg-sky-900",
-    (!visible || isDragging) && "opacity-50"
-  );
-
   return (
-    <div className={wrapperCls}>
+    <div>
       <div
         onClick={select}
         onMouseEnter={() => hover(true)}
@@ -101,35 +97,12 @@ export default function LayerItem({
         data-layer-item
         ref={layerRef}
       >
-        <div
-          className={cx(
-            "flex items-center p-1 pr-2 border-b gap-1",
-            level === 0 && "border-t",
-            MAIN_BORDER_COLOR,
-            isHovered && "bg-sky-700",
-            selected && "bg-sky-500"
-          )}
-        >
-          <div
-            style={{ marginLeft: `${level * 10}px` }}
-            className={cx(
-              "cursor-pointer",
-              !components.length && "pointer-events-none opacity-0"
-            )}
-            onClick={toggleOpen}
-          >
+        <div style={{ display: 'flex' }}>
+          <div style={{ marginLeft: `${level * 10}px` }} onClick={toggleOpen}>
             <Icon path={mdiMenuDown} size={0.7} rotate={open ? 0 : -90} />
           </div>
-          <div className="truncate flex-grow" style={itemStyle}>
-            {name}
-          </div>
-          <div
-            className={cx(
-              "group-hover:opacity-100 cursor-pointer",
-              visible ? "opacity-0" : "opacity-100"
-            )}
-            onClick={toggleVisibility}
-          >
+          <div style={{ flex: '1 1 auto' }}>{name}</div>
+          <div onClick={toggleVisibility}>
             <Icon
               path={visible ? mdiEyeOutline : mdiEyeOffOutline}
               size={0.7}
@@ -138,7 +111,7 @@ export default function LayerItem({
         </div>
       </div>
       {!!(open && components.length) && (
-        <div className={cx("max-w-full", !open && "hidden")}>{cmpToRender}</div>
+        <div className={cx('max-w-full', !open && 'hidden')}>{cmpToRender}</div>
       )}
     </div>
   );
