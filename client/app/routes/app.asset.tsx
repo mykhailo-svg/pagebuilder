@@ -13,6 +13,8 @@ import Topbar from '../components/Topbar';
 import RightSidebar from '../components/RightSidebar';
 import { useEffect, useState } from 'react';
 import { Card } from '@shopify/polaris';
+import mainCss from '../styles/main.css';
+export const links = () => [{ rel: 'stylesheet', href: mainCss }];
 
 const gjsOptions: EditorConfig = {
   height: '100vh',
@@ -73,7 +75,6 @@ export default function App() {
             className={`gjs-column-r w-[300px] border-l ${MAIN_BORDER_COLOR}`}
           />
         </div>
-
       </GjsEditor>
     </>
   );

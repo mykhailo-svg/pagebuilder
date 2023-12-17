@@ -20,12 +20,19 @@ export default function CustomBlockManager({
           <div className={cx('py-2 px-4 border-y', MAIN_BORDER_COLOR)}>
             {category}
           </div>
-          <div className="grid grid-cols-2 gap-2 p-2">
+          <div
+            style={{
+              display: 'flex',
+              overflow: 'hidden',
+              maxWidth: '400px',
+              flexWrap: 'wrap',
+            }}
+          >
             {blocks.map((block: any) => (
               <div
                 key={block.getId()}
                 draggable
-                style={{ width: '100px', height: '100px', overflow: 'hidden' }}
+                style={{ display: 'inline-block', minWidth: '150px' }}
                 onDragStart={(ev) => dragStart(block, ev.nativeEvent)}
                 onDragEnd={() => dragStop(false)}
               >

@@ -1,19 +1,27 @@
-import * as React from "react";
-import { useEditor } from "@grapesjs/react";
+import * as React from 'react';
+import { useEditor } from '@grapesjs/react';
 import {
   mdiArrowULeftTop,
   mdiArrowURightTop,
   mdiBorderRadius,
   mdiFullscreen,
   mdiXml,
-} from "@mdi/js";
-import Icon from "@mdi/react";
-import { useEffect, useState } from "react";
-import { BTN_CLS, MAIN_BORDER_COLOR, cx } from "./common";
+} from '@mdi/js';
+import {
+  MaximizeMajor,
+  LogoBlockMajor,
+  CodeMajor,
+  RedoMajor,
+  UndoMajor,
+} from '@shopify/polaris-icons';
+import Icon from '@mdi/react';
+import { FunctionComponent, SVGProps, useEffect, useState } from 'react';
+import { BTN_CLS, MAIN_BORDER_COLOR, cx } from './common';
+import { Button } from '@shopify/polaris';
 
 interface CommandButton {
   id: string;
-  iconPath: string;
+  iconPath: FunctionComponent<SVGProps<SVGSVGElement>>;
   options?: Record<string, any>;
   disabled?: () => boolean;
 }
@@ -26,33 +34,28 @@ export default function TopbarButtons({
   const { UndoManager, Commands } = editor;
   const cmdButtons: CommandButton[] = [
     {
-      id: "core:component-outline",
-      iconPath: mdiBorderRadius,
+      id: 'core:component-outline',
+      iconPath: LogoBlockMajor,
     },
     {
-      id: "core:fullscreen",
-      iconPath: mdiFullscreen,
-      options: { target: "#root" },
+      id: 'core:open-code',
+      iconPath: CodeMajor,
     },
     {
-      id: "core:open-code",
-      iconPath: mdiXml,
-    },
-    {
-      id: "core:undo",
-      iconPath: mdiArrowULeftTop,
+      id: 'core:undo',
+      iconPath: UndoMajor,
       disabled: () => !UndoManager.hasUndo(),
     },
     {
-      id: "core:redo",
-      iconPath: mdiArrowURightTop,
+      id: 'core:redo',
+      iconPath: RedoMajor,
       disabled: () => !UndoManager.hasRedo(),
     },
   ];
 
   useEffect(() => {
-    const cmdEvent = "run stop";
-    const updateEvent = "update";
+    const cmdEvent = 'run stop';
+    const updateEvent = 'update';
     const updateCounter = () => setUpdateCounter((value) => value + 1);
     const onCommand = (id: string) => {
       cmdButtons.find((btn) => btn.id === id) && updateCounter();
@@ -67,26 +70,19 @@ export default function TopbarButtons({
   }, []);
 
   return (
-    <div className={cx("flex gap-3", className)}>
+    <div className={cx('flex gap-3', className)}>
       {cmdButtons.map(({ id, iconPath, disabled, options = {} }) => (
-        <button
+        <Button
           key={id}
-          type="button"
-          className={cx(
-            BTN_CLS,
-            MAIN_BORDER_COLOR,
-            Commands.isActive(id) && "text-sky-300",
-            disabled?.() && "opacity-50"
-          )}
+          icon={iconPath}
+          size="large"
           onClick={() =>
             Commands.isActive(id)
               ? Commands.stop(id)
               : Commands.run(id, options)
           }
           disabled={disabled?.()}
-        >
-          <Icon path={iconPath} size={1} />
-        </button>
+        ></Button>
       ))}
     </div>
   );

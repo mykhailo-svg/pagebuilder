@@ -169,3 +169,8 @@
     display: flex;
     justify-content: space-between;
 }
+
+.gjs-row {
+    display: flex;
+    background: #000;
+}

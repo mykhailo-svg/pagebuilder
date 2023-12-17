@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   BlocksProvider,
   LayersProvider,
@@ -6,28 +6,28 @@ import {
   SelectorsProvider,
   StylesProvider,
   TraitsProvider,
-} from "@grapesjs/react";
+} from '@grapesjs/react';
 import {
   mdiBrush,
   mdiLayers,
   mdiViewGridPlus,
   mdiTextBoxMultiple,
   mdiCog,
-} from "@mdi/js";
-import Icon from "@mdi/react";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
-import { useState } from "react";
-import CustomBlockManager from "./CustomBlockManager";
-import { MAIN_BORDER_COLOR, cx } from "./common";
-import CustomPageManager from "./CustomPageManager";
-import CustomLayerManager from "./CustomLayerManager";
-import CustomSelectorManager from "./CustomSelectorManager";
-import CustomStyleManager from "./CustomStyleManager";
-import CustomTraitManager from "./CustomTraitManager";
+} from '@mdi/js';
+import Icon from '@mdi/react';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import { useState } from 'react';
+import CustomBlockManager from './CustomBlockManager';
+import { MAIN_BORDER_COLOR, cx } from './common';
+import CustomPageManager from './CustomPageManager';
+import CustomLayerManager from './CustomLayerManager';
+import CustomSelectorManager from './CustomSelectorManager';
+import CustomStyleManager from './CustomStyleManager';
+import CustomTraitManager from './CustomTraitManager';
 
 const defaultTabProps = {
-  className: "!min-w-0",
+  className: '!min-w-0',
 };
 
 export default function RightSidebar({
@@ -36,7 +36,7 @@ export default function RightSidebar({
   const [selectedTab, setSelectedTab] = useState(0);
 
   return (
-    <div className={cx("gjs-right-sidebar flex flex-col", className)}>
+    <div className={cx('gjs-right-sidebar flex flex-col', className)}>
       <Tabs
         value={selectedTab}
         onChange={(_, v) => setSelectedTab(v)}
@@ -49,13 +49,9 @@ export default function RightSidebar({
           {...defaultTabProps}
           label={<Icon size={1} path={mdiViewGridPlus} />}
         />
-        <Tab
-          {...defaultTabProps}
-          label={<Icon size={1} path={mdiTextBoxMultiple} />}
-        />
       </Tabs>
       <div
-        className={cx("overflow-y-auto flex-grow border-t", MAIN_BORDER_COLOR)}
+        className={cx('overflow-y-auto flex-grow border-t', MAIN_BORDER_COLOR)}
       >
         {selectedTab === 0 && (
           <>
@@ -81,11 +77,6 @@ export default function RightSidebar({
           <BlocksProvider>
             {(props) => <CustomBlockManager {...props} />}
           </BlocksProvider>
-        )}
-        {selectedTab === 4 && (
-          <PagesProvider>
-            {(props) => <CustomPageManager {...props} />}
-          </PagesProvider>
         )}
       </div>
     </div>
