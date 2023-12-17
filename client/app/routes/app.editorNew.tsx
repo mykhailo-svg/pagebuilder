@@ -129,7 +129,7 @@ export default function AdditionalPage() {
 
     submit(formData, {
       method: 'post',
-      action: `/app/editor?pageId=${pageResponse.id}`,
+      action: `/app/editorNew?pageId=${pageResponse.id}`,
     });
   };
 
@@ -156,6 +156,9 @@ export default function AdditionalPage() {
   };
   const onEditor = (editor: Editor) => {
     console.log('Editor loaded');
+    editor.on('update', () => {
+      setCanSave(false);
+    });
     (window as any).editor = editor;
     setEditor(editor);
   };
