@@ -14,16 +14,22 @@ import {
   mdiTextBoxMultiple,
   mdiCog,
 } from '@mdi/js';
+import {
+  LegacyCard,
+  Tabs as PolarisTabs,
+  Icon as PolarisIcon,
+} from '@shopify/polaris';
 import Icon from '@mdi/react';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import CustomBlockManager from './CustomBlockManager';
 import { MAIN_BORDER_COLOR, cx } from './common';
 import CustomPageManager from './CustomPageManager';
 import CustomLayerManager from './CustomLayerManager';
 import CustomSelectorManager from './CustomSelectorManager';
 import CustomStyleManager from './CustomStyleManager';
+import { PaintBrushMajor } from '@shopify/polaris-icons';
 import CustomTraitManager from './CustomTraitManager';
 
 const defaultTabProps = {
@@ -34,51 +40,73 @@ export default function RightSidebar({
   className,
 }: React.HTMLAttributes<HTMLDivElement>) {
   const [selectedTab, setSelectedTab] = useState(0);
+  const panels = [
+    <>
+      <SelectorsProvider>
+        {(props) => <CustomSelectorManager {...props} />}
+      </SelectorsProvider>
+      <StylesProvider>
+        {(props) => <CustomStyleManager {...props} />}
+      </StylesProvider>
+    </>,
+    <>
+      <TraitsProvider>
+        {(props) => <CustomTraitManager {...props} />}
+      </TraitsProvider>
+    </>,
+    <>
+      <LayersProvider>
+        {(props) => <CustomLayerManager {...props} />}
+      </LayersProvider>
+    </>,
+    <>
+      <BlocksProvider>
+        {(props) => <CustomBlockManager {...props} />}
+      </BlocksProvider>
+    </>,
+  ];
+  const [selected, setSelected] = useState(0);
 
+  const handleTabChange = useCallback(
+    (selectedTabIndex: number) => setSelected(selectedTabIndex),
+    []
+  );
+  const tabs = [
+    {
+      id: 'all-customers-fitted-2',
+      content: 'Styles',
+      accessibilityLabel: 'All customers',
+      panelID: 'styles',
+    },
+    {
+      id: 'accepts-marketing-fitted-2',
+      content: 'Settings',
+
+      panelID: 'settings',
+    },
+    {
+      id: 'layers',
+      content: 'Layers',
+
+      panelID: 'layers',
+    },
+    {
+      id: 'blocks',
+      content: 'Blocks',
+
+      panelID: 'blocks',
+    },
+  ];
   return (
     <div className={cx('gjs-right-sidebar flex flex-col', className)}>
-      <Tabs
-        value={selectedTab}
-        onChange={(_, v) => setSelectedTab(v)}
-        variant="fullWidth"
+      <PolarisTabs
+        tabs={tabs}
+        selected={selected}
+        onSelect={handleTabChange}
+        fitted
       >
-        <Tab {...defaultTabProps} label={<Icon size={1} path={mdiBrush} />} />
-        <Tab {...defaultTabProps} label={<Icon size={1} path={mdiCog} />} />
-        <Tab {...defaultTabProps} label={<Icon size={1} path={mdiLayers} />} />
-        <Tab
-          {...defaultTabProps}
-          label={<Icon size={1} path={mdiViewGridPlus} />}
-        />
-      </Tabs>
-      <div
-        className={cx('overflow-y-auto flex-grow border-t', MAIN_BORDER_COLOR)}
-      >
-        {selectedTab === 0 && (
-          <>
-            <SelectorsProvider>
-              {(props) => <CustomSelectorManager {...props} />}
-            </SelectorsProvider>
-            <StylesProvider>
-              {(props) => <CustomStyleManager {...props} />}
-            </StylesProvider>
-          </>
-        )}
-        {selectedTab === 1 && (
-          <TraitsProvider>
-            {(props) => <CustomTraitManager {...props} />}
-          </TraitsProvider>
-        )}
-        {selectedTab === 2 && (
-          <LayersProvider>
-            {(props) => <CustomLayerManager {...props} />}
-          </LayersProvider>
-        )}
-        {selectedTab === 3 && (
-          <BlocksProvider>
-            {(props) => <CustomBlockManager {...props} />}
-          </BlocksProvider>
-        )}
-      </div>
+        {panels[selected]}
+      </PolarisTabs>
     </div>
   );
 }
