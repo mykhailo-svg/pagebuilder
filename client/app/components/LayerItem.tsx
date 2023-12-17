@@ -101,13 +101,14 @@ export default function LayerItem({
         ref={layerRef}
       >
         <div style={{ display: 'flex' }}>
-          {components.length ? (
-            <div style={{ marginLeft: `${level * 10}px` }} onClick={toggleOpen}>
+          <div style={{ marginLeft: `${level * 20}px` }} onClick={toggleOpen}>
+            {components.length ? (
               <PolarisIcon source={open ? ChevronUpMinor : ChevronDownMinor} />
-            </div>
-          ) : (
-            ''
-          )}
+            ) : (
+              ''
+            )}
+          </div>
+
           <div style={{ flex: '1 1 auto' }}>{name}</div>
           <div style={{ cursor: 'pointer' }} onClick={toggleVisibility}>
             <PolarisIcon source={visible ? ViewMinor : HideMinor} />
