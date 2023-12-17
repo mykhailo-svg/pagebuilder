@@ -2,7 +2,7 @@
 
 name = "pages-builder"
 client_id = "b559767290b67b4db00a3d213d55c281"
-application_url = "https://syndicate-employers-encouraging-motor.trycloudflare.com"
+application_url = "https://niger-viewed-shower-construct.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products,read_themes,write_themes"
 
 [auth]
 redirect_urls = [
-  "https://syndicate-employers-encouraging-motor.trycloudflare.com/auth/callback",
-  "https://syndicate-employers-encouraging-motor.trycloudflare.com/auth/shopify/callback",
-  "https://syndicate-employers-encouraging-motor.trycloudflare.com/api/auth/callback",
-  "https://syndicate-employers-encouraging-motor.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://niger-viewed-shower-construct.trycloudflare.com/auth/callback",
+  "https://niger-viewed-shower-construct.trycloudflare.com/auth/shopify/callback",
+  "https://niger-viewed-shower-construct.trycloudflare.com/api/auth/callback",
+  "https://niger-viewed-shower-construct.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]
