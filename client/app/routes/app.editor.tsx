@@ -164,7 +164,7 @@ export default function AdditionalPage() {
   };
 
   return (
-    <>
+    <Page fullWidth>
       <Form ref={formRef} onSubmit={handleSubmit} method="post">
         <EditorHeader
           handleFullscreenToggle={handleFullscreenToggle}
@@ -200,6 +200,6 @@ export default function AdditionalPage() {
           <RightSidebar className={`gjs-column-r w-[300px] border-l`} />
         </div>
       </GjsEditor>
-    </>
+    </Page>
   );
 }
