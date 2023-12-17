@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Card, Frame, Page, Toast } from '@shopify/polaris';
+import { BlockStack, Card, Frame, Page, Toast } from '@shopify/polaris';
 import type { Editor, EditorConfig } from 'grapesjs';
 import mainCss from '../styles/main.css';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
@@ -165,41 +165,43 @@ export default function AdditionalPage() {
 
   return (
     <Page fullWidth>
-      <Form ref={formRef} onSubmit={handleSubmit} method="post">
-        <EditorHeader
-          handleFullscreenToggle={handleFullscreenToggle}
-          canSave={canSave}
-          page={pageResponse}
-        />
-      </Form>
-      <GjsEditor
-        className="gjs-custom-editor text-white bg-slate-900"
-        grapesjs="https://unpkg.com/grapesjs"
-        grapesjsCss="https://unpkg.com/grapesjs/dist/css/grapes.min.css"
-        options={gjsOptions}
-        plugins={[
-          {
-            id: 'gjs-blocks-basic',
-            src: 'https://unpkg.com/grapesjs-blocks-basic',
-          },
-        ]}
-        onEditor={onEditor}
-      >
-        <div style={{ display: 'flex' }}>
-          <div
-            style={{ flex: '1 1 auto' }}
-            className="gjs-column-m flex flex-col flex-grow"
-          >
-            <Topbar />
-            <div style={{ flex: '1 1 auto' }}>
-              <Card>
-                <Canvas />
-              </Card>
+      <BlockStack gap="200">
+        <Form ref={formRef} onSubmit={handleSubmit} method="post">
+          <EditorHeader
+            handleFullscreenToggle={handleFullscreenToggle}
+            canSave={canSave}
+            page={pageResponse}
+          />
+        </Form>
+        <GjsEditor
+          className="gjs-custom-editor text-white bg-slate-900"
+          grapesjs="https://unpkg.com/grapesjs"
+          grapesjsCss="https://unpkg.com/grapesjs/dist/css/grapes.min.css"
+          options={gjsOptions}
+          plugins={[
+            {
+              id: 'gjs-blocks-basic',
+              src: 'https://unpkg.com/grapesjs-blocks-basic',
+            },
+          ]}
+          onEditor={onEditor}
+        >
+          <div style={{ display: 'flex', gap: '20px' }}>
+            <div
+              style={{ flex: '1 1 auto' }}
+              className="gjs-column-m flex flex-col flex-grow"
+            >
+              <Topbar />
+              <div style={{ flex: '1 1 auto' }}>
+                <Card>
+                  <Canvas />
+                </Card>
+              </div>
             </div>
+            <RightSidebar className={`gjs-column-r w-[300px] border-l`} />
           </div>
-          <RightSidebar className={`gjs-column-r w-[300px] border-l`} />
-        </div>
-      </GjsEditor>
+        </GjsEditor>
+      </BlockStack>
     </Page>
   );
 }
