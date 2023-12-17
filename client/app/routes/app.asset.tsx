@@ -1,4 +1,3 @@
-//@ts-nocheck
 import * as React from 'react';
 import GjsEditor, {
   AssetsProvider,
@@ -37,62 +36,60 @@ const gjsOptions: EditorConfig = {
 };
 
 export default function App() {
-  const [GjsEditor, setGjsEditor] = useState<any>(null);
+  const onEditor = (editor: any) => {
+    console.log('Editor loaded');
+    (window as any).editor = editor;
+  };
 
-  useEffect(() => {
-    const loadGrapesJS = async () => {
-      try {
-        // Dynamically import GrapesJS and its related modules
-        const [
-          Editor,
-          GjsEditor,
-          GjsEditorModule,
-
-          // Other modules...
-        ] = await Promise.all([
-          import('grapesjs'),
-          import('@grapesjs/react'),
-
-          // Import other modules dynamically...
-        ]);
-
-        // Set up GrapesJS options and other configurations...
-        const gjsOptions = {
-          // Your GrapesJS options...
-        };
-
-        // Your onEditor function...
-        const onEditor = (editor: any) => {
-          console.log('Editor loaded');
-          (window as any).editor = editor;
-        };
-
-        // Set the GjsEditor component with the dynamically imported module
-        setGjsEditor(() => (
-          <GjsEditor.default
-            className="gjs-custom-editor text-white bg-slate-900"
-            grapesjs="https://unpkg.com/grapesjs"
-            grapesjsCss="https://unpkg.com/grapesjs/dist/css/grapes.min.css"
-            options={gjsOptions}
-            plugins={[
-              {
-                id: 'gjs-blocks-basic',
-                src: 'https://unpkg.com/grapesjs-blocks-basic',
-              },
-            ]}
-            onEditor={onEditor}
-          >
-            {/* Your JSX structure... */}
-          </GjsEditor.default>
-        ));
-      } catch (error) {
-        console.error('Error loading GrapesJS:', error);
-      }
-    };
-
-    // Call the function to load GrapesJS when the component mounts
-    loadGrapesJS();
-  }, []); // Empty dependency array to ensure the effect runs only once
-
-  return <>{GjsEditor}</>;
+  return (
+    <>
+      <GjsEditor
+        className="gjs-custom-editor text-white bg-slate-900"
+        grapesjs="https://unpkg.com/grapesjs"
+        grapesjsCss="https://unpkg.com/grapesjs/dist/css/grapes.min.css"
+        options={gjsOptions}
+        plugins={[
+          {
+            id: 'gjs-blocks-basic',
+            src: 'https://unpkg.com/grapesjs-blocks-basic',
+          },
+        ]}
+        onEditor={onEditor}
+      >
+        <div
+          className={`flex h-full border-t ${MAIN_BORDER_COLOR}`}
+          style={{ display: 'flex' }}
+        >
+          <div className="gjs-column-m flex flex-col flex-grow">
+            <Topbar className="min-h-[48px]" />
+            <Canvas className="flex-grow gjs-custom-editor-canvas" />
+          </div>
+          <RightSidebar
+            className={`gjs-column-r w-[300px] border-l ${MAIN_BORDER_COLOR}`}
+          />
+        </div>
+        <ModalProvider>
+          {({ open, title, content, close }: any) => (
+            <CustomModal
+              open={open}
+              title={title}
+              children={content}
+              close={close}
+            />
+          )}
+        </ModalProvider>
+        <AssetsProvider>
+          {({ assets, select, close, Container }: any) => (
+            <Container>
+              <CustomAssetManager
+                assets={assets}
+                select={select}
+                close={close}
+              />
+            </Container>
+          )}
+        </AssetsProvider>
+      </GjsEditor>
+    </>
+  );
 }
