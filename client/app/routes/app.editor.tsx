@@ -191,9 +191,9 @@ export default function AdditionalPage() {
               style={{ flex: '1 1 auto' }}
               className="gjs-column-m flex flex-col flex-grow"
             >
-              <Topbar />
               <div style={{ flex: '1 1 auto' }}>
                 <Card>
+                  <Topbar />
                   <Canvas />
                 </Card>
               </div>
