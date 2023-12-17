@@ -162,6 +162,13 @@ export default function AdditionalPage() {
 
   return (
     <>
+      <Form ref={formRef} onSubmit={handleSubmit} method="post">
+        <EditorHeader
+          handleFullscreenToggle={handleFullscreenToggle}
+          canSave={canSave}
+          page={pageResponse}
+        />
+      </Form>
       <GjsEditor
         className="gjs-custom-editor text-white bg-slate-900"
         grapesjs="https://unpkg.com/grapesjs"
