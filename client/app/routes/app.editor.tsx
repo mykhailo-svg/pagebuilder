@@ -161,8 +161,20 @@ export default function AdditionalPage() {
     });
     editor.BlockManager.add('my-custom-block', {
       label: 'My Custom Block',
-      attributes: { class: 'fa fa-cube' }, // You can set custom attributes
-      content: '<div class="my-custom-block">Hello, this is my custom block!</div>',
+      category: "Custom",
+      attributes: {
+        class: 'fa fa-cube', title: {
+          type: 'text',
+          label: 'Title',
+          defaultValue: 'Default Title',
+        },
+        description: {
+          type: 'textarea',
+          label: 'Description',
+          defaultValue: 'Default Description',
+        },
+      }, // You can set custom attributes
+      content: '<div class="my-custom-block"><div>Hello, this is my custom block!</div></div>',
     });
 
     (window as any).editor = editor;
