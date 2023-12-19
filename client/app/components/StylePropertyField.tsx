@@ -3,20 +3,16 @@ import { useEditor } from "@grapesjs/react";
 import {
   mdiArrowDownDropCircle,
   mdiArrowUpDropCircle,
-  mdiClose,
   mdiDelete,
   mdiPlus,
 } from "@mdi/js";
 import { Select as PolarisSelect } from "@shopify/polaris"
 import Icon from "@mdi/react";
-import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
-import MenuItem from "@mui/material/MenuItem";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
-import Select from "@mui/material/Select";
 import Slider from "@mui/material/Slider";
 import TextField from "@mui/material/TextField";
 import type {
