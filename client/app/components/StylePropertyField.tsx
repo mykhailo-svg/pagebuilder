@@ -7,6 +7,7 @@ import {
   mdiDelete,
   mdiPlus,
 } from "@mdi/js";
+import { Select as PolarisSelect } from "@shopify/polaris"
 import Icon from "@mdi/react";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -28,6 +29,7 @@ import type {
 } from "grapesjs";
 import { BTN_CLS, ROUND_BORDER_COLOR, cx } from "./common";
 import { Button, Text } from "@shopify/polaris";
+import { useCallback, useState } from "react";
 
 interface StylePropertyFieldProps extends React.HTMLProps<HTMLDivElement> {
   prop: Property;
@@ -45,6 +47,19 @@ export default function StylePropertyField({
   const onChange = (ev: any) => {
     handleChange(ev.target.value);
   };
+
+  const [selected, setSelected] = useState('today');
+
+  const handleSelectChange = useCallback(
+    (value: string) => setSelected(value),
+    [],
+  );
+
+  const options = [
+    { label: 'Today', value: 'today' },
+    { label: 'Yesterday', value: 'yesterday' },
+    { label: 'Last 7 days', value: 'lastWeek' },
+  ];
 
   const openAssets = () => {
     const { Assets } = editor;
@@ -99,18 +114,26 @@ export default function StylePropertyField({
       {
         const selectProp = prop as PropertySelect;
         inputToRender = (
-          <FormControl fullWidth size="small">
-            <Select value={value} onChange={onChange}>
-              {selectProp.getOptions().map((option) => (
-                <MenuItem
-                  key={selectProp.getOptionId(option)}
-                  value={selectProp.getOptionId(option)}
-                >
-                  {selectProp.getOptionLabel(option)}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <>
+            <FormControl fullWidth size="small">
+              <Select value={value} onChange={onChange}>
+                {selectProp.getOptions().map((option) => (
+                  <MenuItem
+                    key={selectProp.getOptionId(option)}
+                    value={selectProp.getOptionId(option)}
+                  >
+                    {selectProp.getOptionLabel(option)}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <PolarisSelect
+              label="Date range"
+              options={options}
+              onChange={handleSelectChange}
+              value={selected}
+            />
+          </>
         );
       }
       break;
