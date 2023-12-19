@@ -27,6 +27,7 @@ import type {
   PropertyStack,
 } from "grapesjs";
 import { BTN_CLS, ROUND_BORDER_COLOR, cx } from "./common";
+import { Button, Text } from "@shopify/polaris";
 
 interface StylePropertyFieldProps extends React.HTMLProps<HTMLDivElement> {
   prop: Property;
@@ -258,11 +259,11 @@ export default function StylePropertyField({
       className={cx("mb-3 px-1", prop.isFull() ? "w-full" : "w-1/2")}
     >
       <div className={cx("flex mb-2 items-center", canClear && "text-sky-300")}>
-        <div className="flex-grow capitalize">{prop.getLabel()}</div>
+
+        <Text as="h3">{prop.getLabel()}</Text>
         {canClear && (
-          <button onClick={() => prop.clear()}>
-            <Icon path={mdiClose} size={0.7} />
-          </button>
+
+          <Button tone="critical" variant="primary" onClick={() => prop.clear()}>Clear</Button>
         )}
         {type === "stack" && (
           <IconButton
