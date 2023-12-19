@@ -68,7 +68,7 @@ export default function CustomSelectorManager({
         <PolarisSelect
           label="Date range"
           options={statessOptions}
-          onChange={handleSelectChange}
+          onChange={(e) => setState(e)}
           value={selected}
         />
         {states.length}
