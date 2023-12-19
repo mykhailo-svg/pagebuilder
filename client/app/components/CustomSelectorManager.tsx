@@ -7,7 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { MAIN_BORDER_COLOR, cx } from "./common";
 import { Selector, State, StyleTarget } from "grapesjs";
-import { Button } from "@shopify/polaris";
+import { BlockStack, Button, InlineGrid, InlineStack } from "@shopify/polaris";
 
 type CustomSelectorManagerProps = {
   selectors: Selector[];
@@ -62,17 +62,16 @@ export default function CustomSelectorManager({
         ) : (
           <div className="opacity-70">Select a component</div>
         )}
-        {selectors.map((selector) => (
-          <div
-            key={selector.toString()}
-            className="px-2 py-1 flex items-center gap-1 whitespace-nowrap bg-sky-500 rounded"
-          >
-            <div>{selector.getLabel()}</div>
-            <button type="button" onClick={() => removeSelector(selector)}>
-              <Icon size={0.7} path={mdiClose} />
-            </button>
-          </div>
-        ))}
+        <BlockStack gap="100">
+          {selectors.map((selector) => (
+            <InlineGrid columns={2}>
+
+              <div>{selector.getLabel()}</div>
+              <Button variant="primary" tone="critical" onClick={() => removeSelector(selector)}>Remove</Button>
+            </InlineGrid >
+
+          ))}
+        </BlockStack>
       </div>
       <div>
         Selected: <span className="opacity-70">{targetStr || "None"}</span>
