@@ -1,7 +1,7 @@
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import type { Selector, State, StyleTarget } from "grapesjs";
+import type { SelectOption, Selector, State, StyleTarget } from "grapesjs";
 import { BlockStack, Button, InlineGrid, Text, Select as PolarisSelect } from "@shopify/polaris";
 import { useCallback, useState } from "react";
 
@@ -33,6 +33,9 @@ export default function CustomSelectorManager({
     (value: string) => setSelected(value),
     [],
   );
+  console.log(states);
+  const [statessOptions, setStatesOptions] = useState([{ label: "- State -", value: "", id: '' }])
+
 
   const options = [
     { label: 'Today', value: 'today' },
@@ -59,10 +62,11 @@ export default function CustomSelectorManager({
         </FormControl>
         <PolarisSelect
           label="Date range"
-          options={options}
+          options={statessOptions}
           onChange={handleSelectChange}
           value={selected}
         />
+        {states.length}
       </div>
       <div>
         {targetStr ? (
