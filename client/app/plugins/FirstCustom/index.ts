@@ -1,4 +1,7 @@
 import grapesjs from "grapesjs";
+import loadComponents from "./components"
+
+import loadBlocks from './blocks'
 
 export default grapesjs.plugins.add("customEditorComponent", ((editor, opts) => {
     let options = {
@@ -14,6 +17,7 @@ export default grapesjs.plugins.add("customEditorComponent", ((editor, opts) => 
         }
     }
 
-
+    loadBlocks(editor, opts)
+    loadComponents(editor, opts)
 
 }))
