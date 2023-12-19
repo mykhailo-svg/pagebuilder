@@ -50,10 +50,9 @@ export default function StylePropertyField({
 
   const [selected, setSelected] = useState('today');
 
-  const handleSelectChange = useCallback(
-    (value: string) => setSelected(value),
-    [],
-  );
+  const handleSelectChange = (value: string) => { setSelected(value); handleChange(value) }
+
+
 
 
   const openAssets = () => {
@@ -110,25 +109,13 @@ export default function StylePropertyField({
         const selectProp = prop as PropertySelect;
         inputToRender = (
           <>
-            <FormControl fullWidth size="small">
-              <Select value={value} onChange={onChange}>
-                {selectProp.getOptions().map((option) => (
-                  <MenuItem
-                    key={selectProp.getOptionId(option)}
-                    value={selectProp.getOptionId(option)}
-                  >
-                    {selectProp.getOptionLabel(option)}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
             <PolarisSelect
               label=""
               options={
                 selectProp.getOptions().map((option) => { return { label: selectProp.getOptionLabel(option), value: selectProp.getOptionId(option) } }
                 )
               }
-              onChange={onChange}
+              onChange={handleSelectChange}
               value={value}
             />
           </>
