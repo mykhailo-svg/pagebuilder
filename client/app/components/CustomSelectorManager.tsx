@@ -21,14 +21,10 @@ export default function CustomSelectorManager({
   addSelector,
   removeSelector,
 }: CustomSelectorManagerProps) {
-  const addNewSelector = () => {
-    const next = selectors.length + 1;
-    addSelector({ name: `new-${next}`, label: `New ${next}` });
-  };
+
 
   const targetStr = targets.join(", ");
 
-  console.log(states);
   const [statessOptions, setStatesOptions] = useState([{ label: "- State -", value: "", id: '' }])
 
   useEffect(() => {
@@ -37,7 +33,7 @@ export default function CustomSelectorManager({
 
   }, [states])
 
-  const [popoverActive, setPopoverActive] = useState(true);
+  const [popoverActive, setPopoverActive] = useState(false);
   const [tagValue, setTagValue] = useState('');
 
   const togglePopoverActive = useCallback(
@@ -51,8 +47,8 @@ export default function CustomSelectorManager({
   );
 
   const activator = (
-    <Button onClick={togglePopoverActive} disclosure>
-      Filter
+    <Button variant="primary" fullWidth onClick={togglePopoverActive} disclosure>
+      Selector
     </Button>
   );
   return (
@@ -65,28 +61,29 @@ export default function CustomSelectorManager({
           value={selectedState}
         />
         {targetStr ? (
-          <Button variant="primary" fullWidth onClick={addNewSelector}>Add</Button>
+          <Popover preferredPosition="above"
+            active={popoverActive}
+            activator={activator}
+            onClose={togglePopoverActive}
+            ariaHaspopup={false}
+            sectioned
+          >
+            <BlockStack gap="300">
+              <TextField
+                label="Selector"
+                value={tagValue}
+                onChange={handleTagValueChange}
+                autoComplete="off"
+              />
+              <Button size="slim" onClick={() => {
+                addSelector({ name: tagValue, label: tagValue });
+              }}>Add selector</Button>
+            </BlockStack>
+          </Popover>
         ) : (
           <div className="opacity-70">Select a component</div>
         )}
-        <Popover
-          active={popoverActive}
-          activator={activator}
-          onClose={togglePopoverActive}
-          ariaHaspopup={false}
-          sectioned
-        >
-          <FormLayout>
-            <Select label="Show all customers where:" options={['Tagged with']} />
-            <TextField
-              label="Tags"
-              value={tagValue}
-              onChange={handleTagValueChange}
-              autoComplete="off"
-            />
-            <Button size="slim">Add filter</Button>
-          </FormLayout>
-        </Popover>
+
       </BlockStack>
       <div>
 

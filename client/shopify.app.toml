@@ -2,7 +2,7 @@
 
 name = "Pagelab - Dev Room 17 (VM)"
 client_id = "433d388883a2b917a3003803e5757178"
-application_url = "https://washington-pix-oklahoma-harmony.trycloudflare.com"
+application_url = "https://record-then-slides-sullivan.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products,read_themes,write_themes"
 
 [auth]
 redirect_urls = [
-  "https://washington-pix-oklahoma-harmony.trycloudflare.com/auth/callback",
-  "https://washington-pix-oklahoma-harmony.trycloudflare.com/auth/shopify/callback",
-  "https://washington-pix-oklahoma-harmony.trycloudflare.com/api/auth/callback",
-  "https://washington-pix-oklahoma-harmony.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://record-then-slides-sullivan.trycloudflare.com/auth/callback",
+  "https://record-then-slides-sullivan.trycloudflare.com/auth/shopify/callback",
+  "https://record-then-slides-sullivan.trycloudflare.com/api/auth/callback",
+  "https://record-then-slides-sullivan.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]
