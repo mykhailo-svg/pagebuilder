@@ -6,7 +6,7 @@ import {
   mdiDelete,
   mdiPlus,
 } from "@mdi/js";
-import { Select as PolarisSelect } from "@shopify/polaris"
+import { Select as PolarisSelect, TextField as PolarisTextField } from "@shopify/polaris"
 import Icon from "@mdi/react";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
@@ -51,6 +51,7 @@ export default function StylePropertyField({
 
 
 
+
   const openAssets = () => {
     const { Assets } = editor;
     Assets.open({
@@ -73,13 +74,21 @@ export default function StylePropertyField({
   const valueWithDef = hasValue ? value : defValue;
 
   let inputToRender = (
-    <TextField
-      placeholder={defValue}
-      value={valueString}
-      onChange={onChange}
-      size="small"
-      fullWidth
-    />
+    <>
+      <TextField
+        placeholder={defValue}
+        value={valueString}
+        onChange={onChange}
+        size="small"
+        fullWidth
+      />
+      <PolarisTextField label=""
+        value={value}
+        onChange={handleChange}
+        autoComplete="off">
+
+      </PolarisTextField>
+    </>
   );
 
   switch (type) {
