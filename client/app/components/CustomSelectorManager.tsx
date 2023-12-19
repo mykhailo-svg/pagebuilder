@@ -6,6 +6,14 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { MAIN_BORDER_COLOR, cx } from "./common";
+import { Selector, State, StyleTarget } from "grapesjs";
+
+type CustomSelectorManagerProps = {
+  selectors: Selector[];
+  selectedState: State; states: State[];
+  targets: StyleTarget[]; setState: (val: any) => void, addSelector: (props: any) => void
+  removeSelector: (arg: any) => void
+}
 
 export default function CustomSelectorManager({
   selectors,
@@ -15,7 +23,7 @@ export default function CustomSelectorManager({
   setState,
   addSelector,
   removeSelector,
-}: Omit<SelectorsResultProps, "Container">) {
+}: CustomSelectorManagerProps) {
   const addNewSelector = () => {
     const next = selectors.length + 1;
     addSelector({ name: `new-${next}`, label: `New ${next}` });

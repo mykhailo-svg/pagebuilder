@@ -2,7 +2,7 @@
 
 name = "pages-builder"
 client_id = "b559767290b67b4db00a3d213d55c281"
-application_url = "https://bhutan-aimed-large-park.trycloudflare.com"
+application_url = "https://packaging-forbes-town-foundations.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products,read_themes,write_themes"
 
 [auth]
 redirect_urls = [
-  "https://bhutan-aimed-large-park.trycloudflare.com/auth/callback",
-  "https://bhutan-aimed-large-park.trycloudflare.com/auth/shopify/callback",
-  "https://bhutan-aimed-large-park.trycloudflare.com/api/auth/callback",
-  "https://bhutan-aimed-large-park.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://packaging-forbes-town-foundations.trycloudflare.com/auth/callback",
+  "https://packaging-forbes-town-foundations.trycloudflare.com/auth/shopify/callback",
+  "https://packaging-forbes-town-foundations.trycloudflare.com/api/auth/callback",
+  "https://packaging-forbes-town-foundations.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]
