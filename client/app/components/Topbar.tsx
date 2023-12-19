@@ -13,7 +13,7 @@ export default function Topbar() {
   return (
     <Card>
       <InlineGrid columns={2} gap="1000">
-        <DevicesProvider>
+        {/* <DevicesProvider>
           {({
             selected,
             select,
@@ -36,7 +36,7 @@ export default function Topbar() {
               </Select>
             </FormControl>
           )}
-        </DevicesProvider>
+        </DevicesProvider> */}
         <WithEditor>
           <TopbarButtons className="ml-auto px-2" />
         </WithEditor>

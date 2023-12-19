@@ -8,6 +8,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import type { Trait } from "grapesjs";
+import {TextField as PolarisTextField} from "@shopify/polaris"
 import { ROUND_BORDER_COLOR, cx } from "./common";
 
 interface StylePropertyFieldProps extends React.HTMLProps<HTMLDivElement> {
@@ -42,13 +43,14 @@ export default function TraitPropertyField({
   const valueWithDef = typeof value !== "undefined" ? value : defValue;
 
   let inputToRender = (
-    <TextField
+    <PolarisTextField
+      label=""
       placeholder={defValue}
       value={value}
-      onChange={onChange}
-      size="small"
-      fullWidth
+      onChange={handleChange}
+      autoComplete="off"
     />
+    
   );
 
   switch (type) {
