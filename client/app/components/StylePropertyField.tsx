@@ -75,15 +75,8 @@ export default function StylePropertyField({
 
   let inputToRender = (
     <>
-      <TextField
-        placeholder={defValue}
-        value={valueString}
-        onChange={onChange}
-        size="small"
-        fullWidth
-      />
       <PolarisTextField label=""
-        value={value}
+        value={value == "auto" ? "" : value}
         onChange={handleChange}
         autoComplete="off">
 
