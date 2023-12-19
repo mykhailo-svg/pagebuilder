@@ -1,6 +1,7 @@
 import { Page, Layout, CalloutCard } from '@shopify/polaris';
-
+import * as hjs from '@grapesjs/react';
 export default function Index() {
+  const a = hjs;
   return (
     <Page fullWidth>
       <ui-title-bar title="Dashboard"></ui-title-bar>
