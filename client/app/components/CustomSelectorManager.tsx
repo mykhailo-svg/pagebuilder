@@ -3,7 +3,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import type { SelectOption, Selector, State, StyleTarget } from "grapesjs";
 import { BlockStack, Button, InlineGrid, Text, Select as PolarisSelect } from "@shopify/polaris";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type CustomSelectorManagerProps = {
   selectors: Selector[];
@@ -36,6 +36,11 @@ export default function CustomSelectorManager({
   console.log(states);
   const [statessOptions, setStatesOptions] = useState([{ label: "- State -", value: "", id: '' }])
 
+  useEffect(() => {
+    setStatesOptions([{ label: "- State -", value: "", id: '' },
+    ...states.map((state) => { return { label: state.getLabel(), value: state.id.toString(), id: state.id.toString() } })])
+
+  }, [states])
 
   const options = [
     { label: 'Today', value: 'today' },
