@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 
 type CustomSelectorManagerProps = {
   selectors: Selector[];
-  selectedState: State; states: State[];
+  selectedState: string; states: State[];
   targets: StyleTarget[]; setState: (val: any) => void, addSelector: (props: any) => void
   removeSelector: (arg: any) => void
 }
@@ -50,28 +50,12 @@ export default function CustomSelectorManager({
   return (
     <div className="gjs-custom-selector-manager p-2 flex flex-col gap-2 text-left">
       <div className="flex items-center">
-        <div className="flex-grow">Selectors</div>
-        <FormControl size="small">
-          <Select
-            value={selectedState}
-            onChange={(ev) => setState(ev.target.value)}
-            displayEmpty
-          >
-            <MenuItem value="">- State -</MenuItem>
-            {states.map((state) => (
-              <MenuItem value={state.id} key={state.id}>
-                {state.getName()}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
         <PolarisSelect
-          label="Date range"
+          label="Selectors"
           options={statessOptions}
           onChange={(e) => setState(e)}
-          value={selected}
+          value={selectedState}
         />
-        {states.length}
       </div>
       <div>
         {targetStr ? (
