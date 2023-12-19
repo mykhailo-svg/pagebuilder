@@ -7,7 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { MAIN_BORDER_COLOR, cx } from "./common";
 import { Selector, State, StyleTarget } from "grapesjs";
-import { BlockStack, Button, InlineGrid, InlineStack } from "@shopify/polaris";
+import { BlockStack, Button, InlineGrid, InlineStack, Text } from "@shopify/polaris";
 
 type CustomSelectorManagerProps = {
   selectors: Selector[];
@@ -51,12 +51,7 @@ export default function CustomSelectorManager({
           </Select>
         </FormControl>
       </div>
-      <div
-        className={cx(
-          "flex items-center gap-2 flex-wrap p-2 bg-black/30 border rounded min-h-[45px]",
-          MAIN_BORDER_COLOR
-        )}
-      >
+      <div>
         {targetStr ? (
           <Button variant="primary" onClick={addNewSelector}>Add</Button>
         ) : (
@@ -74,7 +69,7 @@ export default function CustomSelectorManager({
         </BlockStack>
       </div>
       <div>
-        Selected: <span className="opacity-70">{targetStr || "None"}</span>
+        Selected: <Text as="span">{targetStr || "None"}</Text>
       </div>
     </div>
   );
