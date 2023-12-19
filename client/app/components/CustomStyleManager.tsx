@@ -9,6 +9,7 @@ import { MAIN_BG_COLOR } from './common';
 import StylePropertyField from './StylePropertyField';
 import { Sectors } from 'grapesjs';
 import { Button, Collapsible, Text } from '@shopify/polaris';
+import { StyleAccordion } from './CustomStyleAccordion';
 
 const accordionIcon = <Icon path={mdiMenuDown} size={0.7} />;
 
@@ -20,36 +21,7 @@ export default function CustomStyleManager({ sectors }: { sectors: Sectors }) {
     <div className="gjs-custom-style-manager text-left">
       {sectors.map((sector) => (
         <>
-          {/* <Accordion key={sector.getId()} disableGutters>
-            <AccordionSummary
-              className="!bg-slate-800"
-              expandIcon={accordionIcon}
-            >
-              {sector.getName()}
-            </AccordionSummary>
-            <AccordionDetails className={`${MAIN_BG_COLOR} flex flex-wrap`}>
-              {sector.getProperties().map((prop) => (
-                <StylePropertyField key={prop.getId()} prop={prop} />
-              ))}
-            </AccordionDetails>
-          </Accordion> */}
-          <div>
-            <Button fullWidth onClick={handleToggle}>
-              {sector.getName()}
-            </Button>
-
-
-            <Collapsible
-              open={open}
-              id="basic-collapsible"
-              transition={{ duration: '500ms', timingFunction: 'ease-in-out' }}
-              expandOnPrint
-            >
-              {sector.getProperties().map((prop) => (
-                <StylePropertyField key={prop.getId()} prop={prop} />
-              ))}
-            </Collapsible>
-          </div>
+          <StyleAccordion sector={sector} />
         </>
       ))}
     </div>
