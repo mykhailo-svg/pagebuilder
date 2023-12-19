@@ -1,9 +1,9 @@
-import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import type { SelectOption, Selector, State, StyleTarget } from "grapesjs";
+import type { Selector, State, StyleTarget } from "grapesjs";
 import { BlockStack, Button, InlineGrid, Text, Select as PolarisSelect } from "@shopify/polaris";
 import { useCallback, useEffect, useState } from "react";
+import {
+  DeleteMajor
+} from '@shopify/polaris-icons';
 
 type CustomSelectorManagerProps = {
   selectors: Selector[];
@@ -27,12 +27,7 @@ export default function CustomSelectorManager({
   };
 
   const targetStr = targets.join(", ");
-  const [selected, setSelected] = useState('today');
 
-  const handleSelectChange = useCallback(
-    (value: string) => setSelected(value),
-    [],
-  );
   console.log(states);
   const [statessOptions, setStatesOptions] = useState([{ label: "- State -", value: "", id: '' }])
 
@@ -42,33 +37,30 @@ export default function CustomSelectorManager({
 
   }, [states])
 
-  const options = [
-    { label: 'Today', value: 'today' },
-    { label: 'Yesterday', value: 'yesterday' },
-    { label: 'Last 7 days', value: 'lastWeek' },
-  ];
+
   return (
-    <div className="gjs-custom-selector-manager p-2 flex flex-col gap-2 text-left">
-      <div className="flex items-center">
+    <BlockStack gap="500">
+      <BlockStack gap="100">
         <PolarisSelect
           label="Selectors"
           options={statessOptions}
           onChange={(e) => setState(e)}
           value={selectedState}
         />
-      </div>
-      <div>
         {targetStr ? (
-          <Button variant="primary" onClick={addNewSelector}>Add</Button>
+          <Button variant="primary" fullWidth onClick={addNewSelector}>Add</Button>
         ) : (
           <div className="opacity-70">Select a component</div>
         )}
+      </BlockStack>
+      <div>
+
         <BlockStack gap="100">
           {selectors.map((selector) => (
             <InlineGrid columns={2}>
 
               <div>{selector.getLabel()}</div>
-              <Button variant="primary" tone="critical" onClick={() => removeSelector(selector)}>Remove</Button>
+              <Button variant="primary" tone="critical" onClick={() => removeSelector(selector)} icon={DeleteMajor} />
             </InlineGrid >
 
           ))}
@@ -77,6 +69,6 @@ export default function CustomSelectorManager({
       <div>
         Selected: <Text as="span">{targetStr || "None"}</Text>
       </div>
-    </div>
+    </BlockStack>
   );
 }
