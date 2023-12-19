@@ -7,6 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { MAIN_BORDER_COLOR, cx } from "./common";
 import { Selector, State, StyleTarget } from "grapesjs";
+import { Button } from "@shopify/polaris";
 
 type CustomSelectorManagerProps = {
   selectors: Selector[];
@@ -57,13 +58,7 @@ export default function CustomSelectorManager({
         )}
       >
         {targetStr ? (
-          <button
-            type="button"
-            onClick={addNewSelector}
-            className={cx("border rounded px-2 py-1")}
-          >
-            <Icon size={0.7} path={mdiPlus} />
-          </button>
+          <Button variant="primary" onClick={addNewSelector}>Add</Button>
         ) : (
           <div className="opacity-70">Select a component</div>
         )}
