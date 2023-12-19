@@ -1,13 +1,8 @@
-import * as React from "react";
-import { SelectorsResultProps } from "@grapesjs/react";
-import { mdiClose, mdiPlus } from "@mdi/js";
-import Icon from "@mdi/react";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import { MAIN_BORDER_COLOR, cx } from "./common";
 import type { Selector, State, StyleTarget } from "grapesjs";
-import { BlockStack, Button, InlineGrid, InlineStack, Text } from "@shopify/polaris";
+import { BlockStack, Button, InlineGrid, Text, Select as PolarisSelect } from "@shopify/polaris";
 
 type CustomSelectorManagerProps = {
   selectors: Selector[];
