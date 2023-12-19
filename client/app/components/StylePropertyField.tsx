@@ -55,11 +55,6 @@ export default function StylePropertyField({
     [],
   );
 
-  const options = [
-    { label: 'Today', value: 'today' },
-    { label: 'Yesterday', value: 'yesterday' },
-    { label: 'Last 7 days', value: 'lastWeek' },
-  ];
 
   const openAssets = () => {
     const { Assets } = editor;
@@ -128,10 +123,13 @@ export default function StylePropertyField({
               </Select>
             </FormControl>
             <PolarisSelect
-              label="Date range"
-              options={options}
-              onChange={handleSelectChange}
-              value={selected}
+              label=""
+              options={
+                selectProp.getOptions().map((option) => { return { label: selectProp.getOptionLabel(option), value: selectProp.getOptionId(option) } }
+                )
+              }
+              onChange={onChange}
+              value={value}
             />
           </>
         );
