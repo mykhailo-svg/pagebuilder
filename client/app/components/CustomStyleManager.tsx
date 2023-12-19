@@ -8,7 +8,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import { MAIN_BG_COLOR } from './common';
 import StylePropertyField from './StylePropertyField';
 import { Sectors } from 'grapesjs';
-import { Button, Collapsible, Text } from '@shopify/polaris';
+import { BlockStack, Button, Collapsible, Text } from '@shopify/polaris';
 import { StyleAccordion } from './CustomStyleAccordion';
 
 const accordionIcon = <Icon path={mdiMenuDown} size={0.7} />;
@@ -18,12 +18,12 @@ export default function CustomStyleManager({ sectors }: { sectors: Sectors }) {
 
   const handleToggle = React.useCallback(() => setOpen((open) => !open), []);
   return (
-    <div className="gjs-custom-style-manager text-left">
+    <BlockStack gap="400">
       {sectors.map((sector) => (
         <>
           <StyleAccordion sector={sector} />
         </>
       ))}
-    </div>
+    </BlockStack>
   );
 }
