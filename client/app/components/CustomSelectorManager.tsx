@@ -1,5 +1,5 @@
 import type { Selector, State, StyleTarget } from "grapesjs";
-import { BlockStack, Button, InlineGrid, Text, Select as PolarisSelect } from "@shopify/polaris";
+import { BlockStack, Button, InlineGrid, Text, Select as PolarisSelect, Popover, FormLayout, TextField, Select } from "@shopify/polaris";
 import { useCallback, useEffect, useState } from "react";
 import {
   DeleteMajor
@@ -37,7 +37,24 @@ export default function CustomSelectorManager({
 
   }, [states])
 
+  const [popoverActive, setPopoverActive] = useState(true);
+  const [tagValue, setTagValue] = useState('');
 
+  const togglePopoverActive = useCallback(
+    () => setPopoverActive((popoverActive) => !popoverActive),
+    [],
+  );
+
+  const handleTagValueChange = useCallback(
+    (value: string) => setTagValue(value),
+    [],
+  );
+
+  const activator = (
+    <Button onClick={togglePopoverActive} disclosure>
+      Filter
+    </Button>
+  );
   return (
     <BlockStack gap="500">
       <BlockStack gap="100">
@@ -52,6 +69,24 @@ export default function CustomSelectorManager({
         ) : (
           <div className="opacity-70">Select a component</div>
         )}
+        <Popover
+          active={popoverActive}
+          activator={activator}
+          onClose={togglePopoverActive}
+          ariaHaspopup={false}
+          sectioned
+        >
+          <FormLayout>
+            <Select label="Show all customers where:" options={['Tagged with']} />
+            <TextField
+              label="Tags"
+              value={tagValue}
+              onChange={handleTagValueChange}
+              autoComplete="off"
+            />
+            <Button size="slim">Add filter</Button>
+          </FormLayout>
+        </Popover>
       </BlockStack>
       <div>
 
