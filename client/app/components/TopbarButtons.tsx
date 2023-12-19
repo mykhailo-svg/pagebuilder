@@ -15,7 +15,8 @@ import {
   UndoMajor,
 } from '@shopify/polaris-icons';
 import Icon from '@mdi/react';
-import { FunctionComponent, SVGProps, useEffect, useState } from 'react';
+import type { FunctionComponent, SVGProps} from 'react';
+import { useEffect, useState } from 'react';
 import { BTN_CLS, MAIN_BORDER_COLOR, cx } from './common';
 import { Button } from '@shopify/polaris';
 

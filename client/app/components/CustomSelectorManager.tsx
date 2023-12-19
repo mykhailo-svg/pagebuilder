@@ -6,7 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { MAIN_BORDER_COLOR, cx } from "./common";
-import { Selector, State, StyleTarget } from "grapesjs";
+import type { Selector, State, StyleTarget } from "grapesjs";
 import { BlockStack, Button, InlineGrid, InlineStack, Text } from "@shopify/polaris";
 
 type CustomSelectorManagerProps = {

@@ -7,7 +7,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import { MAIN_BG_COLOR } from './common';
 import StylePropertyField from './StylePropertyField';
-import { Sectors } from 'grapesjs';
+import type { Sectors } from 'grapesjs';
 import { BlockStack, Button, Collapsible, Scrollable, Text } from '@shopify/polaris';
 import { StyleAccordion } from './CustomStyleAccordion';
 
