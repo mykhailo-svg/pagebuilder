@@ -16,6 +16,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Slider from "@mui/material/Slider";
 import TextField from "@mui/material/TextField";
 import type {
+  Editor,
   Property,
   PropertyComposite,
   PropertyRadio,
@@ -53,7 +54,7 @@ export default function StylePropertyField({
 
 
   const openAssets = () => {
-    const { Assets } = editor;
+    const { Assets }: Editor = editor;
     Assets.open({
       select: (asset, complete) => {
         console.log({ complete });
