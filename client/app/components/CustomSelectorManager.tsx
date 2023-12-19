@@ -3,6 +3,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import type { Selector, State, StyleTarget } from "grapesjs";
 import { BlockStack, Button, InlineGrid, Text, Select as PolarisSelect } from "@shopify/polaris";
+import { useCallback, useState } from "react";
 
 type CustomSelectorManagerProps = {
   selectors: Selector[];
@@ -26,7 +27,18 @@ export default function CustomSelectorManager({
   };
 
   const targetStr = targets.join(", ");
+  const [selected, setSelected] = useState('today');
 
+  const handleSelectChange = useCallback(
+    (value: string) => setSelected(value),
+    [],
+  );
+
+  const options = [
+    { label: 'Today', value: 'today' },
+    { label: 'Yesterday', value: 'yesterday' },
+    { label: 'Last 7 days', value: 'lastWeek' },
+  ];
   return (
     <div className="gjs-custom-selector-manager p-2 flex flex-col gap-2 text-left">
       <div className="flex items-center">
@@ -45,6 +57,12 @@ export default function CustomSelectorManager({
             ))}
           </Select>
         </FormControl>
+        <PolarisSelect
+          label="Date range"
+          options={options}
+          onChange={handleSelectChange}
+          value={selected}
+        />
       </div>
       <div>
         {targetStr ? (
