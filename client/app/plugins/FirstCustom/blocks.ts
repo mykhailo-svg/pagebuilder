@@ -6,6 +6,6 @@ export default (editor: Editor, opts = {} as any) => {
     blockManager.add(opts.name, {
         label: `<div>${opts.label}</div>`,
         category: opts.category,
-        content:"<div>Custom plugin</div>"
+        content:`<div class="mycustpm-container" >Custom plugin</div>`
     })
 }
