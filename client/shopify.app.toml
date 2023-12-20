@@ -2,7 +2,7 @@
 
 name = "Pagelab - Dev Room 17 (VM)"
 client_id = "433d388883a2b917a3003803e5757178"
-application_url = "https://statement-otherwise-highland-lithuania.trycloudflare.com"
+application_url = "https://tanks-mean-claims-limit.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,10 +11,10 @@ scopes = "write_products,read_themes,write_themes"
 
 [auth]
 redirect_urls = [
-  "https://statement-otherwise-highland-lithuania.trycloudflare.com/auth/callback",
-  "https://statement-otherwise-highland-lithuania.trycloudflare.com/auth/shopify/callback",
-  "https://statement-otherwise-highland-lithuania.trycloudflare.com/api/auth/callback",
-  "https://statement-otherwise-highland-lithuania.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://tanks-mean-claims-limit.trycloudflare.com/auth/callback",
+  "https://tanks-mean-claims-limit.trycloudflare.com/auth/shopify/callback",
+  "https://tanks-mean-claims-limit.trycloudflare.com/api/auth/callback",
+  "https://tanks-mean-claims-limit.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]

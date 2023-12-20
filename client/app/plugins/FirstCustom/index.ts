@@ -1,23 +1,18 @@
+//@ts-nocheck
 import grapesjs from "grapesjs";
-import loadComponents from "./components"
+import loadComponents from "./components";
+import loadBlocks from "./blocks";
 
-import loadBlocks from './blocks'
-
-export default grapesjs.plugins.add("customEditorComponent", ((editor, opts) => {
+export default grapesjs.plugins.add("swiperComponent", (editor, opts = {}) => {
     let options = {
-        label: "Customcc",
-        name: "CComponent",
-        category: "Custom"
+        label: "Swiper",
+        name: "cswiper",
+        category: "Custom",
     };
-
-    // Extend opts with default values from options
     for (let name in options) {
-        if (!(name in opts)) {
-            opts[name] = options[name as "label"];
-        }
+        if (!(name in opts)) opts[name] = options[name];
     }
 
-    loadBlocks(editor, opts)
-    loadComponents(editor, opts)
-
-}))
+    loadBlocks(editor, options);
+    loadComponents(editor, opts);
+});
