@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TraitsResultProps } from '@grapesjs/react';
 import TraitPropertyField from './TraitPropertyField';
-import { Traits } from 'grapesjs';
+import type { Traits } from 'grapesjs';
 
 export default function CustomTraitManager({ traits }: { traits: Traits }) {
   return (

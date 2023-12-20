@@ -3,22 +3,20 @@ import { useEditor } from "@grapesjs/react";
 import {
   mdiArrowDownDropCircle,
   mdiArrowUpDropCircle,
-  mdiClose,
   mdiDelete,
   mdiPlus,
 } from "@mdi/js";
+import { Select as PolarisSelect, TextField as PolarisTextField } from "@shopify/polaris"
 import Icon from "@mdi/react";
-import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
-import MenuItem from "@mui/material/MenuItem";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
-import Select from "@mui/material/Select";
 import Slider from "@mui/material/Slider";
 import TextField from "@mui/material/TextField";
 import type {
+  Editor,
   Property,
   PropertyComposite,
   PropertyRadio,
@@ -28,6 +26,7 @@ import type {
 } from "grapesjs";
 import { BTN_CLS, ROUND_BORDER_COLOR, cx } from "./common";
 import { Button, Text } from "@shopify/polaris";
+import { useCallback, useState } from "react";
 
 interface StylePropertyFieldProps extends React.HTMLProps<HTMLDivElement> {
   prop: Property;
@@ -46,8 +45,16 @@ export default function StylePropertyField({
     handleChange(ev.target.value);
   };
 
+  const [selected, setSelected] = useState('today');
+
+  const handleSelectChange = (value: string) => { setSelected(value); handleChange(value) }
+
+
+
+
+
   const openAssets = () => {
-    const { Assets } = editor;
+    const { Assets }: Editor = editor;
     Assets.open({
       select: (asset, complete) => {
         console.log({ complete });
@@ -68,13 +75,15 @@ export default function StylePropertyField({
   const valueWithDef = hasValue ? value : defValue;
 
   let inputToRender = (
-    <TextField
-      placeholder={defValue}
-      value={valueString}
-      onChange={onChange}
-      size="small"
-      fullWidth
-    />
+    <>
+      <PolarisTextField label=""
+        placeholder={"auto"}
+        value={value == "auto" ? "" : value}
+        onChange={handleChange}
+        autoComplete="off">
+
+      </PolarisTextField>
+    </>
   );
 
   switch (type) {
@@ -99,18 +108,17 @@ export default function StylePropertyField({
       {
         const selectProp = prop as PropertySelect;
         inputToRender = (
-          <FormControl fullWidth size="small">
-            <Select value={value} onChange={onChange}>
-              {selectProp.getOptions().map((option) => (
-                <MenuItem
-                  key={selectProp.getOptionId(option)}
-                  value={selectProp.getOptionId(option)}
-                >
-                  {selectProp.getOptionLabel(option)}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <>
+            <PolarisSelect
+              label=""
+              options={
+                selectProp.getOptions().map((option) => { return { label: selectProp.getOptionLabel(option), value: selectProp.getOptionId(option) } }
+                )
+              }
+              onChange={handleSelectChange}
+              value={value}
+            />
+          </>
         );
       }
       break;

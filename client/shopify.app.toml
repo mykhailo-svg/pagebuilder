@@ -1,8 +1,8 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-name = "pages-builder"
-client_id = "b559767290b67b4db00a3d213d55c281"
-application_url = "https://bhutan-aimed-large-park.trycloudflare.com"
+name = "Pagelab - Dev Room 17 (VM)"
+client_id = "433d388883a2b917a3003803e5757178"
+application_url = "https://tanks-mean-claims-limit.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -11,18 +11,18 @@ scopes = "write_products,read_themes,write_themes"
 
 [auth]
 redirect_urls = [
-  "https://bhutan-aimed-large-park.trycloudflare.com/auth/callback",
-  "https://bhutan-aimed-large-park.trycloudflare.com/auth/shopify/callback",
-  "https://bhutan-aimed-large-park.trycloudflare.com/api/auth/callback",
-  "https://bhutan-aimed-large-park.trycloudflare.com/.shopify/graphiql/auth/callback"
+  "https://tanks-mean-claims-limit.trycloudflare.com/auth/callback",
+  "https://tanks-mean-claims-limit.trycloudflare.com/auth/shopify/callback",
+  "https://tanks-mean-claims-limit.trycloudflare.com/api/auth/callback",
+  "https://tanks-mean-claims-limit.trycloudflare.com/.shopify/graphiql/auth/callback"
 ]
 
 [webhooks]
-api_version = "2023-01"
+api_version = "2023-10"
 
 [pos]
 embedded = false
 
 [build]
 automatically_update_urls_on_dev = true
-dev_store_url = "test2r3.myshopify.com"
+dev_store_url = "dev-room-17-mv-19-12-2023.myshopify.com"

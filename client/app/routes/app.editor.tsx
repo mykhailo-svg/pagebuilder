@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { BlockStack, Card, Frame, Page, Toast } from '@shopify/polaris';
-import type { Editor, EditorConfig } from 'grapesjs';
+import { Editor, EditorConfig } from 'grapesjs';
 import mainCss from '../styles/main.css';
 import grapesStyles from 'grapesjs/dist/css/grapes.min.css';
 import { Fullscreen } from '@shopify/app-bridge/actions';
@@ -27,7 +27,7 @@ import GjsEditor, {
   ModalProvider,
 } from '@grapesjs/react';
 import RightSidebar from '~/components/RightSidebar';
-
+import customEditorComponent from '~/plugins/FirstCustom';
 export const links = () => [
   { rel: 'stylesheet', href: grapesStyles },
   { rel: 'stylesheet', href: mainCss },
@@ -138,6 +138,8 @@ export default function AdditionalPage() {
     storageManager: false,
     undoManager: { trackSelection: false },
     selectorManager: { componentFirst: true },
+    plugins: [customEditorComponent],
+    pluginsOpts: { customEditorComponent: {} },
     projectData: {
       assets: [
         'https://via.placeholder.com/350x250/78c5d6/fff',
@@ -159,6 +161,18 @@ export default function AdditionalPage() {
     editor.on('update', () => {
       setCanSave(false);
     });
+    editor.BlockManager.add('my-custom-block', {
+      id: 'images',
+      label: 'Image',
+      media: `<div>Heloo</div>`,
+      // Use `image` component
+      content: { type: "text", content: 'Insert your text here', },
+      // The component `image` is activatable (shows the Asset Manager).
+      // We want to activate it once dropped in the canvas.
+      activate: true,
+      // select: true, // Default with `activate: true`
+    });
+
     (window as any).editor = editor;
     setEditor(editor);
   };

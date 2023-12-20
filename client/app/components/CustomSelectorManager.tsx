@@ -1,11 +1,16 @@
-import * as React from "react";
-import { SelectorsResultProps } from "@grapesjs/react";
-import { mdiClose, mdiPlus } from "@mdi/js";
-import Icon from "@mdi/react";
-import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import { MAIN_BORDER_COLOR, cx } from "./common";
+import type { Selector, State, StyleTarget } from "grapesjs";
+import { BlockStack, Button, InlineGrid, Text, Select as PolarisSelect, Popover, FormLayout, TextField, Select } from "@shopify/polaris";
+import { useCallback, useEffect, useState } from "react";
+import {
+  DeleteMajor
+} from '@shopify/polaris-icons';
+
+type CustomSelectorManagerProps = {
+  selectors: Selector[];
+  selectedState: string; states: State[];
+  targets: StyleTarget[]; setState: (val: any) => void, addSelector: (props: any) => void
+  removeSelector: (arg: any) => void
+}
 
 export default function CustomSelectorManager({
   selectors,
@@ -15,65 +20,87 @@ export default function CustomSelectorManager({
   setState,
   addSelector,
   removeSelector,
-}: Omit<SelectorsResultProps, "Container">) {
-  const addNewSelector = () => {
-    const next = selectors.length + 1;
-    addSelector({ name: `new-${next}`, label: `New ${next}` });
-  };
+}: CustomSelectorManagerProps) {
+
 
   const targetStr = targets.join(", ");
 
+  const [statessOptions, setStatesOptions] = useState([{ label: "- State -", value: "", id: '' }])
+
+  useEffect(() => {
+    setStatesOptions([{ label: "- State -", value: "", id: '' },
+    ...states.map((state) => { return { label: state.getLabel(), value: state.id.toString(), id: state.id.toString() } })])
+
+  }, [states])
+
+  const [popoverActive, setPopoverActive] = useState(false);
+  const [tagValue, setTagValue] = useState('');
+
+  const togglePopoverActive = useCallback(
+    () => setPopoverActive((popoverActive) => !popoverActive),
+    [],
+  );
+
+  const handleTagValueChange = useCallback(
+    (value: string) => setTagValue(value),
+    [],
+  );
+
+  const activator = (
+    <Button variant="primary" fullWidth onClick={togglePopoverActive} disclosure>
+      Selector
+    </Button>
+  );
   return (
-    <div className="gjs-custom-selector-manager p-2 flex flex-col gap-2 text-left">
-      <div className="flex items-center">
-        <div className="flex-grow">Selectors</div>
-        <FormControl size="small">
-          <Select
-            value={selectedState}
-            onChange={(ev) => setState(ev.target.value)}
-            displayEmpty
-          >
-            <MenuItem value="">- State -</MenuItem>
-            {states.map((state) => (
-              <MenuItem value={state.id} key={state.id}>
-                {state.getName()}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </div>
-      <div
-        className={cx(
-          "flex items-center gap-2 flex-wrap p-2 bg-black/30 border rounded min-h-[45px]",
-          MAIN_BORDER_COLOR
-        )}
-      >
+    <BlockStack gap="500">
+      <BlockStack gap="100">
+        <PolarisSelect
+          label="Selectors"
+          options={statessOptions}
+          onChange={(e) => setState(e)}
+          value={selectedState}
+        />
         {targetStr ? (
-          <button
-            type="button"
-            onClick={addNewSelector}
-            className={cx("border rounded px-2 py-1")}
+          <Popover preferredPosition="above"
+            active={popoverActive}
+            activator={activator}
+            onClose={togglePopoverActive}
+            ariaHaspopup={false}
+            sectioned
           >
-            <Icon size={0.7} path={mdiPlus} />
-          </button>
+            <BlockStack gap="300">
+              <TextField
+                label="Selector"
+                value={tagValue}
+                onChange={handleTagValueChange}
+                autoComplete="off"
+              />
+              <Button size="slim" onClick={() => {
+                addSelector({ name: tagValue, label: tagValue });
+              }}>Add selector</Button>
+            </BlockStack>
+          </Popover>
         ) : (
           <div className="opacity-70">Select a component</div>
         )}
-        {selectors.map((selector) => (
-          <div
-            key={selector.toString()}
-            className="px-2 py-1 flex items-center gap-1 whitespace-nowrap bg-sky-500 rounded"
-          >
-            <div>{selector.getLabel()}</div>
-            <button type="button" onClick={() => removeSelector(selector)}>
-              <Icon size={0.7} path={mdiClose} />
-            </button>
-          </div>
-        ))}
+
+      </BlockStack>
+      <div>
+
+        <BlockStack gap="100">
+          {selectors.map((selector) => (
+            <InlineGrid columns={2}>
+
+              <div>{selector.getLabel()}</div>
+              <Button variant="primary" tone="critical" onClick={() => removeSelector(selector)} icon={DeleteMajor} />
+            </InlineGrid >
+
+          ))}
+        </BlockStack>
       </div>
       <div>
-        Selected: <span className="opacity-70">{targetStr || "None"}</span>
+        Selected: <Text as="span">{targetStr || "None"}</Text>
       </div>
-    </div>
+    </BlockStack>
   );
 }

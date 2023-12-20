@@ -2,8 +2,15 @@ import * as React from 'react';
 import { useEditor } from '@grapesjs/react';
 import { Icon as PolarisIcon } from '@shopify/polaris';
 import type { Component, LayerData } from 'grapesjs';
-import { MouseEvent, useEffect, useMemo, useRef, useState } from 'react';
+import type { MouseEvent} from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { cx } from './common';
+import {
+  ChevronUpMinor,
+  ChevronDownMinor,
+  ViewMinor,
+  HideMinor,
+} from '@shopify/polaris-icons';
 
 export declare interface LayerItemProps
   extends React.HTMLProps<HTMLDivElement> {
@@ -12,12 +19,6 @@ export declare interface LayerItemProps
   draggingCmp?: Component;
   dragParent?: Component;
 }
-import {
-  ChevronUpMinor,
-  ChevronDownMinor,
-  ViewMinor,
-  HideMinor,
-} from '@shopify/polaris-icons';
 
 const itemStyle = { maxWidth: `100%` };
 

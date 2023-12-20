@@ -7,7 +7,8 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import { MAIN_BG_COLOR } from './common';
 import StylePropertyField from './StylePropertyField';
-import { Sector, Sectors } from 'grapesjs';
+import type { Sector} from 'grapesjs';
+import { Sectors } from 'grapesjs';
 import { Button, Card, Collapsible, Text } from '@shopify/polaris';
 import { useCallback, useState } from 'react';
 

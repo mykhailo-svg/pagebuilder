@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BlocksResultProps } from '@grapesjs/react';
+import type { BlocksResultProps } from '@grapesjs/react';
 import { MAIN_BORDER_COLOR, cx } from './common';
 import { Card } from '@shopify/polaris';
 

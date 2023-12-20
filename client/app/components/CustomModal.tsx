@@ -3,7 +3,8 @@ import { mdiClose } from "@mdi/js";
 import Icon from "@mdi/react";
 import Box from "@mui/material/Box";
 import Fade from "@mui/material/Fade";
-import Modal, { ModalProps } from "@mui/material/Modal";
+import type { ModalProps } from "@mui/material/Modal";
+import Modal from "@mui/material/Modal";
 import { MAIN_BG_COLOR, MAIN_TXT_COLOR, cx } from "./common";
 
 const style = {

@@ -1,5 +1,6 @@
 import * as React from "react";
-import { LayersResultProps, useEditor } from "@grapesjs/react";
+import type { LayersResultProps} from "@grapesjs/react";
+import { useEditor } from "@grapesjs/react";
 import type { Component, Editor } from "grapesjs";
 import { useRef, useState } from "react";
 import { cx } from "./common";
